@@ -1,5 +1,8 @@
-﻿namespace OGCP.Curriculum.API.repositories;
+﻿using OGCP.Curriculum.API.models;
 
-public interface IProfileRepository<T> : IProfileReadRepository<T>, IProfileWriteRepository<T>
+namespace OGCP.Curriculum.API.repositories
 {
+    public interface IProfileRepository : IRepository<Profile>
+    {
+    }
 }

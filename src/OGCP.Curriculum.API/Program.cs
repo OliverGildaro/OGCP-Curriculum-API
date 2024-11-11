@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.factories;
-using OGCP.Curriculum.API.models;
 using OGCP.Curriculum.API.repositories;
 using OGCP.Curriculum.API.services;
 
@@ -20,9 +18,9 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddControllers();
-builder.Services.AddScoped<IProfileService<Profile, Request>, ProfileService<Profile, Request>>();
-builder.Services.AddScoped<IProfileRepository<Profile>, ProfileRepository<Profile>>();
-//builder.Services.AddScoped<IProfileFactory<Profile>, ProfileFactory>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<IProfileFactory, ProfileFactory>();
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 
 var app = builder.Build();
 

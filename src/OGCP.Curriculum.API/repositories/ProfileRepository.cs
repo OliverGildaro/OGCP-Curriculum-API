@@ -1,19 +1,14 @@
-﻿namespace OGCP.Curriculum.API.repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using OGCP.Curriculum.API.models;
 
-public class ProfileRepository<t> : IProfileRepository<t>
+namespace OGCP.Curriculum.API.repositories
 {
-    public ProfileRepository()
+    public class ProfileRepository : Repository<Profile>, IProfileRepository
     {
-
-    }
-
-    public void Add(t entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public t FInd()
-    {
-        throw new NotImplementedException();
+        public ProfileRepository(DbContext context)
+            :base(context)
+        {
+            
+        }
     }
 }

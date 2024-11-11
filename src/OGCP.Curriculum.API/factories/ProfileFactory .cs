@@ -1,0 +1,52 @@
+﻿using OGCP.Curriculum.API.dtos;
+using OGCP.Curriculum.API.models;
+
+namespace OGCP.Curriculum.API.factories
+{
+    public class ProfileFactory : IProfileFactory
+    {
+        public Profile Get(Request request)
+        {
+            if (request is CreateGeneralProfileRequest generalRequest)
+            {
+                return new GeneralProfile
+                {
+                    FirstName = generalRequest.FirstName,
+                    LastName = generalRequest.LastName,
+                    Summary = generalRequest.Summary,
+                    Profiletype = generalRequest.Profiletype,
+                    IsPublic = generalRequest.IsPublic
+                };
+            }
+
+            if (request is CreateQualifiedProfileRequest qualifiedRequest)
+            {
+                return new QualifiedProfile
+                {
+                    FirstName = qualifiedRequest.FirstName,
+                    LastName = qualifiedRequest.LastName,
+                    Summary = qualifiedRequest.Summary,
+                    Profiletype = qualifiedRequest.Profiletype,
+                    IsPublic = qualifiedRequest.IsPublic,
+                    DesiredJobRole = qualifiedRequest.DesiredJobRole
+                };
+            }
+            if (request is CreateStudentProfileRequest studentRequest)
+            {
+                return new QualifiedProfile
+                {
+                    FirstName = studentRequest.FirstName,
+                    LastName = studentRequest.LastName,
+                    Summary = studentRequest.Summary,
+                    Profiletype = studentRequest.Profiletype,
+                    IsPublic = studentRequest.IsPublic,
+                };
+            }
+
+            return null;
+        }
+    }
+
+
+
+}

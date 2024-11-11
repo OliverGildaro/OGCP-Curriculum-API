@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.dtos;
+using OGCP.Curriculum.API.factories;
 using OGCP.Curriculum.API.models;
 using OGCP.Curriculum.API.services;
 
@@ -11,9 +12,9 @@ namespace OGCP.Curriculum.API.Controllers
     [Produces("application/json")]
     public class GeneralController : Controller
     {
-        private readonly IProfileService<GeneralProfile, CreateGeneralProfileRequest> service;
+        private readonly IProfileService service;
 
-        public GeneralController(IProfileService<GeneralProfile, CreateGeneralProfileRequest> service)
+        public GeneralController(IProfileService service)
         {
             this.service = service;
         }

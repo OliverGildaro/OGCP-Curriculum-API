@@ -1,6 +1,6 @@
 ﻿namespace OGCP.Curriculum.API.repositories;
 
-public interface IProfileReadRepository<T>
+public interface IReadRepository<T>
 {
     public T FInd();
 }
