@@ -1,43 +1,47 @@
-﻿using OGCP.Curriculum.API.models;
+﻿using OGCP.Curriculum.API.helpers;
+using OGCP.Curriculum.API.models;
+using System.Text.Json.Serialization;
 
 namespace OGCP.Curriculum.API.dtos;
 
-public record Request
-{
-
-}
-public record CreateQualifiedProfileRequest : Request
+public abstract class ProfileRequest
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Summary { get; set; }
+    public ProfileEnum RequestType { get; set; } // Discriminator field
+}
+
+public enum ProfileEnum
+{
+    CreateGeneralProfileRequest = 1,
+    CreateQualifiedProfileRequest
+}
+
+public class CreateGeneralProfileRequest : ProfileRequest
+{
+    public Profiletype Profiletype { get; set; }
+    public bool IsPublic { get; set; }
+}
+
+public class CreateQualifiedProfileRequest : ProfileRequest
+{
     public Profiletype Profiletype { get; set; }
     public string DesiredJobRole { get; set; }
     public bool IsPublic { get; set; }
 }
 
-public record CreateGeneralProfileRequest : Request
-{
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Summary { get; set; }
-    public Profiletype Profiletype { get; set; }
-    public bool IsPublic { get; set; }
-}
 
-public record CreateStudentProfileRequest : Request
+public class CreateStudentProfileRequest : ProfileRequest
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Summary { get; set; }
-    public string Major { get; set; }
     public Profiletype Profiletype { get; set; }
+    public string Major { get; set; }
     public string DesiredJobRole { get; set; }
     public bool IsPublic { get; set; }
     public string CareerGoals { get; set; }
 }
 
-public record PersonalInfoRequest
+public class PersonalInfoRequest
 {
     public string FirstName { get; init; }
     public string LastName { get; init; }
@@ -46,13 +50,13 @@ public record PersonalInfoRequest
     public string Summary { get; init; }
 }
 
-public record SkillRequest
+public class SkillRequest
 {
     public string Name { get; init; }
     public string Level { get; init; }
 }
 
-public record WorkExperienceRequest
+public class WorkExperienceRequest
 {
     public string Company { get; init; }
     public string Position { get; init; }
@@ -61,7 +65,7 @@ public record WorkExperienceRequest
     public string Description { get; init; }
 }
 
-public record EducationRequest
+public class EducationRequest
 {
     public string Institution { get; init; }
     public string Degree { get; init; }

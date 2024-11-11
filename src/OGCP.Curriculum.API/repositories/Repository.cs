@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OGCP.Curriculum.API.repositories.interfaces;
 
 namespace OGCP.Curriculum.API.repositories;
 

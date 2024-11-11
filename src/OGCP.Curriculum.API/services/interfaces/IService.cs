@@ -1,4 +1,4 @@
-﻿namespace OGCP.Curriculum.API.services;
+﻿namespace OGCP.Curriculum.API.services.interfaces;
 
 public interface IService<tEntity, tRequest>
     where tEntity : class

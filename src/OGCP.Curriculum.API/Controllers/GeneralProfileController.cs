@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.factories;
+using OGCP.Curriculum.API.helpers;
 using OGCP.Curriculum.API.models;
-using OGCP.Curriculum.API.services;
+using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.Controllers
 {
@@ -27,12 +28,12 @@ namespace OGCP.Curriculum.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProfile(CreateGeneralProfileRequest profileRequest)
+        [Consumes("application/json")]
+        public IActionResult CreateProfile([FromBody] ProfileRequest profileRequest)
         {
-            
-            this.service.Create(profileRequest);
 
-            return View();
+            this.service.Create(profileRequest);
+            return Ok();
         }
     }
 }

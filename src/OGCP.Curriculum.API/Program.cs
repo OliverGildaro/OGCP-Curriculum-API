@@ -1,13 +1,19 @@
+using JsonSubTypes;
 using Microsoft.EntityFrameworkCore;
+using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.factories;
+using OGCP.Curriculum.API.factories.interfaces;
 using OGCP.Curriculum.API.repositories;
+using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services;
+using OGCP.Curriculum.API.services.interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<DbProfileContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("conectionDb")));
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "AllowSpecificOrigins", builder =>
@@ -17,10 +23,22 @@ builder.Services.AddCors(options =>
             .AllowAnyOrigin();
     });
 });
-builder.Services.AddControllers();
-builder.Services.AddScoped<IProfileService, ProfileService>();
-builder.Services.AddScoped<IProfileFactory, ProfileFactory>();
-builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.Converters.Add(
+        JsonSubtypesConverterBuilder
+        .Of(typeof(ProfileRequest), "RequestType")
+        .RegisterSubtype(typeof(CreateGeneralProfileRequest), ProfileEnum.CreateGeneralProfileRequest)
+        .RegisterSubtype(typeof(CreateQualifiedProfileRequest), ProfileEnum.CreateQualifiedProfileRequest)
+        .SerializeDiscriminatorProperty()
+        .Build()
+    );
+});
+
+builder.Services.AddScoped<IProfileService, GeneralProfileService>();
+builder.Services.AddScoped<IProfileFactory, GeneralProfileFactory>();
+builder.Services.AddScoped<IGeneralProfileRepository, GeneralProfileRepository>();
 
 var app = builder.Build();
 

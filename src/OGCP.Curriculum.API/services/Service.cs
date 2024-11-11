@@ -1,5 +1,6 @@
-﻿using OGCP.Curriculum.API.factories;
-using OGCP.Curriculum.API.repositories;
+﻿using OGCP.Curriculum.API.factories.interfaces;
+using OGCP.Curriculum.API.repositories.interfaces;
+using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.services;
 

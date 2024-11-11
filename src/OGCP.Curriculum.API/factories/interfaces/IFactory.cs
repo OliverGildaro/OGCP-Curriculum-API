@@ -1,4 +1,4 @@
-﻿namespace OGCP.Curriculum.API.factories;
+﻿namespace OGCP.Curriculum.API.factories.interfaces;
 
 public interface IFactory<TEntity, TRequest>
 {
