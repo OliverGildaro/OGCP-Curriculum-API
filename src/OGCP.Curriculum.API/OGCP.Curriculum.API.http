@@ -1,0 +1,6 @@
+@OGCP.Curriculum.API_HostAddress = http://localhost:5283
+
+GEt {{OGCP.Curriculum.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
