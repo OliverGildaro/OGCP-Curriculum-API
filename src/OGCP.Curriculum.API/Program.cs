@@ -31,6 +31,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
         .Of(typeof(ProfileRequest), "RequestType")
         .RegisterSubtype(typeof(CreateGeneralProfileRequest), ProfileEnum.CreateGeneralProfileRequest)
         .RegisterSubtype(typeof(CreateQualifiedProfileRequest), ProfileEnum.CreateQualifiedProfileRequest)
+        .RegisterSubtype(typeof(CreateStudentProfileRequest), ProfileEnum.CreateStudentProfileRequest)
         .SerializeDiscriminatorProperty()
         .Build()
     );

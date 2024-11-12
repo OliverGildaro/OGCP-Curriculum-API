@@ -50,9 +50,10 @@ public class QualifiedProfile : Profile
     {
         
     }
-    public QualifiedProfile(string firstName, string lastName, string summary)
+    public QualifiedProfile(string firstName, string lastName, string summary, string desiredJobRole)
         : base(firstName, lastName, summary)
     {
+        this.DesiredJobRole = desiredJobRole;
     }
 
     public string DesiredJobRole { get; set; }
@@ -66,20 +67,23 @@ public class GeneralProfile : Profile
     {
         
     }
-    public GeneralProfile(string firstName, string lastName, string summary) 
+    public GeneralProfile(string firstName, string lastName, string summary, string[] personalGoals) 
         : base(firstName, lastName, summary)
     {
+        this.PersonalGoals = personalGoals;
     }
 
-    public List<string> PersonalGoals { get; set; } = new List<string>();
+    public string[] PersonalGoals { get; set; } = new string[] {};
     public List<WorkExperience> WorkExperience { get; set; } = new List<WorkExperience>();
 }
 
 public class StudentProfile : Profile
 {
-    public StudentProfile(string firstName, string lastName, string summary)
+    public StudentProfile(string firstName, string lastName, string summary, string major, string careerGoals)
         : base(firstName, lastName, summary)
     {
+        this.CareerGoals = careerGoals;
+        this.Major = major;
     }
 
     public string Major { get; set; }

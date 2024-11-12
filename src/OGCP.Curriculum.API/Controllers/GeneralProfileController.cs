@@ -1,52 +1,50 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.factories;
-using OGCP.Curriculum.API.helpers;
-using OGCP.Curriculum.API.models;
 using OGCP.Curriculum.API.services.interfaces;
 
-namespace OGCP.Curriculum.API.Controllers
+namespace OGCP.Curriculum.API.Controllers;
+
+[Route("api/v1/profiles")]
+[EnableCors("AllowSpecificOrigins")]
+[Produces("application/json")]
+public class GeneralController : Controller
 {
-    [Route("api/v1/profiles/general")]
-    [EnableCors("AllowSpecificOrigins")]
-    [Produces("application/json")]
-    public class GeneralController : Controller
+    private readonly IProfileService service;
+
+    public GeneralController(IProfileService service)
     {
-        private readonly IProfileService service;
+        this.service = service;
+    }
 
-        public GeneralController(IProfileService service)
+    [HttpGet]
+    public IActionResult GetProfiles()
+    {
+        var profiles = this.service.Get();
+        return Ok(profiles);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetProfile(int id)
+    {
+        var profile = this.service.Get(id);
+        return Ok(profile);
+    }
+
+    [HttpPost]
+    [Consumes("application/json")]
+    public IActionResult CreateProfile([FromBody] ProfileRequest profileRequest)
+    {
+        if (profileRequest.RequestType.Equals(ProfileEnum.CreateGeneralProfileRequest))
         {
-            this.service = service;
-        }
-
-        [HttpGet]
-        public IActionResult GetProfiles()
+            this.service.Create((CreateGeneralProfileRequest)profileRequest);
+        } else if(profileRequest.RequestType.Equals(ProfileEnum.CreateQualifiedProfileRequest))
         {
-            var profiles = this.service.Get();
-            return Ok(profiles);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult GetProfile(int id)
+            this.service.Create((CreateQualifiedProfileRequest)profileRequest);
+        } else if(profileRequest.RequestType.Equals(ProfileEnum.CreateStudentProfileRequest))
         {
-            var profile = this.service.Get(id);
-            return Ok(profile);
+            this.service.Create((CreateStudentProfileRequest)profileRequest);
         }
-
-        [HttpPost]
-        [Consumes("application/json")]
-        public IActionResult CreateProfile([FromBody] ProfileRequest profileRequest)
-        {
-            if (profileRequest.RequestType.Equals(ProfileEnum.CreateGeneralProfileRequest))
-            {
-                this.service.Create((CreateGeneralProfileRequest)profileRequest);
-            } else
-            {
-                this.service.Create((CreateQualifiedProfileRequest)profileRequest);
-
-            }
-            return Ok();
-        }
+        return Ok();
     }
 }

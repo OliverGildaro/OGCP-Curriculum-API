@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{66BB2FBE-D87
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F265EE14-E808-4029-A4A5-14A36BAF0DEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OGCP.Curriculum.API", "src\OGCP.Curriculum.API\OGCP.Curriculum.API.csproj", "{D304B5DA-25CB-4425-9E41-FB86723DE9E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OGCP.Curriculum.API", "src\OGCP.Curriculum.API\OGCP.Curriculum.API.csproj", "{D304B5DA-25CB-4425-9E41-FB86723DE9E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
