@@ -4,14 +4,14 @@ using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.services;
 
-public abstract class Service<TEntity, TRequest> : IService<TEntity, TRequest>
+public abstract class Service<TEntity, TEntityId, TRequest> : IService<TEntity, TEntityId, TRequest>
     where TEntity : class
     where TRequest : class
 {
-    private IRepository<TEntity> repository;
+    private IRepository<TEntity, TEntityId> repository;
     private IFactory<TEntity, TRequest> factory;
 
-    public Service(IRepository<TEntity> repository, IFactory<TEntity, TRequest> factory)
+    public Service(IRepository<TEntity, TEntityId> repository, IFactory<TEntity, TRequest> factory)
     {
         this.repository = repository;
         this.factory = factory;
@@ -19,11 +19,18 @@ public abstract class Service<TEntity, TRequest> : IService<TEntity, TRequest>
 
     public void Create(TRequest request)
     {
-        throw new NotImplementedException();
+        var entity = this.factory.Get(request);
+        this.repository.Add(entity);
+        this.repository.SaveChanges();
     }
 
-    public TEntity Get()
+    public TEntity Get(TEntityId id)
     {
-        throw new NotImplementedException();
+        return this.repository.Find(id);
+    }
+
+    public IEnumerable<TEntity> Get()
+    {
+        return this.repository.Find();
     }
 }

@@ -1,5 +1,9 @@
-﻿namespace OGCP.Curriculum.API.repositories.interfaces;
+﻿using OGCP.Curriculum.API.models;
 
-public interface IRepository<T> : IReadRepository<T>, IWriteRepository<T>
+namespace OGCP.Curriculum.API.repositories.interfaces;
+
+public interface IRepository<TEntity, TTEntityId>
+    : IReadRepository<TEntity, TTEntityId>, IWriteRepository<TEntity>
+    where TEntity : class
 {
 }

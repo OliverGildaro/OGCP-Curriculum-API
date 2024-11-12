@@ -3,14 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OGCP.Curriculum.API.models;
 
-public class Profile
+public interface IEntity<TEntityId>
+{
+    public TEntityId Id { get; set; }
+}
+
+public class Profile : IEntity<int>
 {
     [Key]
     public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Summary { get; set; }
-    public Profiletype Profiletype { get; set; }
+    //public Profiletype Profiletype { get; set; }
     public bool IsPublic { get; set; }//Public or private
     public string Visibility { get; set; }//Public and friends only
     public string Status { get; set; }//progress of profile completion
@@ -19,11 +24,37 @@ public class Profile
     public List<Skill> Skills { get; set; } = new List<Skill>();
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+
+    public Profile()
+    {
+        
+    }
+
+    public Profile(string firstName, string lastName, string summary)
+    {
+        this.FirstName = firstName;
+        this.LastName = lastName;
+        this.Summary = summary;
+        this.IsPublic = true;
+        this.Visibility = string.Empty;
+        this.Status = string.Empty;
+        this.CreatedAt = DateTime.UtcNow;
+        this.UpdatedAt = DateTime.UtcNow;
+    }
 }
 
 
 public class QualifiedProfile : Profile
 {
+    public QualifiedProfile()
+    {
+        
+    }
+    public QualifiedProfile(string firstName, string lastName, string summary)
+        : base(firstName, lastName, summary)
+    {
+    }
+
     public string DesiredJobRole { get; set; }
     public List<Education> Education { get; set; } = new List<Education>();
     public List<WorkExperience> WorkExperience { get; set; } = new List<WorkExperience>();
@@ -31,12 +62,26 @@ public class QualifiedProfile : Profile
 
 public class GeneralProfile : Profile
 {
+    public GeneralProfile()
+    {
+        
+    }
+    public GeneralProfile(string firstName, string lastName, string summary) 
+        : base(firstName, lastName, summary)
+    {
+    }
+
     public List<string> PersonalGoals { get; set; } = new List<string>();
     public List<WorkExperience> WorkExperience { get; set; } = new List<WorkExperience>();
 }
 
 public class StudentProfile : Profile
 {
+    public StudentProfile(string firstName, string lastName, string summary)
+        : base(firstName, lastName, summary)
+    {
+    }
+
     public string Major { get; set; }
     public List<Internship> Internships { get; set; } = new List<Internship>();
     public List<ExtracurricularActivity> ExtraActivities { get; set; } = new List<ExtracurricularActivity>();

@@ -10,14 +10,8 @@ namespace OGCP.Curriculum.API.factories
         {
             if (request is CreateGeneralProfileRequest generalRequest)
             {
-                return new GeneralProfile
-                {
-                    FirstName = generalRequest.FirstName,
-                    LastName = generalRequest.LastName,
-                    Summary = generalRequest.Summary,
-                    //Profiletype = generalRequest.Profiletype,
-                    IsPublic = generalRequest.IsPublic
-                };
+                (string firstName, string lastName, string summary) = generalRequest;
+                return new GeneralProfile(firstName, lastName, summary);
             }
 
             //if (request is CreateQualifiedProfileRequest qualifiedRequest)

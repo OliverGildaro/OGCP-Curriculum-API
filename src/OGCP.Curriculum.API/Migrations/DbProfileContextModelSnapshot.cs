@@ -35,7 +35,7 @@ namespace OGCP.Curriculum.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Institution")
                         .IsRequired()
@@ -45,7 +45,7 @@ namespace OGCP.Curriculum.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -67,7 +67,7 @@ namespace OGCP.Curriculum.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -78,7 +78,7 @@ namespace OGCP.Curriculum.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("StudentProfileId")
                         .HasColumnType("int");
@@ -103,7 +103,7 @@ namespace OGCP.Curriculum.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Responsibilities")
                         .IsRequired()
@@ -114,7 +114,7 @@ namespace OGCP.Curriculum.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("StudentProfileId")
                         .HasColumnType("int");
@@ -189,7 +189,7 @@ namespace OGCP.Curriculum.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -207,9 +207,6 @@ namespace OGCP.Curriculum.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProfileType")
-                        .HasColumnType("int");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -219,7 +216,7 @@ namespace OGCP.Curriculum.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Visibility")
                         .IsRequired()
@@ -243,14 +240,14 @@ namespace OGCP.Curriculum.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("ProjectTitle")
+                    b.Property<string>("Projecttitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("StudentProfileId")
                         .HasColumnType("int");
@@ -313,7 +310,7 @@ namespace OGCP.Curriculum.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("GeneralProfileId")
                         .HasColumnType("int");
@@ -326,7 +323,7 @@ namespace OGCP.Curriculum.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("DateTime2");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

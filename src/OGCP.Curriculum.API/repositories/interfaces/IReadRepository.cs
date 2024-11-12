@@ -1,6 +1,9 @@
 ﻿namespace OGCP.Curriculum.API.repositories.interfaces;
 
-public interface IReadRepository<T>
+public interface IReadRepository<TEntity, TEntityId>
+    where TEntity : class
 {
-    public T FInd();
+    public IEnumerable<TEntity> Find();
+    public TEntity Find(TEntityId id);
+
 }

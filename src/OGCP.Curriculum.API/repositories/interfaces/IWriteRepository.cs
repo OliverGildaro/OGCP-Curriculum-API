@@ -1,6 +1,9 @@
 ﻿namespace OGCP.Curriculum.API.repositories.interfaces;
 
-public interface IWriteRepository<T>
+public interface IWriteRepository<TEntity>
+    where TEntity : class
 {
-    void Add(T entity);
+    void Add(TEntity entity);
+    void SaveChanges();
+
 }

@@ -23,16 +23,29 @@ namespace OGCP.Curriculum.API.Controllers
         [HttpGet]
         public IActionResult GetProfiles()
         {
-            var asas = this.service.Get();
-            return Ok();
+            var profiles = this.service.Get();
+            return Ok(profiles);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetProfile(int id)
+        {
+            var profile = this.service.Get(id);
+            return Ok(profile);
         }
 
         [HttpPost]
         [Consumes("application/json")]
         public IActionResult CreateProfile([FromBody] ProfileRequest profileRequest)
         {
+            if (profileRequest.RequestType.Equals(ProfileEnum.CreateGeneralProfileRequest))
+            {
+                this.service.Create((CreateGeneralProfileRequest)profileRequest);
+            } else
+            {
+                this.service.Create((CreateQualifiedProfileRequest)profileRequest);
 
-            this.service.Create(profileRequest);
+            }
             return Ok();
         }
     }

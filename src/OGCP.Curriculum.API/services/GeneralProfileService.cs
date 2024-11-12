@@ -6,7 +6,7 @@ using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.services;
 
-public class GeneralProfileService : Service<Profile, ProfileRequest>, IProfileService
+public class GeneralProfileService : Service<Profile, int, ProfileRequest>, IProfileService
 {
     public GeneralProfileService(IGeneralProfileRepository repository, IProfileFactory factory)
         :base(repository, factory)

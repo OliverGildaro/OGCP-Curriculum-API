@@ -22,6 +22,13 @@ public class CreateGeneralProfileRequest : ProfileRequest
 {
     public Profiletype Profiletype { get; set; }
     public bool IsPublic { get; set; }
+
+    public void Deconstruct(out string firstName, out string lastName, out string summary)
+    {
+        firstName = this.FirstName;  // Assuming FirstName is a property in ProfileRequest
+        lastName = this.LastName;    // Assuming LastName is a property in ProfileRequest
+        summary = this.Summary;      // Assuming Summary is a property in ProfileRequest
+    }
 }
 
 public class CreateQualifiedProfileRequest : ProfileRequest

@@ -20,12 +20,11 @@ namespace OGCP.Curriculum.API.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Summary = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfileType = table.Column<int>(type: "int", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     Visibility = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "DateTime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "DateTime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     PersonalGoals = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DesiredJobRole = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -45,8 +44,8 @@ namespace OGCP.Curriculum.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Institution = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Degree = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "DateTime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "DateTime2", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     QualifiedProfileId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -67,8 +66,8 @@ namespace OGCP.Curriculum.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "DateTime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "DateTime2", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentProfileId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -90,8 +89,8 @@ namespace OGCP.Curriculum.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Company = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "DateTime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "DateTime2", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Responsibilities = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentProfileId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -151,11 +150,11 @@ namespace OGCP.Curriculum.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProjectTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Projecttitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Supervisor = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Summary = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "DateTime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "DateTime2", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     StudentProfileId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -196,8 +195,8 @@ namespace OGCP.Curriculum.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Company = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "DateTime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "DateTime2", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GeneralProfileId = table.Column<int>(type: "int", nullable: true),
                     QualifiedProfileId = table.Column<int>(type: "int", nullable: true)
