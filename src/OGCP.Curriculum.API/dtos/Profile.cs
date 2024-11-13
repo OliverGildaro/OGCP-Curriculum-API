@@ -61,6 +61,36 @@ public class CreateLanguageRequest
     public LevelEnum Level { get; set; }
 }
 
+
+public class CreateEducationRequest
+{
+    public string Institution { get; set; }
+    public DegreeEnum Degree { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
+
+
+    public void Deconstruct(out string institution, out DegreeEnum degree, out DateTime startDate, out DateTime? endDate)
+    {
+        institution = this.Institution;
+        degree = this.Degree;
+        startDate = this.StartDate;
+        endDate = this.EndDate;
+    }
+}
+
+public enum DegreeEnum
+{
+    AssociateDegree,
+    BachelorDegree,
+    MasterDegree,
+    Doctorate,
+    PhD,
+    Diploma,
+    Certificate,
+    HighSchool
+}
+
 public enum LevelEnum
 {
     BEGINNER = 1,

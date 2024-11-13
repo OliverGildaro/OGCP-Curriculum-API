@@ -5,5 +5,4 @@ public interface IWriteRepository<TEntity>
 {
     void Add(TEntity entity);
     void SaveChanges();
-
 }

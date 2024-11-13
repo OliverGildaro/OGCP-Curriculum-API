@@ -50,11 +50,27 @@ public class ProfileController : Controller
 
     [HttpPut("{id}/languages")]
     [ProducesResponseType(203)]
-    public IActionResult UpdateEventName(int id, [FromBody] CreateLanguageRequest request)
+    public IActionResult AddLanguageToProfile(int id, [FromBody] CreateLanguageRequest request)
     {
         try
         {
             this.service.AddLanguage(id, request);
+
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest();
+        }
+    }
+
+    [HttpPut("{id}/educations")]
+    [ProducesResponseType(203)]
+    public IActionResult AddEducationToProfile(int id, [FromBody] CreateEducationRequest request)
+    {
+        try
+        {
+            this.service.AddEducation(id, request);
 
             return NoContent();
         }

@@ -4,12 +4,12 @@ using OGCP.Curriculum.API.repositories.interfaces;
 
 namespace OGCP.Curriculum.API.repositories;
 
-public abstract class Repository<TEntity, TEntityId> : IRepository<TEntity, TEntityId>
+public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntity, TEntityId>
     where TEntity : class, IEntity<TEntityId>
 {
     private DbContext context;
 
-    protected Repository(DbContext context)
+    protected GenericRepository(DbContext context)
     {
         this.context = context;
     }

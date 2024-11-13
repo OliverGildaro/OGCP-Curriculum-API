@@ -2,7 +2,7 @@
 
 namespace OGCP.Curriculum.API.repositories.interfaces
 {
-    public interface IGeneralProfileRepository : IRepository<Profile, int>
+    public interface IProfileRepository : IRepository<Profile, int>
     {
     }
 }

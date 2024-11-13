@@ -9,7 +9,8 @@ public interface IEntity<TEntityId>
     public TEntityId Id { get; set; }
 }
 
-public class Profile : IEntity<int>
+public interface IProfile { /* common properties or methods */ }
+public class Profile : IEntity<int>, IProfile
 {
     [Key]
     public int Id { get; set; }
@@ -69,6 +70,11 @@ public class QualifiedProfile : Profile
     public string DesiredJobRole { get; set; }
     public List<Education> Education { get; set; } = new List<Education>();
     public List<WorkExperience> WorkExperience { get; set; } = new List<WorkExperience>();
+
+    internal void AddEducation(Education education)
+    {
+        this.Education.Add(education);
+    }
 }
 
 public class GeneralProfile : Profile
@@ -141,6 +147,18 @@ public class Skill
 
 public class Education
 {
+    public Education()
+    {
+        
+    }
+    public Education(string institution, DegreeEnum degree, DateTime startDate, DateTime? endDate)
+    {
+        this.Degree = degree.ToString();
+        this.Institution = institution;
+        this.StartDate = startDate;
+        this.EndDate = endDate;
+    }
+
     [Key]
     public int Id { get; set; }
     public string Institution { get; set; }

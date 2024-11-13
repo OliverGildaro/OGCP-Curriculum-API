@@ -4,14 +4,14 @@ using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.services;
 
-public abstract class Service<TEntity, TEntityId, TRequest> : IService<TEntity, TEntityId, TRequest>
+public abstract class GenericService<TEntity, TEntityId, TRequest> : IService<TEntity, TEntityId, TRequest>
     where TEntity : class
     where TRequest : class
 {
     protected IRepository<TEntity, TEntityId> repository;
     protected IFactory<TEntity, TRequest> factory;
 
-    public Service(IRepository<TEntity, TEntityId> repository, IFactory<TEntity, TRequest> factory)
+    public GenericService(IRepository<TEntity, TEntityId> repository, IFactory<TEntity, TRequest> factory)
     {
         this.repository = repository;
         this.factory = factory;

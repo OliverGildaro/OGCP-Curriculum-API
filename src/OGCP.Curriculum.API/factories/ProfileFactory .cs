@@ -4,7 +4,7 @@ using OGCP.Curriculum.API.models;
 
 namespace OGCP.Curriculum.API.factories
 {
-    public class GeneralProfileFactory : IProfileFactory
+    public class ProfileFactory : IProfileFactory
     {
         public Profile Get(ProfileRequest request)
         {
@@ -22,34 +22,7 @@ namespace OGCP.Curriculum.API.factories
                 return new StudentProfile(firstName, lastName, summary, major, careerGoals);
             }
 
-            //if (request is CreateQualifiedProfileRequest qualifiedRequest)
-            //{
-            //    return new QualifiedProfile
-            //    {
-            //        FirstName = qualifiedRequest.FirstName,
-            //        LastName = qualifiedRequest.LastName,
-            //        Summary = qualifiedRequest.Summary,
-            //        Profiletype = qualifiedRequest.Profiletype,
-            //        IsPublic = qualifiedRequest.IsPublic,
-            //        DesiredJobRole = qualifiedRequest.DesiredJobRole
-            //    };
-            //}
-            //if (request is CreateStudentProfileRequest studentRequest)
-            //{
-            //    return new QualifiedProfile
-            //    {
-            //        FirstName = studentRequest.FirstName,
-            //        LastName = studentRequest.LastName,
-            //        Summary = studentRequest.Summary,
-            //        Profiletype = studentRequest.Profiletype,
-            //        IsPublic = studentRequest.IsPublic,
-            //    };
-            //}
-
             return null;
         }
     }
-
-
-
 }

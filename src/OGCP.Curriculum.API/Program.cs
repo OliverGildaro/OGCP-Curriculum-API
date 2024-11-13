@@ -41,8 +41,10 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 });
 
 builder.Services.AddScoped<IProfileService, ProfileService>();
-builder.Services.AddScoped<IProfileFactory, GeneralProfileFactory>();
-builder.Services.AddScoped<IGeneralProfileRepository, GeneralProfileRepository>();
+//builder.Services.AddScoped<IGeneralProfileService, GeneralProfileService>();
+//builder.Services.AddScoped<IQualifiedProfileService, QualifiedProfileService>();
+builder.Services.AddScoped<IProfileFactory, ProfileFactory>();
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 
 var app = builder.Build();
 
