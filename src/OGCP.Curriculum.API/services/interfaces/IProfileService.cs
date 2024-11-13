@@ -5,5 +5,6 @@ namespace OGCP.Curriculum.API.services.interfaces
 {
     public interface IProfileService : IService<Profile, int, ProfileRequest>
     {
+        void AddLanguage(int id, CreateLanguageRequest languageRequest);
     }
 }

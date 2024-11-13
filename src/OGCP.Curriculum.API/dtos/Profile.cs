@@ -1,4 +1,7 @@
-﻿namespace OGCP.Curriculum.API.dtos;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace OGCP.Curriculum.API.dtos;
 
 public abstract class ProfileRequest
 {
@@ -50,6 +53,30 @@ public class CreateStudentProfileRequest : ProfileRequest
         major = this.Major;
         careerGoals = this.CareerGoals;
     }
+}
+
+public class CreateLanguageRequest
+{
+    public string Name { get; set; }
+    public string Level { get; set; }
+}
+
+public enum LevelEnum
+{
+    BEGINNER = 1,
+    INTERMEDIATE = 2,
+    PROFICIENT = 3,
+    ADVANCED = 4,
+    EXPERT = 5
+}
+
+public enum LanguageEnum
+{
+    SPANISH = 1,
+    ENGLISH = 2,
+    KOREAN = 3,
+    ITALIAN = 4,
+    PORTUGUESE = 5
 }
 
 public class PersonalInfoRequest

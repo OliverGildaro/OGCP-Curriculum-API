@@ -8,8 +8,8 @@ public abstract class Service<TEntity, TEntityId, TRequest> : IService<TEntity, 
     where TEntity : class
     where TRequest : class
 {
-    private IRepository<TEntity, TEntityId> repository;
-    private IFactory<TEntity, TRequest> factory;
+    protected IRepository<TEntity, TEntityId> repository;
+    protected IFactory<TEntity, TRequest> factory;
 
     public Service(IRepository<TEntity, TEntityId> repository, IFactory<TEntity, TRequest> factory)
     {

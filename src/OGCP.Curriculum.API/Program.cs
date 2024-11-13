@@ -24,6 +24,9 @@ builder.Services.AddCors(options =>
     });
 });
 
+//System.Text.Json does not support polimorphic deserialization, but it support limited serialization
+//Polimorphic deserialization can be achieved only using Newtonsoft.json
+//System.Text.Json is more performant than Newtonsoft.json
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.Converters.Add(
@@ -37,7 +40,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     );
 });
 
-builder.Services.AddScoped<IProfileService, GeneralProfileService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IProfileFactory, GeneralProfileFactory>();
 builder.Services.AddScoped<IGeneralProfileRepository, GeneralProfileRepository>();
 

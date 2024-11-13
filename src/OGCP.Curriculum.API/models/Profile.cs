@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OGCP.Curriculum.API.dtos;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OGCP.Curriculum.API.models;
@@ -41,8 +42,17 @@ public class Profile : IEntity<int>
         this.CreatedAt = DateTime.UtcNow;
         this.UpdatedAt = DateTime.UtcNow;
     }
-}
 
+    internal bool AddLanguage(Language language)
+    {
+        if (this.LanguagesSpoken is null)
+        {
+            this.LanguagesSpoken = new List<Language>();
+        }
+        this.LanguagesSpoken.Add(language);
+        return true;
+    }
+}
 
 public class QualifiedProfile : Profile
 {
@@ -96,6 +106,15 @@ public class StudentProfile : Profile
 
 public class Language
 {
+    public Language()
+    {
+        
+    }
+    public Language(string name, string level)
+    {
+        this.Name = name;
+        this.Level = level;
+    }
     [Key]
     public int Id { get; set; }
     public string Name { get; set; }
@@ -120,16 +139,6 @@ public class Skill
     public string Level { get; set; } // Ejemplo: Básico, Intermedio, Avanzado
 }
 
-public class WorkExperience
-{
-    [Key]
-    public int Id { get; set; }
-    public string Company { get; set; }
-    public string Position { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
-    public string Description { get; set; }
-}
 public class Education
 {
     [Key]
@@ -145,7 +154,7 @@ public class ExtracurricularActivity
     [Key]
     public int Id { get; set; }
     public string Name { get; set; }
-    public string Position { get; set; }
+    public string Role { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string Description { get; set; }
@@ -162,21 +171,22 @@ public class ResearchExperience
     public DateTime? EndDate { get; set; }
 }
 
-public class Internship
+public class JobExperience
 {
     [Key]
     public int Id { get; set; }
     public string Company { get; set; }
-    public string Role { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
-    public string Responsibilities { get; set; }
+    public string Description { get; set; }
 }
 
-
-public enum Profiletype
+public class WorkExperience : JobExperience
 {
-    Student,
-    Professional,
-    NonDegree
+    public string Position { get; set; }
+}
+
+public class Internship : JobExperience
+{
+    public string Role { get; set; }
 }
