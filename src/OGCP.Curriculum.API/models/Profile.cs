@@ -107,6 +107,11 @@ public class StudentProfile : Profile
     public List<ExtracurricularActivity> ExtraActivities { get; set; } = new List<ExtracurricularActivity>();
     public List<ResearchExperience> ResearchExperiences { get; set; } = new List<ResearchExperience>();
     public string CareerGoals { get; set; }
+
+    internal void AddEducation(Education education)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 

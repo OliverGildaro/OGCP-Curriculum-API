@@ -3,7 +3,7 @@ using OGCP.Curriculum.API.models;
 
 namespace OGCP.Curriculum.API.factories.interfaces
 {
-    public interface IProfileFactory : IFactory<Profile, ProfileRequest>
+    public interface IProfileFactory
     {
     }
 }

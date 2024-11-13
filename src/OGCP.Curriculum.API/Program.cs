@@ -40,11 +40,13 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     );
 });
 
-builder.Services.AddScoped<IProfileService, ProfileService>();
-//builder.Services.AddScoped<IGeneralProfileService, GeneralProfileService>();
-//builder.Services.AddScoped<IQualifiedProfileService, QualifiedProfileService>();
+builder.Services.AddScoped<IStudentProfileService, StudentProfileService>();
+builder.Services.AddScoped<IQualifiedProfileService, QualifiedProfileService>();
+builder.Services.AddScoped<IGeneralProfileService, GeneralProfileService>();
 builder.Services.AddScoped<IProfileFactory, ProfileFactory>();
-builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+builder.Services.AddScoped<IGeneralProfileRepository, GeneralProfileRepository>();
+builder.Services.AddScoped<IStudentProfileRepository, StudentProfileRepository>();
+builder.Services.AddScoped<IQualifiedProfileRepository, QualifiedProfileRepository>();
 
 var app = builder.Build();
 

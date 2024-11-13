@@ -3,9 +3,9 @@ using OGCP.Curriculum.API.repositories.interfaces;
 
 namespace OGCP.Curriculum.API.repositories
 {
-    public class GeneralProfileRepository : GenericRepository<GeneralProfile, int>, IGeneralProfileRepository
+    public class StudentProfileRepository : GenericRepository<StudentProfile, int>, IStudentProfileRepository
     {
-        public GeneralProfileRepository(DbProfileContext context)
+        public StudentProfileRepository(DbProfileContext context)
             :base(context)
         {
             

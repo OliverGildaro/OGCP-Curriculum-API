@@ -8,11 +8,11 @@ namespace OGCP.Curriculum.API.Controllers;
 [Route("api/v1/profiles")]
 [EnableCors("AllowSpecificOrigins")]
 [Produces("application/json")]
-public class ProfileController : Controller
+public class GeneralProfileController : Controller
 {
-    private readonly IProfileService service;
+    private readonly IGeneralProfileService service;
 
-    public ProfileController(IProfileService service)
+    public GeneralProfileController(IGeneralProfileService service)
     {
         this.service = service;
     }
@@ -55,22 +55,6 @@ public class ProfileController : Controller
         try
         {
             this.service.AddLanguage(id, request);
-
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest();
-        }
-    }
-
-    [HttpPut("{id}/educations")]
-    [ProducesResponseType(203)]
-    public IActionResult AddEducationToProfile(int id, [FromBody] CreateEducationRequest request)
-    {
-        try
-        {
-            this.service.AddEducation(id, request);
 
             return NoContent();
         }

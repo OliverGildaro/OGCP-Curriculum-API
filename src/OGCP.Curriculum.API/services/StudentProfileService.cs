@@ -6,37 +6,53 @@ using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.services;
 
-public class ProfileService : GenericService<Profile, int, ProfileRequest>, IProfileService
+public class StudentProfileService : IStudentProfileService
 {
-    public ProfileService(IProfileRepository repository, IProfileFactory factory)
-        :base(repository, factory)
+    private readonly IStudentProfileRepository repository;
+
+    public StudentProfileService(IStudentProfileRepository repository, IProfileFactory factory)
     {
+        this.repository = repository;
     }
 
     public void AddEducation(int id, CreateEducationRequest request)
     {
-        Profile profile = base.Get(id);
+        StudentProfile profile = this.repository.Find(id);
         if (profile is null)
         {
             return;
         }
-        QualifiedProfile generalProfile = (QualifiedProfile)profile;
 
         (string institution, DegreeEnum degree, DateTime startDate, DateTime? endDate ) = request;
         Education education = new Education(institution, degree, startDate, endDate);
 
-        generalProfile.AddEducation(education);
+        profile.AddEducation(education);
 
         this.repository.SaveChanges();
     }
 
     public void AddLanguage(int id, CreateLanguageRequest languageRequest)
     {
-        var profile = base.Get(id);
+        StudentProfile profile = this.repository.Find(id);
 
         Language language = new Language(languageRequest.Name, languageRequest.Level);
         bool result = profile.AddLanguage(language);
 
-        base.repository.SaveChanges();
+        repository.SaveChanges();
+    }
+
+    public void Create(ProfileRequest request)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<StudentProfile> Get()
+    {
+        throw new NotImplementedException();
+    }
+
+    public StudentProfile Get(int id)
+    {
+        throw new NotImplementedException();
     }
 }
