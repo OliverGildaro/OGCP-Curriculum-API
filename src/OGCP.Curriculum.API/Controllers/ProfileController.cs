@@ -49,12 +49,18 @@ public class ProfileController : Controller
     }
 
     [HttpPut("{id}/languages")]
-    [Consumes("application/json")]
-    [Produces("application/json")]
-    public IActionResult AddLaguageToProfile(int id, CreateLanguageRequest request)
+    [ProducesResponseType(203)]
+    public IActionResult UpdateEventName(int id, [FromBody] CreateLanguageRequest request)
     {
-        this.service.AddLanguage(id, request);
+        try
+        {
+            this.service.AddLanguage(id, request);
 
-        return Ok();
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest();
+        }
     }
 }

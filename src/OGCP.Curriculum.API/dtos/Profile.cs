@@ -57,8 +57,8 @@ public class CreateStudentProfileRequest : ProfileRequest
 
 public class CreateLanguageRequest
 {
-    public string Name { get; set; }
-    public string Level { get; set; }
+    public LanguageEnum Name { get; set; }
+    public LevelEnum Level { get; set; }
 }
 
 public enum LevelEnum

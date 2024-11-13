@@ -110,10 +110,10 @@ public class Language
     {
         
     }
-    public Language(string name, string level)
+    public Language(LanguageEnum name, LevelEnum level)
     {
-        this.Name = name;
-        this.Level = level;
+        this.Name = name.ToString();
+        this.Level = level.ToString();
     }
     [Key]
     public int Id { get; set; }
