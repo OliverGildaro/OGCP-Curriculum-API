@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.dtos;
+using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.Controllers;
 
-[Route("api/v1/profiles")]
+[Route("api/v1/profiles/qualified")]
 [EnableCors("AllowSpecificOrigins")]
 [Produces("application/json")]
 public class QualifiedProfileController : Controller
@@ -35,16 +36,7 @@ public class QualifiedProfileController : Controller
     [Consumes("application/json")]
     public IActionResult CreateProfile([FromBody] ProfileRequest profileRequest)
     {
-        if (profileRequest.RequestType.Equals(ProfileEnum.CreateGeneralProfileRequest))
-        {
-            this.service.Create((CreateGeneralProfileRequest)profileRequest);
-        } else if(profileRequest.RequestType.Equals(ProfileEnum.CreateQualifiedProfileRequest))
-        {
-            this.service.Create((CreateQualifiedProfileRequest)profileRequest);
-        } else if(profileRequest.RequestType.Equals(ProfileEnum.CreateStudentProfileRequest))
-        {
-            this.service.Create((CreateStudentProfileRequest)profileRequest);
-        }
+        this.service.Create((CreateQualifiedProfileRequest)profileRequest);
         return Ok();
     }
 
@@ -66,11 +58,36 @@ public class QualifiedProfileController : Controller
 
     [HttpPut("{id}/educations")]
     [ProducesResponseType(203)]
-    public IActionResult AddEducationToProfile(int id, [FromBody] CreateEducationRequest request)
+    public IActionResult AddEducationToProfile(int id, [FromBody] CreateDegreeEducationRequest request)
     {
         try
         {
             this.service.AddEducation(id, request);
+
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest();
+        }
+    }
+
+    [HttpPut("{id}/workexperiences")]
+    [ProducesResponseType(203)]
+    public IActionResult AddJobExperienceToProfile(int id, [FromBody] CreateJobExperienceRequest request)
+    {
+        try
+        {
+            //if (request is CreateWorkExperienceRequest workReq)
+            //{
+            //    var asas = workReq;
+            //}
+            //else if (request is CreateInternshipExperienceRequest interReq)
+            //{ 
+            //    var asas = interReq;
+            //}
+
+            this.service.AddJobExperience(id, request);
 
             return NoContent();
         }

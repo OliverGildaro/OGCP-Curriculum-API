@@ -61,21 +61,47 @@ public class CreateLanguageRequest
     public LevelEnum Level { get; set; }
 }
 
-
 public class CreateEducationRequest
 {
     public string Institution { get; set; }
     public DegreeEnum Degree { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
+}
 
+
+public class CreateDegreeEducationRequest : CreateEducationRequest
+{
+    public DegreeEnum Degree { get; set; }
 
     public void Deconstruct(out string institution, out DegreeEnum degree, out DateTime startDate, out DateTime? endDate)
     {
-        institution = this.Institution;
+        institution = base.Institution;
         degree = this.Degree;
+        startDate = base.StartDate;
+        endDate = base.EndDate;
+    }
+}
+
+public class CreateResearchEducationRequest : CreateEducationRequest
+{
+    public string ProjectTitle { get; set; }
+    public string Supervisor { get; set; }
+    public string Summary { get; set; }
+    public void Deconstruct(
+        out string institution,
+        out DateTime startDate,
+        out DateTime? endDate,
+        out string projectTitle,
+        out string supervisor,
+        out string summary)
+    {
+        institution = this.Institution;
         startDate = this.StartDate;
         endDate = this.EndDate;
+        projectTitle = this.ProjectTitle;
+        supervisor = this.Supervisor;
+        summary = this.Summary;
     }
 }
 

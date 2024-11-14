@@ -5,7 +5,7 @@ using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.Controllers;
 
-[Route("api/v1/profiles")]
+[Route("api/v1/profiles/general")]
 [EnableCors("AllowSpecificOrigins")]
 [Produces("application/json")]
 public class GeneralProfileController : Controller
@@ -33,18 +33,9 @@ public class GeneralProfileController : Controller
 
     [HttpPost]
     [Consumes("application/json")]
-    public IActionResult CreateProfile([FromBody] ProfileRequest profileRequest)
+    public IActionResult CreateProfile([FromBody] CreateGeneralProfileRequest profileRequest)
     {
-        if (profileRequest.RequestType.Equals(ProfileEnum.CreateGeneralProfileRequest))
-        {
-            this.service.Create((CreateGeneralProfileRequest)profileRequest);
-        } else if(profileRequest.RequestType.Equals(ProfileEnum.CreateQualifiedProfileRequest))
-        {
-            this.service.Create((CreateQualifiedProfileRequest)profileRequest);
-        } else if(profileRequest.RequestType.Equals(ProfileEnum.CreateStudentProfileRequest))
-        {
-            this.service.Create((CreateStudentProfileRequest)profileRequest);
-        }
+        this.service.Create(profileRequest);
         return Ok();
     }
 

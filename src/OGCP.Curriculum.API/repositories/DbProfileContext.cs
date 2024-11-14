@@ -32,6 +32,12 @@ namespace OGCP.Curriculum.API.repositories
                 )
                 .Metadata.SetValueComparer(stringArrayComparer);   // Set the custom value comparer
 
+            modelBuilder.Entity<Education>()
+                .HasDiscriminator<string>("EducationType")
+                .HasValue<Education>("BaseEducation")
+                .HasValue<DegreeEducation>("DegreeEducation")
+                .HasValue<ResearchEducation>("ResearchEducation");
+
             base.OnModelCreating(modelBuilder);
         }
     }

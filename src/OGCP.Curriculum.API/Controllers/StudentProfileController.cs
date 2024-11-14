@@ -5,7 +5,7 @@ using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.Controllers;
 
-[Route("api/v1/profiles")]
+[Route("api/v1/profiles/students")]
 [EnableCors("AllowSpecificOrigins")]
 [Produces("application/json")]
 public class StudentController : Controller
@@ -33,18 +33,9 @@ public class StudentController : Controller
 
     [HttpPost]
     [Consumes("application/json")]
-    public IActionResult CreateProfile([FromBody] ProfileRequest profileRequest)
+    public IActionResult CreateProfile([FromBody] CreateStudentProfileRequest profileRequest)
     {
-        if (profileRequest.RequestType.Equals(ProfileEnum.CreateGeneralProfileRequest))
-        {
-            this.service.Create((CreateGeneralProfileRequest)profileRequest);
-        } else if(profileRequest.RequestType.Equals(ProfileEnum.CreateQualifiedProfileRequest))
-        {
-            this.service.Create((CreateQualifiedProfileRequest)profileRequest);
-        } else if(profileRequest.RequestType.Equals(ProfileEnum.CreateStudentProfileRequest))
-        {
-            this.service.Create((CreateStudentProfileRequest)profileRequest);
-        }
+        this.service.Create(profileRequest);
         return Ok();
     }
 
@@ -66,7 +57,7 @@ public class StudentController : Controller
 
     [HttpPut("{id}/educations")]
     [ProducesResponseType(203)]
-    public IActionResult AddEducationToProfile(int id, [FromBody] CreateEducationRequest request)
+    public IActionResult AddEducationToProfile(int id, [FromBody] CreateResearchEducationRequest request)
     {
         try
         {

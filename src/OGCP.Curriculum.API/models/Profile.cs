@@ -69,11 +69,16 @@ public class QualifiedProfile : Profile
 
     public string DesiredJobRole { get; set; }
     public List<Education> Education { get; set; } = new List<Education>();
-    public List<WorkExperience> WorkExperience { get; set; } = new List<WorkExperience>();
+    public List<JobExperience> WorkExperience { get; set; } = new List<JobExperience>();
 
     internal void AddEducation(Education education)
     {
         this.Education.Add(education);
+    }
+
+    internal void AddJobExperience(JobExperience workExperience)
+    {
+        this.WorkExperience.Add(workExperience);
     }
 }
 
@@ -95,6 +100,10 @@ public class GeneralProfile : Profile
 
 public class StudentProfile : Profile
 {
+    public StudentProfile()
+    {
+        
+    }
     public StudentProfile(string firstName, string lastName, string summary, string major, string careerGoals)
         : base(firstName, lastName, summary)
     {
@@ -103,14 +112,13 @@ public class StudentProfile : Profile
     }
 
     public string Major { get; set; }
-    public List<Internship> Internships { get; set; } = new List<Internship>();
-    public List<ExtracurricularActivity> ExtraActivities { get; set; } = new List<ExtracurricularActivity>();
-    public List<ResearchExperience> ResearchExperiences { get; set; } = new List<ResearchExperience>();
+    public List<InternshipExperience> Internships { get; set; } = new List<InternshipExperience>();
+    public List<ResearchEducation> ResearchEducation { get; set; } = new List<ResearchEducation>();
     public string CareerGoals { get; set; }
 
-    internal void AddEducation(Education education)
+    internal void AddEducation(ResearchEducation education)
     {
-        throw new NotImplementedException();
+        this.ResearchEducation.Add(education);
     }
 }
 
@@ -156,46 +164,69 @@ public class Education
     {
         
     }
-    public Education(string institution, DegreeEnum degree, DateTime startDate, DateTime? endDate)
+    protected Education(string institution, DateTime startDate, DateTime? endDate)
     {
-        this.Degree = degree.ToString();
-        this.Institution = institution;
-        this.StartDate = startDate;
-        this.EndDate = endDate;
+        Institution = institution;
+        StartDate = startDate;
+        EndDate = endDate;
     }
 
     [Key]
     public int Id { get; set; }
     public string Institution { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
+}
+
+public class DegreeEducation : Education
+{
+    public DegreeEducation()
+    {
+        
+    }
+    public DegreeEducation(string institution, DegreeEnum degree, DateTime startDate, DateTime? endDate)
+        : base(institution, startDate, endDate)
+    {
+        Degree = degree.ToString();
+    }
+
     public string Degree { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
 }
 
-public class ExtracurricularActivity
+public class ResearchEducation : Education
 {
-    [Key]
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Role { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
-    public string Description { get; set; }
-}
+    public ResearchEducation()
+    {
+        
+    }
+    public ResearchEducation(string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary)
+        : base(institution, startDate, endDate)
+    {
+        ProjectTitle = projectTitle;
+        Supervisor = supervisor;
+        Summary = summary;
+    }
 
-public class ResearchExperience
-{
-    [Key]
-    public int Id { get; set; }
-    public string Projecttitle { get; set; }
+    public string ProjectTitle { get; set; }
     public string Supervisor { get; set; }
     public string Summary { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
 }
 
 public class JobExperience
 {
+    public JobExperience()
+    {
+        
+    }
+
+    public JobExperience(string company, DateTime startDate, DateTime? endDate, string description)
+    {
+        Company = company;
+        StartDate = startDate;
+        EndDate = endDate;
+        Description = description;
+    }
+
     [Key]
     public int Id { get; set; }
     public string Company { get; set; }
@@ -206,10 +237,33 @@ public class JobExperience
 
 public class WorkExperience : JobExperience
 {
-    public string Position { get; set; }
+    private string position;
+
+    public WorkExperience()
+    {
+    }
+
+    public WorkExperience(string company, DateTime startDate, DateTime? endDate, string description, string position)
+        :base(company, startDate, endDate, description)
+    {
+        this.position = position;
+    }
+
+    public string Position => position;
 }
 
-public class Internship : JobExperience
+public class InternshipExperience : JobExperience
 {
+    public InternshipExperience()
+    {
+        
+    }
+
+    public InternshipExperience(string company, DateTime startDate, DateTime? endDate, string description, string role)
+        :base(company, startDate, endDate, description)
+    {
+        Role = role;
+    }
+
     public string Role { get; set; }
 }

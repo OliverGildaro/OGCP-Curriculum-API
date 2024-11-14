@@ -1,8 +1,7 @@
 using JsonSubTypes;
 using Microsoft.EntityFrameworkCore;
 using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.factories;
-using OGCP.Curriculum.API.factories.interfaces;
+using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.repositories;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services;
@@ -38,12 +37,20 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
         .SerializeDiscriminatorProperty()
         .Build()
     );
+
+    options.SerializerSettings.Converters.Add(
+        JsonSubtypesConverterBuilder
+        .Of(typeof(CreateJobExperienceRequest), "ExperiencesType")
+        .RegisterSubtype(typeof(CreateInternshipExperienceRequest), WorkExperiences.INTERSHIP)
+        .RegisterSubtype(typeof(CreateWorkExperienceRequest), WorkExperiences.WORK)
+        .SerializeDiscriminatorProperty()
+        .Build()
+    );
 });
 
 builder.Services.AddScoped<IStudentProfileService, StudentProfileService>();
 builder.Services.AddScoped<IQualifiedProfileService, QualifiedProfileService>();
 builder.Services.AddScoped<IGeneralProfileService, GeneralProfileService>();
-builder.Services.AddScoped<IProfileFactory, ProfileFactory>();
 builder.Services.AddScoped<IGeneralProfileRepository, GeneralProfileRepository>();
 builder.Services.AddScoped<IStudentProfileRepository, StudentProfileRepository>();
 builder.Services.AddScoped<IQualifiedProfileRepository, QualifiedProfileRepository>();

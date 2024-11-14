@@ -1,10 +1,9 @@
 ﻿using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.factories.interfaces;
 using OGCP.Curriculum.API.models;
 
 namespace OGCP.Curriculum.API.factories
 {
-    public class ProfileFactory : IProfileFactory
+    public class ProfileFactory
     {
         public Profile Get(ProfileRequest request)
         {

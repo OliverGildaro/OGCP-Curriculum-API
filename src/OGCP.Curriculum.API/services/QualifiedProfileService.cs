@@ -1,5 +1,5 @@
 ﻿using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.factories.interfaces;
+using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.models;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
@@ -10,12 +10,12 @@ public class QualifiedProfileService : IQualifiedProfileService
 {
     private readonly IQualifiedProfileRepository repository;
 
-    public QualifiedProfileService(IQualifiedProfileRepository repository, IProfileFactory factory)
+    public QualifiedProfileService(IQualifiedProfileRepository repository)
     {
         this.repository = repository;
     }
 
-    public void AddEducation(int id, CreateEducationRequest request)
+    public void AddEducation(int id, CreateDegreeEducationRequest request)
     {
         QualifiedProfile profile = this.repository.Find(id);
         if (profile is null)
@@ -24,9 +24,18 @@ public class QualifiedProfileService : IQualifiedProfileService
         }
 
         (string institution, DegreeEnum degree, DateTime startDate, DateTime? endDate ) = request;
-        Education education = new Education(institution, degree, startDate, endDate);
+        Education education = new DegreeEducation(institution, degree, startDate, endDate);
 
         profile.AddEducation(education);
+
+        this.repository.SaveChanges();
+    }
+
+    public void AddJobExperience<T>(int id, T request)
+    {
+        var profile = this.repository.Find(id);
+        JobExperience jobExperince = FactoryJob.Get(request);
+        profile.AddJobExperience(jobExperince);
 
         this.repository.SaveChanges();
     }
@@ -41,18 +50,21 @@ public class QualifiedProfileService : IQualifiedProfileService
         repository.SaveChanges();
     }
 
-    public void Create(ProfileRequest request)
+    public void Create(CreateQualifiedProfileRequest request)
     {
-        throw new NotImplementedException();
+        (string firstName, string lastName, string summary, string desiredJobRole) = request;
+        var resu = new QualifiedProfile(firstName, lastName, summary, desiredJobRole);
+        this.repository.Add(resu);
+        this.repository.SaveChanges();
     }
 
     public IEnumerable<QualifiedProfile> Get()
     {
-        throw new NotImplementedException();
+        return this.repository.Find();
     }
 
     public QualifiedProfile Get(int id)
     {
-        throw new NotImplementedException();
+        return this.repository.Find(id);
     }
 }

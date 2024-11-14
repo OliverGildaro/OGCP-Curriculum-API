@@ -1,5 +1,4 @@
 ﻿using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.factories.interfaces;
 using OGCP.Curriculum.API.models;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
@@ -10,12 +9,12 @@ public class StudentProfileService : IStudentProfileService
 {
     private readonly IStudentProfileRepository repository;
 
-    public StudentProfileService(IStudentProfileRepository repository, IProfileFactory factory)
+    public StudentProfileService(IStudentProfileRepository repository)
     {
         this.repository = repository;
     }
 
-    public void AddEducation(int id, CreateEducationRequest request)
+    public void AddEducation(int id, CreateResearchEducationRequest request)
     {
         StudentProfile profile = this.repository.Find(id);
         if (profile is null)
@@ -23,8 +22,8 @@ public class StudentProfileService : IStudentProfileService
             return;
         }
 
-        (string institution, DegreeEnum degree, DateTime startDate, DateTime? endDate ) = request;
-        Education education = new Education(institution, degree, startDate, endDate);
+        (string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary ) = request;
+        ResearchEducation education = new ResearchEducation(institution, startDate, endDate, projectTitle, supervisor, summary);
 
         profile.AddEducation(education);
 
@@ -41,18 +40,22 @@ public class StudentProfileService : IStudentProfileService
         repository.SaveChanges();
     }
 
-    public void Create(ProfileRequest request)
+    public void Create(CreateStudentProfileRequest request)
     {
-        throw new NotImplementedException();
+        (string firstName, string lastName, string summary, string major, string careerGoals) = request;
+        var sdsd =  new StudentProfile(firstName, lastName, summary, major, careerGoals);
+        this.repository.Add(sdsd);
+
+        this.repository.SaveChanges();
     }
 
     public IEnumerable<StudentProfile> Get()
     {
-        throw new NotImplementedException();
+        return this.repository.Find();
     }
 
     public StudentProfile Get(int id)
     {
-        throw new NotImplementedException();
+        return this.repository.Find(id);
     }
 }
