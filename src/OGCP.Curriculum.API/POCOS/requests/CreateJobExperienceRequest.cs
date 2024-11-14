@@ -16,11 +16,6 @@ public abstract class CreateJobExperienceRequest
     }
 }
 
-public enum WorkExperiences
-{
-    WORK=1,
-    INTERSHIP
-}
 
 public class CreateWorkExperienceRequest : CreateJobExperienceRequest
 {

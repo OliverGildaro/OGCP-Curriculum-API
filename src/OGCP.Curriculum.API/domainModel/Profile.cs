@@ -9,21 +9,18 @@ public interface IEntity<TEntityId>
     public TEntityId Id { get; set; }
 }
 
-public interface IProfile { /* common properties or methods */ }
-public class Profile : IEntity<int>, IProfile
+public class Profile : IEntity<int>
 {
-    [Key]
     public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Summary { get; set; }
-    //public Profiletype Profiletype { get; set; }
-    public bool IsPublic { get; set; }//Public or private
-    public string Visibility { get; set; }//Public and friends only
-    public string Status { get; set; }//progress of profile completion
+    public bool IsPublic { get; set; }
+    public string Visibility { get; set; }
+    public string Status { get; set; }
     public PersonalInfo PersonalInfo { get; set; }
     public List<Language> LanguagesSpoken { get; set; } = new List<Language>();
-    public List<Skill> Skills { get; set; } = new List<Skill>();
+    public ICollection<Skill> Skills { get; set; } = new List<Skill>();//?? IEnumerable
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
@@ -136,8 +133,8 @@ public class Language
     }
     [Key]
     public int Id { get; set; }
-    public string Name { get; set; }
-    public string Level { get; set; }
+    public string Name { get; set; }//TODO enum to string ocnversion on FluentAPI
+    public string Level { get; set; }//TODO enum to string ocnversion on FluentAPI
 }
 
 public class PersonalInfo
@@ -190,7 +187,7 @@ public class DegreeEducation : Education
         Degree = degree.ToString();
     }
 
-    public string Degree { get; set; }
+    public string Degree { get; set; }//TODO enum to string ocnversion on FluentAPI
 }
 
 public class ResearchEducation : Education

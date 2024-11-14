@@ -40,5 +40,20 @@ namespace OGCP.Curriculum.API.repositories
 
             base.OnModelCreating(modelBuilder);
         }
+        //FLUENT API
+        //Can be complex to setup
+        //Keeps code clean
+        //Support a large feature sets
+        //Works when you cant nodufy entity classes
+        //DATA ANOTATIONS
+        //Easy to setup
+        //May clutter entity classes
+        //smaller feature set
+        //Only works when you have direct control on your classes
+    
+        //TPH table per herarchy
+        //Can lead to empty columns
+        //sql server sparce columns can be used to optimize space for empty columns
+        //Sibiling entities can be mapped to shared columns
     }
 }

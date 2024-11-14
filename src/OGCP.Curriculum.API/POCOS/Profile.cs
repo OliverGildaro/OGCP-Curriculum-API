@@ -105,35 +105,8 @@ public class CreateResearchEducationRequest : CreateEducationRequest
     }
 }
 
-public enum DegreeEnum
-{
-    AssociateDegree,
-    BachelorDegree,
-    MasterDegree,
-    Doctorate,
-    PhD,
-    Diploma,
-    Certificate,
-    HighSchool
-}
 
-public enum LevelEnum
-{
-    BEGINNER = 1,
-    INTERMEDIATE = 2,
-    PROFICIENT = 3,
-    ADVANCED = 4,
-    EXPERT = 5
-}
 
-public enum LanguageEnum
-{
-    SPANISH = 1,
-    ENGLISH = 2,
-    KOREAN = 3,
-    ITALIAN = 4,
-    PORTUGUESE = 5
-}
 
 public class PersonalInfoRequest
 {
@@ -167,9 +140,4 @@ public class EducationRequest
     public DateTime? EndDate { get; init; }
 }
 
-public enum ProfileEnum
-{
-    CreateGeneralProfileRequest = 1,
-    CreateQualifiedProfileRequest,
-    CreateStudentProfileRequest
-}
+
