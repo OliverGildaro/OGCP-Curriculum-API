@@ -9,7 +9,7 @@ public abstract class ProfileRequest
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Summary { get; set; }
-    public ProfileEnum RequestType { get; set; } // Discriminator field
+    public ProfileTypes RequestType { get; set; } // Discriminator field
 }
 
 
@@ -58,14 +58,14 @@ public class CreateStudentProfileRequest : ProfileRequest
 
 public class CreateLanguageRequest
 {
-    public LanguageEnum Name { get; set; }
-    public LevelEnum Level { get; set; }
+    public Languages Name { get; set; }
+    public ProficiencyLevel Level { get; set; }
 }
 
 public class CreateEducationRequest
 {
     public string Institution { get; set; }
-    public DegreeEnum Degree { get; set; }
+    public EducationLevel Degree { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
 }
@@ -73,9 +73,9 @@ public class CreateEducationRequest
 
 public class CreateDegreeEducationRequest : CreateEducationRequest
 {
-    public DegreeEnum Degree { get; set; }
+    public EducationLevel Degree { get; set; }
 
-    public void Deconstruct(out string institution, out DegreeEnum degree, out DateTime startDate, out DateTime? endDate)
+    public void Deconstruct(out string institution, out EducationLevel degree, out DateTime startDate, out DateTime? endDate)
     {
         institution = base.Institution;
         degree = this.Degree;
@@ -136,7 +136,7 @@ public class WorkExperienceRequest
 public class EducationRequest
 {
     public string Institution { get; init; }
-    public string Degree { get; init; }
+    public EducationLevel Degree { get; init; }
     public DateTime StartDate { get; init; }
     public DateTime? EndDate { get; init; }
 }

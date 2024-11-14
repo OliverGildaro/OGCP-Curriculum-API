@@ -24,7 +24,7 @@ public class QualifiedProfileService : IQualifiedProfileService
             return;
         }
 
-        (string institution, DegreeEnum degree, DateTime startDate, DateTime? endDate ) = request;
+        (string institution, EducationLevel degree, DateTime startDate, DateTime? endDate ) = request;
         Education education = new DegreeEducation(institution, degree, startDate, endDate);
 
         profile.AddEducation(education);

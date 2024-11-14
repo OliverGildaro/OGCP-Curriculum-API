@@ -1,5 +1,4 @@
 ﻿using OGCP.Curriculum.API.domainModel;
-using OGCP.Curriculum.API.dtos;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -127,7 +126,7 @@ public class Language
     {
         
     }
-    public Language(LanguageEnum name, LevelEnum level)
+    public Language(Languages name, ProficiencyLevel level)
     {
         this.Name = name.ToString();
         this.Level = level.ToString();
@@ -182,13 +181,13 @@ public class DegreeEducation : Education
     {
         
     }
-    public DegreeEducation(string institution, DegreeEnum degree, DateTime startDate, DateTime? endDate)
+    public DegreeEducation(string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
         : base(institution, startDate, endDate)
     {
-        Degree = degree.ToString();
+        Degree = degree;
     }
 
-    public string Degree { get; set; }//TODO enum to string ocnversion on FluentAPI
+    public EducationLevel Degree { get; set; }//TODO enum to string ocnversion on FluentAPI
 }
 
 public class ResearchEducation : Education

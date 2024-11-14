@@ -7,7 +7,7 @@ public abstract class CreateJobExperienceRequest
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string Description { get; set; }
-    public WorkExperiences ExperiencesType { get; set; } // Discriminator field
+    public WorkExperienceCategory ExperiencesType { get; set; } // Discriminator field
 
     public void Deconstruct(out string company, out DateTime startDate, out DateTime? endDate, out string description)
     {

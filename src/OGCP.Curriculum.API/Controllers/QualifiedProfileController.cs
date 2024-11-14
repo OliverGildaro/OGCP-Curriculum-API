@@ -72,7 +72,7 @@ public class QualifiedProfileController : Controller
         }
     }
 
-    [HttpPut("{id}/workexperiences")]
+    [HttpPut("{id}/WorkExperienceTypes")]
     [ProducesResponseType(203)]
     public IActionResult AddJobExperienceToProfile(int id, [FromBody] CreateJobExperienceRequest request)
     {

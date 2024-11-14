@@ -1,53 +1,48 @@
 ﻿namespace OGCP.Curriculum.API.domainModel
 {
-    public enum typeProfile
+    public enum ProfileDetailLevel
     {
-        QUALIFIED_PROFILE = 1,
-        GENERAL_PROFILE
+        Minimal = 1,
+        Partial,
+        Complete
     }
 
-    public enum DegreeEnum
+    public enum EducationLevel
     {
-        AssociateDegree,
-        BachelorDegree,
-        MasterDegree,
-        Doctorate,
-        PhD,
+        HighSchool = 1,
         Diploma,
         Certificate,
-        HighSchool
+        Associate,
+        Bachelor,
+        Master,
+        Doctorate
     }
 
-
-
-    public enum LevelEnum
+    public enum ProficiencyLevel
     {
-        BEGINNER = 1,
-        INTERMEDIATE = 2,
-        PROFICIENT = 3,
-        ADVANCED = 4,
-        EXPERT = 5
+        Beginner = 1,
+        Intermediate = 2,
+        Proficient = 3,
+        Advanced = 4,
+        Expert = 5
     }
 
-
-
-    public enum LanguageEnum
+    public enum Languages
     {
-        SPANISH = 1,
-        ENGLISH = 2,
-        KOREAN = 3,
-        ITALIAN = 4,
-        PORTUGUESE = 5
+        Spanish = 1,
+        English = 2,
+        Korean = 3,
+        Italian = 4,
+        Portuguese = 5
     }
 
-
-    public enum WorkExperiences
+    public enum WorkExperienceCategory
     {
-        WORK = 1,
-        INTERSHIP
+        Employment = 1,
+        Internship = 2
     }
 
-    public enum ProfileEnum
+    public enum ProfileTypes
     {
         CreateGeneralProfileRequest = 1,
         CreateQualifiedProfileRequest,

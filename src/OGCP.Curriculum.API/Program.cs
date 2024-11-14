@@ -32,9 +32,9 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.Converters.Add(
         JsonSubtypesConverterBuilder
         .Of(typeof(ProfileRequest), "RequestType")
-        .RegisterSubtype(typeof(CreateGeneralProfileRequest), ProfileEnum.CreateGeneralProfileRequest)
-        .RegisterSubtype(typeof(CreateQualifiedProfileRequest), ProfileEnum.CreateQualifiedProfileRequest)
-        .RegisterSubtype(typeof(CreateStudentProfileRequest), ProfileEnum.CreateStudentProfileRequest)
+        .RegisterSubtype(typeof(CreateGeneralProfileRequest), ProfileTypes.CreateGeneralProfileRequest)
+        .RegisterSubtype(typeof(CreateQualifiedProfileRequest), ProfileTypes.CreateQualifiedProfileRequest)
+        .RegisterSubtype(typeof(CreateStudentProfileRequest), ProfileTypes.CreateStudentProfileRequest)
         .SerializeDiscriminatorProperty()
         .Build()
     );
@@ -42,8 +42,8 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.Converters.Add(
         JsonSubtypesConverterBuilder
         .Of(typeof(CreateJobExperienceRequest), "ExperiencesType")
-        .RegisterSubtype(typeof(CreateInternshipExperienceRequest), WorkExperiences.INTERSHIP)
-        .RegisterSubtype(typeof(CreateWorkExperienceRequest), WorkExperiences.WORK)
+        .RegisterSubtype(typeof(CreateInternshipExperienceRequest), WorkExperienceCategory.Internship)
+        .RegisterSubtype(typeof(CreateWorkExperienceRequest), WorkExperienceCategory.Employment)
         .SerializeDiscriminatorProperty()
         .Build()
     );
