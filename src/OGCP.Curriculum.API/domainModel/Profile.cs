@@ -1,4 +1,5 @@
-﻿using OGCP.Curriculum.API.dtos;
+﻿using OGCP.Curriculum.API.domainModel;
+using OGCP.Curriculum.API.dtos;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

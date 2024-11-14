@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using OGCP.Curriculum.API.domainModel;
 
 namespace OGCP.Curriculum.API.dtos;
 

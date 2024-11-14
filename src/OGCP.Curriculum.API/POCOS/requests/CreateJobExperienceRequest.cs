@@ -1,4 +1,6 @@
-﻿namespace OGCP.Curriculum.API.dtos.requests;
+﻿using OGCP.Curriculum.API.domainModel;
+
+namespace OGCP.Curriculum.API.dtos.requests;
 public abstract class CreateJobExperienceRequest
 {
     public string Company { get; set; }

@@ -1,4 +1,5 @@
-﻿using OGCP.Curriculum.API.dtos;
+﻿using OGCP.Curriculum.API.domainModel;
+using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.models;
 using OGCP.Curriculum.API.repositories.interfaces;
