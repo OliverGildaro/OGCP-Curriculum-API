@@ -23,7 +23,7 @@ public class Profile : IEntity<int>
     public bool IsPublic { get; private set; }
     public string Visibility { get; private set; }
     public ProfileDetailLevel DetailLevel { get; private set; }
-    public PersonalInfo PersonalInfo { get; private set; }
+    public DetailInfo PersonalInfo { get; private set; }
     public List<Language> LanguagesSpoken => _languagesSpoken;
     public List<Skill> Skills => _skills;
     public DateTime CreatedAt => _createdAt;
@@ -251,47 +251,5 @@ public class StudentProfile : Profile
         }
 
         _researchEducation.Add(education);
-    }
-}
-
-public class PersonalInfo
-{
-    public int Id { get; set; }
-    public int? ProfileId { get; set; }
-    public Profile Profile { get; set; }
-    public string Email { get; set; }
-    public string Phone { get; set; }
-}
-
-public class Skill
-{
-    private int _id;
-    private string _name;
-    private string _level;
-
-    protected Skill() {}
-    private Skill(string name, string level)
-    {
-        this._name = name;
-        this._level = level;
-    }
-
-    public int Id => _id;
-    public string Name => this._name;
-    public string Level => this.Level;
-
-    public Result<Skill, Error> CreateNew(string name, string level)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            return new Error("", "");
-        }
-
-        if (string.IsNullOrWhiteSpace(level))
-        {
-            return new Error("", "");
-        }
-
-        return new Skill(name, level);
     }
 }

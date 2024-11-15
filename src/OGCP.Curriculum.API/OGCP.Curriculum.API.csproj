@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="domainModel\enums\" />
     <Folder Include="helpers\" />
     <Folder Include="POCOS\responses\" />
   </ItemGroup>
