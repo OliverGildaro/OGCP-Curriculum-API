@@ -66,7 +66,7 @@ public class Profile : IEntity<int>
 
 public class QualifiedProfile : Profile
 {
-    private readonly List<Education> _education = new();
+    private readonly EducationList _educations = new();
     private readonly List<JobExperience> _workExperience = new();
     private string _desiredJobRole;
     protected QualifiedProfile() { }
@@ -83,7 +83,7 @@ public class QualifiedProfile : Profile
     // Public properties for encapsulated access
     public string DesiredJobRole => _desiredJobRole;
 
-    public List<Education> Education => _education;
+    public EducationList Educations => _educations;
     public List<JobExperience> WorkExperience => _workExperience;
 
     // Factory method to create a QualifiedProfile
@@ -124,7 +124,7 @@ public class QualifiedProfile : Profile
             throw new ArgumentNullException(nameof(education), "Education cannot be null.");
         }
 
-        _education.Add(education);
+        _educations.Add(education);
     }
 
     public void AddJobExperience(JobExperience workExperience)

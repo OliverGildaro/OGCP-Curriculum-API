@@ -20,9 +20,12 @@ namespace OGCP.Curriculum.API.repositories
         {
 
         }
+
         public DbSet<QualifiedProfile> QualifiedProfiles { get; set; }
         public DbSet<GeneralProfile> GeneralProfiles { get; set; }
         public DbSet<StudentProfile> StudentProfiles { get; set; }
+        public virtual DbSet<Dictionary<string, object>> Certifications =>
+                Set<Dictionary<string, object>>("Certification");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,9 +41,9 @@ namespace OGCP.Curriculum.API.repositories
                     .HasMaxLength(50);
 
                 entity.Property(p => p.LastName)
-                        .IsRequired()
-                        .HasColumnName("LastName")
-                        .HasMaxLength(50);
+                    .IsRequired()
+                    .HasColumnName("LastName")
+                    .HasMaxLength(50);
 
                 entity.Property(p => p.Summary)
                     .IsRequired(false);
@@ -59,10 +62,16 @@ namespace OGCP.Curriculum.API.repositories
                     .IsRequired();
 
                 entity.Property(p => p.UpdatedAt)
-                .IsRequired();
+                    .IsRequired();
 
+                //EF will create a shadow property, the fk in the language table
+                //This shadow property is not defined in our Language entity domain class
                 entity.HasMany(p => p.LanguagesSpoken)
                     .WithMany();
+
+                //Shadow properties is something that EF use behind the scenes for example to
+                //facilitate temporary tables, or to keep track of foreign keys that we have not mapped explicitly
+                //we can use to access other fields that are not mapped to entities but exist in tables
 
                 entity.HasOne(p => p.PersonalInfo)
                     .WithOne();
@@ -78,18 +87,17 @@ namespace OGCP.Curriculum.API.repositories
                     .Metadata.SetValueComparer(stringArrayComparer);
             });
 
-
             modelBuilder.Entity<QualifiedProfile>(entity =>
             {
                 entity.Property(p => p.DesiredJobRole)
                     .HasMaxLength(200)
                     .IsRequired(false);
 
-                entity.HasMany(p => p.Education)
+                entity.HasOne(p => p.Educations)
                     .WithOne();
 
                 entity.HasMany(p => p.WorkExperience)
-                    .WithOne();        
+                    .WithOne();
             });
 
             modelBuilder.Entity<StudentProfile>(entity =>
@@ -99,15 +107,20 @@ namespace OGCP.Curriculum.API.repositories
 
                 entity.Property(p => p.Major)
                     .IsRequired(false);
-
                 entity.HasMany(p => p.Internships)
                     .WithOne();
-
                 entity.HasMany(p => p.ResearchEducation)
                     .WithOne();
             });
 
-
+            modelBuilder.Entity<Language>(entity =>
+            {
+                //In a system where you synchronize user profiles between databases, you can compare the checksum values to quickly identify records that need updates.
+                //You can validate the integrity of user data during migrations or imports by ensuring that the checksum matches the recalculated value based on the migrated columns.
+                //Auditing: In scenarios where you need to detect unauthorized or accidental changes to critical fields, the checksum can serve as an additional layer of protection.
+                entity.Property<byte[]>("Checksum")
+                    .HasComputedColumnSql("CONVERT(VARBINARY(1024),CHECKSUM([FirstName],[LastName],[UserName]))");
+            });
 
 
 
@@ -127,13 +140,31 @@ namespace OGCP.Curriculum.API.repositories
                 .HasValue<ResearchEducation>("ResearchEducation");
 
 
+            //We do not need to map this to an CLR class
+            //Easy to add metadata without modifying database schema
+            //We can add attributes in a flexible way
+            modelBuilder.SharedTypeEntity<Dictionary<string, object>>(
+                "Certification",
+                entity =>
+                {
+                    entity.Property<int>("Id"); // Primary Key
+                    entity.Property<int>("ProfileId"); // Foreign Key to Profile
+                    entity.Property<string>("CertificationName"); // Name of the certification
+                    entity.Property<string>("IssuingOrganization"); // Organization issuing the certification
+                    entity.Property<DateTime>("DateIssued"); // Issue date of the certification
+                    entity.Property<DateTime?>("ExpirationDate"); // Optional expiration date
+                    entity.Property<string>("Description"); // Description or remarks
+                    entity.HasKey("Id"); // Define the primary key explicitly
+                });
+
+
             base.OnModelCreating(modelBuilder);
         }
         //FLUENT API
         //Can be complex to setup
         //Keeps code clean
         //Support a large feature sets
-        //Works when you cant nodufy entity classes
+        //Works when you can not nodify entity classes
         //DATA ANOTATIONS
         //Easy to setup
         //May clutter entity classes
