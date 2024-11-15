@@ -1,4 +1,5 @@
-﻿using OGCP.Curriculum.API.dtos;
+﻿using ArtForAll.Shared.ErrorHandler;
+using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.models;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
@@ -18,8 +19,8 @@ public class GeneralProfileService : IGeneralProfileService
     {
         GeneralProfile profile = this.repository.Find(id);
 
-        Language language = new Language(languageRequest.Name, languageRequest.Level);
-        bool result = profile.AddLanguage(language);
+        Language language = Language.Create(languageRequest.Name, languageRequest.Level);
+        Result result = profile.AddLanguage(language);
 
         repository.SaveChanges();
     }
@@ -27,8 +28,8 @@ public class GeneralProfileService : IGeneralProfileService
     public void Create(CreateGeneralProfileRequest request)
     {
         (string firstName, string lastName, string summary, string[] personalGoals) = request;
-        var res = new GeneralProfile(firstName, lastName, summary, personalGoals);
-        this.repository.Add(res);
+        var res = GeneralProfile.Create(firstName, lastName, summary, personalGoals);
+        this.repository.Add(res.Value);
 
         this.repository.SaveChanges();
     }

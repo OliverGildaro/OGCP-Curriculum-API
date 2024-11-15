@@ -11,11 +11,11 @@ namespace OGCP.Curriculum.API.services
             if (request is CreateWorkExperienceRequest workExp)
             {
                 var (company, startDate, endDate, description, position) = workExp;
-                return new WorkExperience(company, startDate, endDate, description, position);
+                return WorkExperience.Create(company, startDate, endDate, description, position).Value;
             }else if(request is CreateInternshipExperienceRequest internExp)
             {
                 var (company, startDate, endDate, description, role) = internExp;
-                return new InternshipExperience(company, startDate, endDate, description, role);
+                return InternshipExperience.Create(company, startDate, endDate, description, role).Value;
             }
 
             return null;

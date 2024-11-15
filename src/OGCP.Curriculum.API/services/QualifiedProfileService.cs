@@ -1,4 +1,5 @@
-﻿using OGCP.Curriculum.API.domainModel;
+﻿using ArtForAll.Shared.ErrorHandler;
+using OGCP.Curriculum.API.domainModel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.models;
@@ -45,8 +46,8 @@ public class QualifiedProfileService : IQualifiedProfileService
     {
         QualifiedProfile profile = this.repository.Find(id);
 
-        Language language = new Language(languageRequest.Name, languageRequest.Level);
-        bool result = profile.AddLanguage(language);
+        Language language = Language.Create(languageRequest.Name, languageRequest.Level);
+        Result result = profile.AddLanguage(language);
 
         repository.SaveChanges();
     }
@@ -54,8 +55,8 @@ public class QualifiedProfileService : IQualifiedProfileService
     public void Create(CreateQualifiedProfileRequest request)
     {
         (string firstName, string lastName, string summary, string desiredJobRole) = request;
-        var resu = new QualifiedProfile(firstName, lastName, summary, desiredJobRole);
-        this.repository.Add(resu);
+        var resu = QualifiedProfile.Create(firstName, lastName, summary, desiredJobRole);
+        this.repository.Add(resu.Value);
         this.repository.SaveChanges();
     }
 

@@ -1,266 +1,297 @@
-﻿using OGCP.Curriculum.API.domainModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using ArtForAll.Shared.Contracts.DDD;
+using ArtForAll.Shared.ErrorHandler;
+using OGCP.Curriculum.API.domainModel;
 
 namespace OGCP.Curriculum.API.models;
 
 public interface IEntity<TEntityId>
 {
-    public TEntityId Id { get; set; }
+    public TEntityId Id { get; }
 }
 
 public class Profile : IEntity<int>
 {
-    public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Summary { get; set; }
-    public bool IsPublic { get; set; }
-    public string Visibility { get; set; }
-    public string Status { get; set; }
-    public PersonalInfo PersonalInfo { get; set; }
-    public List<Language> LanguagesSpoken { get; set; } = new List<Language>();
-    public ICollection<Skill> Skills { get; set; } = new List<Skill>();//?? IEnumerable
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    private readonly List<Language> _languagesSpoken;
+    private readonly List<Skill> _skills;
+    private DateTime _createdAt;
+    private DateTime _updatedAt;
 
-    public Profile()
+    public int Id { get; }
+    public string FirstName { get; private set; }
+    public string LastName { get; private set; }
+    public string Summary { get; private set; }
+    public bool IsPublic { get; private set; }
+    public string Visibility { get; private set; }
+    public ProfileDetailLevel DetailLevel { get; private set; }
+    public PersonalInfo PersonalInfo { get; private set; }
+    public List<Language> LanguagesSpoken => _languagesSpoken;
+    public List<Skill> Skills => _skills;
+    public DateTime CreatedAt => _createdAt;
+    public DateTime UpdatedAt => _updatedAt;
+
+    // Protected or private constructors to enforce controlled object creation
+    protected Profile()
     {
-        
+        _languagesSpoken = new List<Language>();
+        _skills = new List<Skill>();
     }
 
     public Profile(string firstName, string lastName, string summary)
     {
-        this.FirstName = firstName;
-        this.LastName = lastName;
-        this.Summary = summary;
-        this.IsPublic = true;
-        this.Visibility = string.Empty;
-        this.Status = string.Empty;
-        this.CreatedAt = DateTime.UtcNow;
-        this.UpdatedAt = DateTime.UtcNow;
+        FirstName = firstName;
+        LastName = lastName;
+        Summary = summary;
+        IsPublic = true;
+        Visibility = string.Empty;
+        _createdAt = DateTime.UtcNow;
+        _updatedAt = DateTime.UtcNow;
+        _languagesSpoken = new List<Language>();
+        _skills = new List<Skill>();
     }
 
-    internal bool AddLanguage(Language language)
+    public Result AddLanguage(Language language)
     {
-        if (this.LanguagesSpoken is null)
-        {
-            this.LanguagesSpoken = new List<Language>();
-        }
-        this.LanguagesSpoken.Add(language);
-        return true;
+        if (language == null) return Result.Failure("");
+
+        _languagesSpoken.Add(language);
+        UpdateTimestamp();
+        return Result.Success();
+    }
+
+    private void UpdateTimestamp()
+    {
+        _updatedAt = DateTime.UtcNow;
     }
 }
 
 public class QualifiedProfile : Profile
 {
-    public QualifiedProfile()
-    {
-        
-    }
-    public QualifiedProfile(string firstName, string lastName, string summary, string desiredJobRole)
+    private readonly List<Education> _education = new();
+    private readonly List<JobExperience> _workExperience = new();
+    private string _desiredJobRole;
+    protected QualifiedProfile() { }
+    private QualifiedProfile(
+        string firstName,
+        string lastName,
+        string summary,
+        string desiredJobRole)
         : base(firstName, lastName, summary)
     {
-        this.DesiredJobRole = desiredJobRole;
+        _desiredJobRole = desiredJobRole;
     }
 
-    public string DesiredJobRole { get; set; }
-    public List<Education> Education { get; set; } = new List<Education>();
-    public List<JobExperience> WorkExperience { get; set; } = new List<JobExperience>();
+    // Public properties for encapsulated access
+    public string DesiredJobRole => _desiredJobRole;
 
-    internal void AddEducation(Education education)
+    public List<Education> Education => _education;
+    public List<JobExperience> WorkExperience => _workExperience;
+
+    // Factory method to create a QualifiedProfile
+    public static Result<QualifiedProfile, Error> Create(
+        string firstName,
+        string lastName,
+        string summary,
+        string desiredJobRole)
     {
-        this.Education.Add(education);
+        if (string.IsNullOrWhiteSpace(firstName))
+        {
+            return new Error("InvalidFirstName", "First name is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(lastName))
+        {
+            return new Error("InvalidLastName", "Last name is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(summary))
+        {
+            return new Error("InvalidSummary", "Summary is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(desiredJobRole))
+        {
+            return new Error("InvalidDesiredJobRole", "Desired job role is required.");
+        }
+
+        return new QualifiedProfile(firstName, lastName, summary, desiredJobRole);
     }
 
-    internal void AddJobExperience(JobExperience workExperience)
+    // Domain methods to add related information
+    public void AddEducation(Education education)
     {
-        this.WorkExperience.Add(workExperience);
+        if (education == null)
+        {
+            throw new ArgumentNullException(nameof(education), "Education cannot be null.");
+        }
+
+        _education.Add(education);
+    }
+
+    public void AddJobExperience(JobExperience workExperience)
+    {
+        if (workExperience == null)
+        {
+            throw new ArgumentNullException(nameof(workExperience), "Job experience cannot be null.");
+        }
+
+        _workExperience.Add(workExperience);
     }
 }
 
 public class GeneralProfile : Profile
 {
-    public GeneralProfile()
-    {
-        
-    }
-    public GeneralProfile(string firstName, string lastName, string summary, string[] personalGoals) 
+    private readonly List<WorkExperience> _workExperience = new();
+    private string[] _personalGoals = Array.Empty<string>();
+
+    protected GeneralProfile() { }
+    private GeneralProfile(string firstName, string lastName, string summary, string[] personalGoals)
         : base(firstName, lastName, summary)
     {
-        this.PersonalGoals = personalGoals;
+        _personalGoals = personalGoals ?? Array.Empty<string>();
     }
 
-    public string[] PersonalGoals { get; set; } = new string[] {};
-    public List<WorkExperience> WorkExperience { get; set; } = new List<WorkExperience>();
+    // Public properties
+    public IReadOnlyCollection<WorkExperience> WorkExperience => _workExperience.AsReadOnly();
+    public string[] PersonalGoals => _personalGoals;
+
+    // Factory method for controlled creation
+    public static Result<GeneralProfile, Error> Create(
+        string firstName,
+        string lastName,
+        string summary,
+        string[] personalGoals)
+    {
+        if (string.IsNullOrWhiteSpace(firstName))
+        {
+            return new Error("InvalidFirstName", "First name is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(lastName))
+        {
+            return new Error("InvalidLastName", "Last name is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(summary))
+        {
+            return new Error("InvalidSummary", "Summary is required.");
+        }
+
+        return new GeneralProfile(firstName, lastName, summary, personalGoals);
+    }
+
+    // Domain methods
+    public void AddWorkExperience(WorkExperience experience)
+    {
+        if (experience == null)
+        {
+            throw new ArgumentNullException(nameof(experience), "Work experience cannot be null.");
+        }
+
+        _workExperience.Add(experience);
+    }
+
+    public void UpdatePersonalGoals(string[] personalGoals)
+    {
+        _personalGoals = personalGoals ?? Array.Empty<string>();
+    }
 }
 
 public class StudentProfile : Profile
 {
-    public StudentProfile()
-    {
-        
-    }
-    public StudentProfile(string firstName, string lastName, string summary, string major, string careerGoals)
+    private readonly List<InternshipExperience> _internships = new();
+    private readonly List<ResearchEducation> _researchEducation = new();
+    private string _major;
+    private string _careerGoals;
+
+    public StudentProfile(
+        string firstName,
+        string lastName,
+        string summary,
+        string major,
+        string careerGoals)
         : base(firstName, lastName, summary)
     {
-        this.CareerGoals = careerGoals;
-        this.Major = major;
+        _major = major;
+        _careerGoals = careerGoals;
     }
 
-    public string Major { get; set; }
-    public List<InternshipExperience> Internships { get; set; } = new List<InternshipExperience>();
-    public List<ResearchEducation> ResearchEducation { get; set; } = new List<ResearchEducation>();
-    public string CareerGoals { get; set; }
+    // Public properties
+    public string Major => _major;
+    public string CareerGoals => _careerGoals;
+    public IReadOnlyCollection<InternshipExperience> Internships => _internships.AsReadOnly();
+    public IReadOnlyCollection<ResearchEducation> ResearchEducation => _researchEducation.AsReadOnly();
 
-    internal void AddEducation(ResearchEducation education)
+    // Factory method for controlled creation
+    public static Result<StudentProfile, Error> Create(
+        string firstName,
+        string lastName,
+        string summary,
+        string major,
+        string careerGoals)
     {
-        this.ResearchEducation.Add(education);
+        return new StudentProfile(firstName, lastName, summary, major, careerGoals);
     }
-}
 
+    // Domain methods
+    public void AddInternship(InternshipExperience internship)
+    {
+        if (internship == null)
+        {
+            throw new ArgumentNullException(nameof(internship), "Internship experience cannot be null.");
+        }
 
-public class Language
-{
-    public Language()
-    {
-        
+        _internships.Add(internship);
     }
-    public Language(Languages name, ProficiencyLevel level)
+
+    public void AddEducation(ResearchEducation education)
     {
-        this.Name = name.ToString();
-        this.Level = level.ToString();
+        if (education == null)
+        {
+            throw new ArgumentNullException(nameof(education), "Research education cannot be null.");
+        }
+
+        _researchEducation.Add(education);
     }
-    [Key]
-    public int Id { get; set; }
-    public string Name { get; set; }//TODO enum to string ocnversion on FluentAPI
-    public string Level { get; set; }//TODO enum to string ocnversion on FluentAPI
 }
 
 public class PersonalInfo
 {
-    [Key]  // Use ProfileId as both FK and PK
     public int Id { get; set; }
-    public int? ProfileId { get; set; } // Optional foreign key property
-    [ForeignKey(nameof(ProfileId))]
+    public int? ProfileId { get; set; }
     public Profile Profile { get; set; }
     public string Email { get; set; }
     public string Phone { get; set; }
 }
+
 public class Skill
 {
-    [Key]
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Level { get; set; } // Ejemplo: Básico, Intermedio, Avanzado
-}
+    private int _id;
+    private string _name;
+    private string _level;
 
-public class Education
-{
-    public Education()
+    protected Skill() {}
+    private Skill(string name, string level)
     {
-        
-    }
-    protected Education(string institution, DateTime startDate, DateTime? endDate)
-    {
-        Institution = institution;
-        StartDate = startDate;
-        EndDate = endDate;
+        this._name = name;
+        this._level = level;
     }
 
-    [Key]
-    public int Id { get; set; }
-    public string Institution { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
-}
+    public int Id => _id;
+    public string Name => this._name;
+    public string Level => this.Level;
 
-public class DegreeEducation : Education
-{
-    public DegreeEducation()
+    public Result<Skill, Error> CreateNew(string name, string level)
     {
-        
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return new Error("", "");
+        }
+
+        if (string.IsNullOrWhiteSpace(level))
+        {
+            return new Error("", "");
+        }
+
+        return new Skill(name, level);
     }
-    public DegreeEducation(string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
-        : base(institution, startDate, endDate)
-    {
-        Degree = degree;
-    }
-
-    public EducationLevel Degree { get; set; }//TODO enum to string ocnversion on FluentAPI
-}
-
-public class ResearchEducation : Education
-{
-    public ResearchEducation()
-    {
-        
-    }
-    public ResearchEducation(string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary)
-        : base(institution, startDate, endDate)
-    {
-        ProjectTitle = projectTitle;
-        Supervisor = supervisor;
-        Summary = summary;
-    }
-
-    public string ProjectTitle { get; set; }
-    public string Supervisor { get; set; }
-    public string Summary { get; set; }
-}
-
-public class JobExperience
-{
-    public JobExperience()
-    {
-        
-    }
-
-    public JobExperience(string company, DateTime startDate, DateTime? endDate, string description)
-    {
-        Company = company;
-        StartDate = startDate;
-        EndDate = endDate;
-        Description = description;
-    }
-
-    [Key]
-    public int Id { get; set; }
-    public string Company { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
-    public string Description { get; set; }
-}
-
-public class WorkExperience : JobExperience
-{
-    private string position;
-
-    public WorkExperience()
-    {
-    }
-
-    public WorkExperience(string company, DateTime startDate, DateTime? endDate, string description, string position)
-        :base(company, startDate, endDate, description)
-    {
-        this.position = position;
-    }
-
-    public string Position => position;
-}
-
-public class InternshipExperience : JobExperience
-{
-    public InternshipExperience()
-    {
-        
-    }
-
-    public InternshipExperience(string company, DateTime startDate, DateTime? endDate, string description, string role)
-        :base(company, startDate, endDate, description)
-    {
-        Role = role;
-    }
-
-    public string Role { get; set; }
 }
