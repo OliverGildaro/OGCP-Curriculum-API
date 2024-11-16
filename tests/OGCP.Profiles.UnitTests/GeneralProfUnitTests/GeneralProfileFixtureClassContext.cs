@@ -8,15 +8,17 @@ using OGCP.Curriculum.API.services;
 namespace OGCP.Profiles.UnitTests.GeneralProfUnitTests;
 
 //***** MEMBER DATA *****//////
-public class GeneralProfileFixtureClassContext : IClassFixture<GeneralProfileServiceFixture>
+//***** FIXTURE CLASS CONTEXT *****//////
+public class GeneralProfileFixtureClassContext : IClassFixture<GeneralProfileServiceFixtureClass>
 {
-    private readonly GeneralProfileServiceFixture fixture;
+    private readonly GeneralProfileServiceFixtureClass fixture;
 
-    public GeneralProfileFixtureClassContext(GeneralProfileServiceFixture fixture)
+    public GeneralProfileFixtureClassContext(GeneralProfileServiceFixtureClass fixture)
     {
         this.fixture = fixture;
     }
 
+    //***** MEMBER DATA *****//////
     public static TheoryData<CreateGeneralProfileRequest> Example_WithMethod()//since is static can be shared across diferent test clases
     {
         return new TheoryData<CreateGeneralProfileRequest>
@@ -50,6 +52,7 @@ public class GeneralProfileFixtureClassContext : IClassFixture<GeneralProfileSer
         Assert.NotNull(result);
     }
 
+    //here I have not been able to use fixture class context
     [Fact]
     public void Test2()
     {
@@ -101,12 +104,13 @@ public class GeneralProfileFixtureClassContext : IClassFixture<GeneralProfileSer
     }
 }
 
-public class GeneralProfileServiceFixture : IDisposable
+//***** FIXTURE CLASS CONTEXT *****//////
+public class GeneralProfileServiceFixtureClass : IDisposable
 {
     public Mock<IGeneralProfileRepository> repository { get; }
     public GeneralProfileService service { get; }
 
-    public GeneralProfileServiceFixture()
+    public GeneralProfileServiceFixtureClass()
     {
         repository = new Mock<IGeneralProfileRepository>();
         repository

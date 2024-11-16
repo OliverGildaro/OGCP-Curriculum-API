@@ -5,14 +5,15 @@ using OGCP.Curriculum.API.dtos;
 namespace OGCP.Profiles.UnitTests.GeneralProfUnitTests;
 
 //***** CLASS DATA *****//////
+//***** FIXTURE COLLECTION CONTEXT *****//////
 
-//Just decorating with the collection fixture will ensure that the test context will be provided here
 [Collection("GeneralProfileServiceCollection")]
+//Just decorating with the collection fixture will ensure that the test context will be provided here
 public class GeneralProfileFixtureCollectionContext
 {
-    private readonly GeneralProfileServiceFixture fixture;
+    private readonly GeneralProfileServiceFixtureClass fixture;
 
-    public GeneralProfileFixtureCollectionContext(GeneralProfileServiceFixture fixture)
+    public GeneralProfileFixtureCollectionContext(GeneralProfileServiceFixtureClass fixture)
     {
         this.fixture = fixture;
     }
@@ -33,17 +34,15 @@ public class GeneralProfileFixtureCollectionContext
 }
 
 //We are wrapping the fixture class aproach
-//now we can reuse the same instance troughtdiferent test classes
 //FIXTURE COLLECTION TEST CONTEXT
 [CollectionDefinition("GeneralProfileServiceCollection")]
 public class GeneralProfileServiceCollectionFixture
-    : ICollectionFixture<GeneralProfileServiceFixture>
+    : ICollectionFixture<GeneralProfileServiceFixtureClass>
 {
 
 }
 
-
-//THEORY DATA
+//***** CLASS DATA *****//////
 public class CreateGeneralProfileRequestTestData : TheoryData<CreateGeneralProfileRequest>
 {
     public CreateGeneralProfileRequestTestData()

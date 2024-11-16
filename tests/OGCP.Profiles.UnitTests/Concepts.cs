@@ -1,3 +1,8 @@
+using System.Runtime.Intrinsics.X86;
+using System;
+using Newtonsoft.Json;
+using OGCP.Profiles.UnitTests.GeneralProfUnitTests;
+
 namespace OGCP.Profiles.UnitTests
 {
     public class Concepts
@@ -19,11 +24,15 @@ namespace OGCP.Profiles.UnitTests
         //We move the arrange to the construyctor
         //WE can implement IDisposable if necessary
         //2. The class fixture approach
-        //when set test context is expensive
-        //Reduce the time to run all tests related to this test context
-        //Test context is reuse and need to be initialized only once
+        //Defined by implementing a class (e.g., GeneralProfileServiceFixtureClass).
+        //Each test within the same test class will reuse the same fixture instance.
+        //Scoped to a single test class.
+        //Requires the test class to implement the IClassFixture<T> interface to use the fixture.
         //3. The collection fixture approach
-        //Share context between different test classes
+        //Defined by creating a CollectionDefinition with ICollectionFixture<T>.
+        //Allows sharing the same fixture instance across multiple test classes.
+        //Scoped to multiple test classes within the same collection.
+        //Test classes in the same collection must use the [Collection] attribute.
 
         //DATA DRIVEN TESTS
         //Reduce the amount of unit test we need to writte

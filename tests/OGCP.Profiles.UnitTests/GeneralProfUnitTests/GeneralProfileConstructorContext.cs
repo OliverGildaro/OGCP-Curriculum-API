@@ -9,11 +9,13 @@ using OGCP.Curriculum.API.services.interfaces;
 namespace OGCP.Profiles.UnitTests.GeneralProfUnitTests;
 
 //***** INLIENE DATA *****//////
+//***** CONSTRUCTOR CONTEXT *****//////
 public class GeneralProfileConstructorContext : IDisposable
 {
     private IGeneralProfileService service;
     public GeneralProfileConstructorContext()
     {
+        //***** CONSTRUCTOR CONTEXT *****//////
         var repository = new Mock<IGeneralProfileRepository>();
         repository.Setup(x => x.Add(It.IsAny<GeneralProfile>()))
             .Returns(Result.Success);
@@ -27,6 +29,7 @@ public class GeneralProfileConstructorContext : IDisposable
     {
     }
 
+    //***** INLIENE DATA *****//////
     [Theory]
     [InlineData("Oliver", "Castro", "Fillstack dev", "Job here goal")]
     [InlineData("Cristian", "Morato", "Fillstack dev", "Job here goal")]
@@ -45,5 +48,4 @@ public class GeneralProfileConstructorContext : IDisposable
         Assert.Empty(result.Message);
         Assert.NotNull(result);
     }
-
 }
