@@ -29,9 +29,18 @@ public class GeneralProfileService : IGeneralProfileService
     {
         (string firstName, string lastName, string summary, string[] personalGoals) = request;
         var res = GeneralProfile.Create(firstName, lastName, summary, personalGoals);
-        this.repository.Add(res.Value);
+        var result = this.repository.Add(res.Value);
 
-        this.repository.SaveChanges();
+        if (result.IsFailure)
+        {
+            throw new ArgumentException();
+        }
+
+        result = this.repository.SaveChanges();
+        if (result.IsFailure)
+        {
+            throw new ArgumentException();
+        }
         return Result.Success();
     }
 

@@ -44,10 +44,22 @@ namespace OGCP.Profiles.UnitTests
         //THEORY
         //A test that is true only for a partucular set of data
 
-        [Fact]
-        public void Test1()
-        {
+        //TEST DOUBLES
+        //1. Fake: A working implementation not suitable for production
+        //SqlLite in memory database library for testing
+        //2. Dummy: A test double thats never accessed or used
+        //En example can be used to add a dependency to factory class that is never used, is just added because the service contract requires
+        //3. Stub: A test double that provides fake that to the system uder test
+        //4. Mock: Is an object that implements the behaviour we expect and allow us to verify whatever we are testing
+        //in our test without having to use the actual object
 
-        }
+
+        //TEST ISOLATION APPROACHES
+        //1. Manually creating the test doubles
+        //2. Using a mocking framework
+        //3. Using EF: In memory database provider
+        //FOr simple scenarios
+        //not the best to use
     }
+
 }

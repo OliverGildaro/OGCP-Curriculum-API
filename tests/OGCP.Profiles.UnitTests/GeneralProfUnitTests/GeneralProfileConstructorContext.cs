@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using ArtForAll.Shared.ErrorHandler;
+using Moq;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services;
@@ -6,18 +8,23 @@ using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Profiles.UnitTests.GeneralProfUnitTests;
 
+//***** INLIENE DATA *****//////
 public class GeneralProfileConstructorContext : IDisposable
 {
     private IGeneralProfileService service;
     public GeneralProfileConstructorContext()
     {
         var repository = new Mock<IGeneralProfileRepository>();
+        repository.Setup(x => x.Add(It.IsAny<GeneralProfile>()))
+            .Returns(Result.Success);
+        repository.Setup(x => x.SaveChanges())
+            .Returns(Result.Success);
+
         service = new GeneralProfileService(repository.Object);
     }
 
     public void Dispose()
     {
-        throw new NotImplementedException();
     }
 
     [Theory]
@@ -31,22 +38,12 @@ public class GeneralProfileConstructorContext : IDisposable
             Summary = summanry,
             PersonalGoals = new string[] {personalGoal}
         };
-        service.Create(request);
+        var result = service.Create(request);
+
+        Assert.True(result.IsSucces);
+        Assert.IsType<Result>(result);
+        Assert.Empty(result.Message);
+        Assert.NotNull(result);
     }
 
-    [Theory]
-    [InlineData("Oliver", "Castro", "Fillstack dev", "Job here goal")]
-    [InlineData("Cristian", "Morato", "Fillstack dev", "Job here goal")]
-    public void Test2(string firstName, string lastName, string summanry, string personalGoal)
-    {
-        var request = new CreateGeneralProfileRequest
-        {
-            FirstName = firstName,
-            LastName = lastName,
-            Summary = summanry,
-            PersonalGoals = new string[] { personalGoal }
-        };
-
-        service.Create(request);
-    }
 }
