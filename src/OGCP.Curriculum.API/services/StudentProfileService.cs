@@ -1,6 +1,6 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.models;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
 
@@ -15,12 +15,13 @@ public class StudentProfileService : IStudentProfileService
         this.repository = repository;
     }
 
-    public void AddEducation(int id, CreateResearchEducationRequest request)
+    public Result AddEducation(int id, CreateResearchEducationRequest request)
     {
         StudentProfile profile = this.repository.Find(id);
         if (profile is null)
         {
-            return;
+            return Result.Failure("");
+
         }
 
         (string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary ) = request;
@@ -29,6 +30,8 @@ public class StudentProfileService : IStudentProfileService
         profile.AddEducation(education);
 
         this.repository.SaveChanges();
+        return Result.Success();
+
     }
 
     public void AddLanguage(int id, CreateLanguageRequest languageRequest)
@@ -41,13 +44,15 @@ public class StudentProfileService : IStudentProfileService
         repository.SaveChanges();
     }
 
-    public void Create(CreateStudentProfileRequest request)
+    public Result Create(CreateStudentProfileRequest request)
     {
         (string firstName, string lastName, string summary, string major, string careerGoals) = request;
         var sdsd =  StudentProfile.Create(firstName, lastName, summary, major, careerGoals);
         this.repository.Add(sdsd.Value);
 
         this.repository.SaveChanges();
+        return Result.Success();
+
     }
 
     public IEnumerable<StudentProfile> Get()

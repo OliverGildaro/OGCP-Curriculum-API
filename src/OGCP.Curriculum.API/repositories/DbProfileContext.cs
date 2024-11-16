@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using OGCP.Curriculum.API.domainModel;
-using OGCP.Curriculum.API.models;
-
+using OGCP.Curriculum.API.domainmodel;
 namespace OGCP.Curriculum.API.repositories
 {
     public class DbProfileContext : DbContext

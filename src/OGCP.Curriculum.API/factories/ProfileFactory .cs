@@ -1,5 +1,5 @@
-﻿using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.models;
+﻿using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculum.API.dtos;
 
 namespace OGCP.Curriculum.API.factories
 {

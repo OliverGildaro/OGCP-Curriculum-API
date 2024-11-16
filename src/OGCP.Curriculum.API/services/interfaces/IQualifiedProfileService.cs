@@ -1,13 +1,13 @@
-﻿using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.dtos.requests;
-using OGCP.Curriculum.API.models;
+﻿using ArtForAll.Shared.ErrorHandler;
+using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculum.API.dtos;
 
 namespace OGCP.Curriculum.API.services.interfaces
 {
     public interface IQualifiedProfileService : IService<QualifiedProfile, int, CreateQualifiedProfileRequest>
     {
-        void AddEducation(int id, CreateDegreeEducationRequest request);
-        void AddJobExperience<T>(int id, T request);
+        Result AddEducation(int id, CreateDegreeEducationRequest request);
+        Result AddJobExperience<T>(int id, T request);
         void AddLanguage(int id, CreateLanguageRequest languageRequest);
     }
 }

@@ -1,6 +1,5 @@
-﻿using OGCP.Curriculum.API.dtos;
+﻿using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos.requests;
-using OGCP.Curriculum.API.models;
 
 namespace OGCP.Curriculum.API.services
 {

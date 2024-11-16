@@ -1,4 +1,4 @@
-﻿namespace OGCP.Curriculum.API.models;
+﻿namespace OGCP.Curriculum.API.domainmodel;
 
 public class DetailInfo
 {

@@ -1,7 +1,9 @@
-﻿namespace OGCP.Curriculum.API.repositories.interfaces;
+﻿using ArtForAll.Shared.ErrorHandler;
 
-public interface IRepository<TEntity, TTEntityId>
-    : IReadRepository<TEntity, TTEntityId>, IWriteRepository<TEntity>
+namespace OGCP.Curriculum.API.repositories.interfaces;
+
+public interface IRepository<TEntity, TEntityId>
+    : IReadRepository<TEntity, TEntityId>, IWriteRepository<TEntity>
     where TEntity : class
 {
 }

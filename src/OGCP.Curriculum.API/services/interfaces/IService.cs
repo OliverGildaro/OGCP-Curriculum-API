@@ -1,4 +1,6 @@
-﻿namespace OGCP.Curriculum.API.services.interfaces;
+﻿using ArtForAll.Shared.ErrorHandler;
+
+namespace OGCP.Curriculum.API.services.interfaces;
 
 public interface IService<TEntity, TEntityId, TRequest>
     where TEntity : class
@@ -6,5 +8,5 @@ public interface IService<TEntity, TEntityId, TRequest>
 {
     public IEnumerable<TEntity> Get();
     public TEntity Get(TEntityId id);
-    public void Create(TRequest request);
+    public Result Create(TRequest request);
 }

@@ -2,7 +2,7 @@
 using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculum.API.domainModel;
 
-namespace OGCP.Curriculum.API.models;
+namespace OGCP.Curriculum.API.domainmodel;
 
 public interface IEntity<TEntityId>
 {

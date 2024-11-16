@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F265EE14
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OGCP.Curriculum.API", "src\OGCP.Curriculum.API\OGCP.Curriculum.API.csproj", "{D304B5DA-25CB-4425-9E41-FB86723DE9E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OGCP.Profiles.UnitTests", "tests\OGCP.Profiles.UnitTests\OGCP.Profiles.UnitTests.csproj", "{54633359-0928-48C7-AA77-DC392DC4CFF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,11 +21,19 @@ Global
 		{D304B5DA-25CB-4425-9E41-FB86723DE9E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D304B5DA-25CB-4425-9E41-FB86723DE9E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D304B5DA-25CB-4425-9E41-FB86723DE9E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54633359-0928-48C7-AA77-DC392DC4CFF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54633359-0928-48C7-AA77-DC392DC4CFF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54633359-0928-48C7-AA77-DC392DC4CFF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54633359-0928-48C7-AA77-DC392DC4CFF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D304B5DA-25CB-4425-9E41-FB86723DE9E4} = {66BB2FBE-D872-4DB3-887C-35340ED37FE7}
+		{54633359-0928-48C7-AA77-DC392DC4CFF7} = {F265EE14-E808-4029-A4A5-14A36BAF0DEE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {033F9C8E-4BC3-4F8E-9BCF-B79B2BE3ECF7}
 	EndGlobalSection
 EndGlobal

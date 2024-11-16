@@ -1,8 +1,10 @@
-﻿namespace OGCP.Curriculum.API.repositories.interfaces;
+﻿using ArtForAll.Shared.ErrorHandler;
+
+namespace OGCP.Curriculum.API.repositories.interfaces;
 
 public interface IWriteRepository<TEntity>
     where TEntity : class
 {
-    void Add(TEntity entity);
-    void SaveChanges();
+    Result Add(TEntity entity);
+    Result SaveChanges();
 }

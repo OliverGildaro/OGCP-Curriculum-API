@@ -1,7 +1,7 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
 
-namespace OGCP.Curriculum.API.models;
+namespace OGCP.Curriculum.API.domainmodel;
 
 public class JobExperience
 {

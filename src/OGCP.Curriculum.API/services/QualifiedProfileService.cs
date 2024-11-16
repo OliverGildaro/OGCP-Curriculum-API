@@ -1,8 +1,6 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
-using OGCP.Curriculum.API.domainModel;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.dtos.requests;
-using OGCP.Curriculum.API.models;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
 
@@ -17,12 +15,12 @@ public class QualifiedProfileService : IQualifiedProfileService
         this.repository = repository;
     }
 
-    public void AddEducation(int id, CreateDegreeEducationRequest request)
+    public Result AddEducation(int id, CreateDegreeEducationRequest request)
     {
         QualifiedProfile profile = this.repository.Find(id);
         if (profile is null)
         {
-            return;
+            return Result.Failure("");
         }
 
         (string institution, EducationLevel degree, DateTime startDate, DateTime? endDate ) = request;
@@ -31,15 +29,19 @@ public class QualifiedProfileService : IQualifiedProfileService
         profile.AddEducation(education);
 
         this.repository.SaveChanges();
+        return Result.Success();
+
     }
 
-    public void AddJobExperience<T>(int id, T request)
+    public Result AddJobExperience<T>(int id, T request)
     {
         var profile = this.repository.Find(id);
         JobExperience jobExperince = FactoryJob.Get(request);
         profile.AddJobExperience(jobExperince);
 
         this.repository.SaveChanges();
+        return Result.Success();
+
     }
 
     public void AddLanguage(int id, CreateLanguageRequest languageRequest)
@@ -52,12 +54,13 @@ public class QualifiedProfileService : IQualifiedProfileService
         repository.SaveChanges();
     }
 
-    public void Create(CreateQualifiedProfileRequest request)
+    public Result Create(CreateQualifiedProfileRequest request)
     {
         (string firstName, string lastName, string summary, string desiredJobRole) = request;
         var resu = QualifiedProfile.Create(firstName, lastName, summary, desiredJobRole);
         this.repository.Add(resu.Value);
         this.repository.SaveChanges();
+        return Result.Success();
     }
 
     public IEnumerable<QualifiedProfile> Get()

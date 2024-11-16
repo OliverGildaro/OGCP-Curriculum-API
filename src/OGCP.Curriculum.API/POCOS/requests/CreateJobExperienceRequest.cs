@@ -1,4 +1,4 @@
-﻿using OGCP.Curriculum.API.domainModel;
+﻿using OGCP.Curriculum.API.domainmodel;
 
 namespace OGCP.Curriculum.API.dtos.requests;
 public abstract class CreateJobExperienceRequest

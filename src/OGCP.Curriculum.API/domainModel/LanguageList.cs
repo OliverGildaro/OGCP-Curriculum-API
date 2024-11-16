@@ -1,4 +1,4 @@
-﻿using OGCP.Curriculum.API.models;
+﻿using OGCP.Curriculum.API.domainmodel;
 
 namespace OGCP.Curriculum.API.domainModel
 {

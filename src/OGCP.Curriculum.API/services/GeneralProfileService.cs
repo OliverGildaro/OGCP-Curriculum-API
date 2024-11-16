@@ -1,6 +1,6 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.models;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
 
@@ -25,13 +25,14 @@ public class GeneralProfileService : IGeneralProfileService
         repository.SaveChanges();
     }
 
-    public void Create(CreateGeneralProfileRequest request)
+    public Result Create(CreateGeneralProfileRequest request)
     {
         (string firstName, string lastName, string summary, string[] personalGoals) = request;
         var res = GeneralProfile.Create(firstName, lastName, summary, personalGoals);
         this.repository.Add(res.Value);
 
         this.repository.SaveChanges();
+        return Result.Success();
     }
 
     public IEnumerable<GeneralProfile> Get()

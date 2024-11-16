@@ -1,4 +1,4 @@
-﻿namespace OGCP.Curriculum.API.domainModel;
+﻿namespace OGCP.Curriculum.API.domainmodel;
 
 public enum ProfileDetailLevel
 {

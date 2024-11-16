@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OGCP.Curriculum.API.models;
+﻿using ArtForAll.Shared.ErrorHandler;
+using Microsoft.EntityFrameworkCore;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.interfaces;
 
 namespace OGCP.Curriculum.API.repositories;
@@ -14,15 +15,21 @@ public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntit
         this.context = context;
     }
 
-    public void Add(TEntity entity)
+    public Result Add(TEntity entity)
     {
         try
         {
-            this.context.Add<TEntity>(entity);
+            var result = this.context.Add<TEntity>(entity);
+
+            if(result.State == EntityState.Added)
+            {
+                return Result.Success();
+            }
+            return Result.Failure("");
         }
         catch (Exception ex)
         {
-            throw;
+            return Result.Failure("");
         }
     }
 
@@ -41,17 +48,21 @@ public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntit
         return result;
     }
 
-    public void SaveChanges()
+    public Result SaveChanges()
     {
         try
         {
-            this.context.SaveChanges();
+            var isSaved = this.context.SaveChanges();
+            if (isSaved is > 0)
+            {
+                return Result.Success();
+            }
+
+            return Result.Failure("");
         }
         catch (Exception ex)
         {
-
-            throw;
+            return Result.Failure("");
         }
-
     }
 }
