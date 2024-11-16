@@ -14,14 +14,16 @@ public class GeneralProfileFixtureCollectionContext
         this.fixture = fixture;
     }
 
-    [Fact]
-    public void Test1()
+    [Theory]
+    [ClassData(typeof(CreateGeneralProfileRequestTestData))]
+    public void Test1(CreateGeneralProfileRequest generalProfile)
     {
-        var request = new Mock<CreateGeneralProfileRequest>();
-        fixture.service.Create(request.Object);
+        var result = fixture.service.Create(generalProfile);
+        Assert.True(result.IsSucces);
     }
 
-    [Fact]
+    [Theory]
+    [ClassData(typeof(CreateGeneralProfileRequestTestData))]
     public void Test2()
     {
         var reques2 = new Mock<CreateGeneralProfileRequest>();
@@ -36,4 +38,19 @@ public class GeneralProfileServiceCollectionFixture
     : ICollectionFixture<GeneralProfileServiceFixture>
 {
 
+}
+
+public class CreateGeneralProfileRequestTestData : TheoryData<CreateGeneralProfileRequest>
+{
+    public CreateGeneralProfileRequestTestData()
+    {
+        this.Add(
+            new CreateGeneralProfileRequest
+            {
+                FirstName = "Oliver",
+                LastName = "Castro",
+                Summary = "Fullstack sumary",
+                PersonalGoals = new string[] { "Be the best", "Another" }
+            });
+    }
 }

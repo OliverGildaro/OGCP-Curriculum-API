@@ -14,15 +14,39 @@ public class GeneralProfileFixtureClassContext : IClassFixture<GeneralProfileSer
         this.fixture = fixture;
     }
 
+    public static IEnumerable<object[]> Example_WithMethod()//since is static can be shared across diferent test clases
+    {
+        return new List<object[]>
+        {
+            new object[]{
+                new CreateGeneralProfileRequest
+                {
+                    FirstName = "Oliver",
+                    LastName = "Castro",
+                    Summary = "Fullstack sumary",
+                    PersonalGoals = new string[] { "Be the best", "Another" }
+                },
+                new CreateGeneralProfileRequest
+                {
+                    FirstName = "Cristian",
+                    LastName = "Morato",
+                    Summary = "Fullstack sumary",
+                    PersonalGoals = new string[] { "Be the best", "Another" }
+                },
+            }
+        };
+    }
+
     [Theory]
-    [ClassData(typeof(CreateGeneralProfileRequestTestData))]
+    [MemberData(nameof(Example_WithMethod))]//this member data can be share across many unit tests
     public void Test1(CreateGeneralProfileRequest generalProfile)
     {
         var result = fixture.service.Create(generalProfile);
         Assert.True(result.IsSucces);
     }
 
-    [Fact]
+    [Theory]
+    [MemberData(nameof(Example_WithMethod))]//this member data can be share across many unit tests
     public void Test2()
     {
         var reques2 = new Mock<CreateGeneralProfileRequest>();
@@ -44,21 +68,5 @@ public class GeneralProfileServiceFixture : IDisposable
 
     public void Dispose()
     {
-    }
-}
-
-
-public class CreateGeneralProfileRequestTestData : TheoryData<CreateGeneralProfileRequest>
-{
-    public CreateGeneralProfileRequestTestData()
-    {
-        this.Add(
-            new CreateGeneralProfileRequest
-            {
-                FirstName = "Oliver",
-                LastName = "Castro",
-                Summary = "Fullstack sumary",
-                PersonalGoals = new string[] { "Be the best", "Another" }
-            });
     }
 }

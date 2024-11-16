@@ -20,17 +20,33 @@ public class GeneralProfileConstructorContext : IDisposable
         throw new NotImplementedException();
     }
 
-    [Fact]
-    public void Test1()
+    [Theory]
+    [InlineData("Oliver", "Castro", "Fillstack dev", "Job here goal")]
+    [InlineData("Cristian", "Morato", "Fillstack dev", "Job here goal")]
+    public void Test1(string firstName, string lastName, string summanry, string personalGoal)
     {
-        var request = new Mock<CreateGeneralProfileRequest>();
-        service.Create(request.Object);
+        var request = new CreateGeneralProfileRequest {
+            FirstName = firstName,
+            LastName = lastName,
+            Summary = summanry,
+            PersonalGoals = new string[] {personalGoal}
+        };
+        service.Create(request);
     }
 
-    [Fact]
-    public void Test2()
+    [Theory]
+    [InlineData("Oliver", "Castro", "Fillstack dev", "Job here goal")]
+    [InlineData("Cristian", "Morato", "Fillstack dev", "Job here goal")]
+    public void Test2(string firstName, string lastName, string summanry, string personalGoal)
     {
-        var reques2 = new Mock<CreateGeneralProfileRequest>();
-        service.Create(reques2.Object);
+        var request = new CreateGeneralProfileRequest
+        {
+            FirstName = firstName,
+            LastName = lastName,
+            Summary = summanry,
+            PersonalGoals = new string[] { personalGoal }
+        };
+
+        service.Create(request);
     }
 }
