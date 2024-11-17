@@ -5,6 +5,11 @@ public class EducationList
 {
     private List<Education> _educations = new();
 
+    protected EducationList()
+    {
+        
+    }
+
     public Education this[int index]
     {
         get => _educations[index];
@@ -21,6 +26,12 @@ public class EducationList
         if (_educations.Count >= 5)
             throw new InvalidOperationException("Cannot have more than 5 educations");
         _educations.Add(education);
+    }
+
+    public List<Education> Educations
+    {
+        get => _educations;
+        private set => _educations = value ?? new List<Education>();
     }
 
     public void RemoveAt(int index) => _educations.RemoveAt(index);

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.utils;
+using System.Reflection.Metadata;
 namespace OGCP.Curriculum.API.repositories
 {
     public class DbProfileContext : DbContext
@@ -23,8 +24,8 @@ namespace OGCP.Curriculum.API.repositories
         public DbSet<QualifiedProfile> QualifiedProfiles { get; set; }
         public DbSet<GeneralProfile> GeneralProfiles { get; set; }
         public DbSet<StudentProfile> StudentProfiles { get; set; }
-        public virtual DbSet<Dictionary<string, object>> Certifications =>
-                Set<Dictionary<string, object>>("Certification");
+        //public virtual DbSet<Dictionary<string, object>> Certifications =>
+        //        Set<Dictionary<string, object>>("Certification");
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
@@ -63,7 +64,8 @@ namespace OGCP.Curriculum.API.repositories
                     .IsRequired(false);
 
                 entity.Property(p => p.DetailLevel)
-                    .HasDefaultValue(ProfileDetailLevel.Minimal)
+                    .HasConversion<string>()
+                    //.HasDefaultValue(ProfileDetailLevel.Minimal.ToString())
                     .IsRequired();
 
                 entity.Property(p => p.CreatedAt)
@@ -72,17 +74,44 @@ namespace OGCP.Curriculum.API.repositories
                 entity.Property(p => p.UpdatedAt)
                     .IsRequired();
 
-                //EF will create a shadow property, the fk in the language table
-                //This shadow property is not defined in our Language entity domain class
-                entity.HasMany(p => p.LanguagesSpoken)
-                    .WithMany();
-
                 //Shadow properties is something that EF use behind the scenes for example to
                 //facilitate temporary tables, or to keep track of foreign keys that we have not mapped explicitly
                 //we can use to access other fields that are not mapped to entities but exist in tables
+                entity.HasOne(e => e.PersonalInfo)
+                        .WithOne()
+                        .HasForeignKey<DetailInfo>("ProfileId")
+                        .IsRequired();
+                //.HasForeignKey(p => p.id)
+                //.HasPrincipalKey(e => e.Id);
 
-                entity.HasOne(p => p.PersonalInfo)
+                //EF will create a shadow property, the fk in the language table
+                //This shadow property is not defined in our Language entity domain class
+                //Indexer properties will be used to create the join table in this many to many relationship
+                entity.HasMany(p => p.LanguagesSpoken)
+                    .WithMany();
+
+                entity.HasMany(p => p.WorkExperience)
                     .WithOne();
+            });
+
+            modelBuilder.Entity<QualifiedProfile>(entity =>
+            {
+                entity.Property(p => p.DesiredJobRole)
+                    .HasMaxLength(200)
+                    .IsRequired(false);
+
+                entity.HasMany(p => p.Educations) // Access the collection from `EducationList`
+                      .WithMany() // Assuming `QualifiedProfiles` exists in `Education`
+                      .UsingEntity<Dictionary<string, object>>(
+                          "QualifiedProfileEducation", // Name of the join table
+                          j => j.HasOne<Education>()
+                                .WithMany()
+                                .HasForeignKey("EducationId"),
+                          j => j.HasOne<QualifiedProfile>()
+                                .WithMany()
+                                .HasForeignKey("QualifiedProfileId"));
+
+
             });
 
             modelBuilder.Entity<GeneralProfile>(entity =>
@@ -95,19 +124,6 @@ namespace OGCP.Curriculum.API.repositories
                     .Metadata.SetValueComparer(stringArrayComparer);
             });
 
-            modelBuilder.Entity<QualifiedProfile>(entity =>
-            {
-                entity.Property(p => p.DesiredJobRole)
-                    .HasMaxLength(200)
-                    .IsRequired(false);
-
-                entity.HasOne(p => p.Educations)
-                    .WithOne();
-
-                entity.HasMany(p => p.WorkExperience)
-                    .WithOne();
-            });
-
             modelBuilder.Entity<StudentProfile>(entity =>
             {
                 entity.Property(p => p.CareerGoals)
@@ -115,8 +131,6 @@ namespace OGCP.Curriculum.API.repositories
 
                 entity.Property(p => p.Major)
                     .IsRequired(false);
-                entity.HasMany(p => p.Internships)
-                    .WithOne();
                 entity.HasMany(p => p.ResearchEducation)
                     .WithOne();
             });
@@ -127,15 +141,41 @@ namespace OGCP.Curriculum.API.repositories
                 //You can validate the integrity of user data during migrations or imports by ensuring that the checksum matches the recalculated value based on the migrated columns.
                 //Auditing: In scenarios where you need to detect unauthorized or accidental changes to critical fields, the checksum can serve as an additional layer of protection.
                 entity.Property<byte[]>("Checksum")
-                    .HasComputedColumnSql("CONVERT(VARBINARY(1024),CHECKSUM([FirstName],[LastName],[UserName]))");
+                    .HasComputedColumnSql("CONVERT(VARBINARY(1024),CHECKSUM([Name],[Level]))");
                 entity.Property(p => p.Name)
-                    .HasConversion<string>()
-                    .HasDefaultValue(Languages.Spanish.ToString());
+                    .HasConversion<string>();
+                    //.HasDefaultValue(Languages.Spanish.ToString());
 
                 entity.Property(p => p.Level)
-                    .HasConversion<string>()
-                    .HasDefaultValue(ProficiencyLevel.Beginner.ToString());
+                    .HasConversion<string>();
+                    //.HasDefaultValue(ProficiencyLevel.Beginner.ToString());
                 entity.HasKey(p => p.Id);
+            });
+
+            modelBuilder.Entity<JobExperience>(entity =>
+            {
+                entity.HasKey(p => p.Id);
+                entity.Property(p => p.Company)
+                    .IsRequired();
+                entity.Property(p => p.StartDate)
+                    .IsRequired();
+                entity.Property(p => p.EndDate)
+                    .IsRequired(false);
+                entity.Property(p => p.Description)
+                    .IsRequired(false);
+            });
+
+            modelBuilder.Entity<InternshipExperience>(entity =>
+            {
+                entity.Property(p => p.Role)
+                    .IsRequired();
+            });
+
+
+            modelBuilder.Entity<WorkExperience>(entity =>
+            {
+                entity.Property(p => p.Position)
+                    .IsRequired();
             });
 
             //modelBuilder.Entity<Education>()
@@ -146,6 +186,7 @@ namespace OGCP.Curriculum.API.repositories
 
             modelBuilder.Entity<Education>(entity =>
             {
+                entity.HasKey(p => p.Id);
                 entity.Property(p => p.StartDate)
                     .IsRequired();
                 entity.Property(p => p.EndDate)
@@ -158,6 +199,22 @@ namespace OGCP.Curriculum.API.repositories
                     .HasValue<Education>("BaseEducation")
                     .HasValue<DegreeEducation>("DegreeEducation")
                     .HasValue<ResearchEducation>("ResearchEducation");
+            });
+
+            modelBuilder.Entity<DegreeEducation>(entity =>
+            {
+                entity.Property(p => p.Degree)
+                    .HasConversion<string>();
+            });
+
+            modelBuilder.Entity<ResearchEducation>(entity =>
+            {
+                entity.Property(p => p.ProjectTitle)
+                    .IsRequired();
+                entity.Property(p => p.Supervisor)
+                    .IsRequired(false);
+                entity.Property(p => p.Summary)
+                    .IsRequired();
             });
 
             modelBuilder.Entity<DetailInfo>(entity =>

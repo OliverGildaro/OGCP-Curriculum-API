@@ -22,7 +22,50 @@ namespace OGCP.Curriculum.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.Education", b =>
+            modelBuilder.Entity("LanguageProfile", b =>
+                {
+                    b.Property<int>("LanguagesSpokenId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LanguagesSpokenId", "ProfileId");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("LanguageProfile");
+                });
+
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.DetailInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Emails")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId")
+                        .IsUnique();
+
+                    b.ToTable("DetailInfo");
+                });
+
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.Education", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,17 +83,13 @@ namespace OGCP.Curriculum.API.Migrations
 
                     b.Property<string>("Institution")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("QualifiedProfileId")
-                        .HasColumnType("int");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("QualifiedProfileId");
 
                     b.ToTable("Education");
 
@@ -59,7 +98,7 @@ namespace OGCP.Curriculum.API.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.JobExperience", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.JobExperience", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,7 +111,6 @@ namespace OGCP.Curriculum.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Discriminator")
@@ -83,7 +121,7 @@ namespace OGCP.Curriculum.API.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("QualifiedProfileId")
+                    b.Property<int?>("ProfileId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -91,7 +129,7 @@ namespace OGCP.Curriculum.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QualifiedProfileId");
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("JobExperience");
 
@@ -100,13 +138,18 @@ namespace OGCP.Curriculum.API.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.Language", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.Language", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("Checksum")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("varbinary(max)")
+                        .HasComputedColumnSql("CONVERT(VARBINARY(1024),CHECKSUM([Name],[Level]))");
 
                     b.Property<string>("Level")
                         .IsRequired()
@@ -116,45 +159,12 @@ namespace OGCP.Curriculum.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProfileId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProfileId");
 
                     b.ToTable("Language");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.PersonalInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProfileId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProfileId")
-                        .IsUnique()
-                        .HasFilter("[ProfileId] IS NOT NULL");
-
-                    b.ToTable("PersonalInfo");
-                });
-
-            modelBuilder.Entity("OGCP.Curriculum.API.models.Profile", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.Profile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -165,6 +175,10 @@ namespace OGCP.Curriculum.API.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DetailLevel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(21)
@@ -172,31 +186,33 @@ namespace OGCP.Curriculum.API.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("FirstName");
 
                     b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("LastName");
 
                     b.Property<string>("Summary")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Visibility")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("LastName");
 
                     b.ToTable("Profile");
 
@@ -205,35 +221,24 @@ namespace OGCP.Curriculum.API.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.Skill", b =>
+            modelBuilder.Entity("QualifiedProfileEducation", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("EducationId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Level")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProfileId")
+                    b.Property<int>("QualifiedProfileId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("EducationId", "QualifiedProfileId");
 
-                    b.HasIndex("ProfileId");
+                    b.HasIndex("QualifiedProfileId");
 
-                    b.ToTable("Skill");
+                    b.ToTable("QualifiedProfileEducation");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.DegreeEducation", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.DegreeEducation", b =>
                 {
-                    b.HasBaseType("OGCP.Curriculum.API.models.Education");
+                    b.HasBaseType("OGCP.Curriculum.API.domainmodel.Education");
 
                     b.Property<string>("Degree")
                         .IsRequired()
@@ -242,9 +247,9 @@ namespace OGCP.Curriculum.API.Migrations
                     b.HasDiscriminator().HasValue("DegreeEducation");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.ResearchEducation", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.ResearchEducation", b =>
                 {
-                    b.HasBaseType("OGCP.Curriculum.API.models.Education");
+                    b.HasBaseType("OGCP.Curriculum.API.domainmodel.Education");
 
                     b.Property<string>("ProjectTitle")
                         .IsRequired()
@@ -258,7 +263,6 @@ namespace OGCP.Curriculum.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Supervisor")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("StudentProfileId");
@@ -266,9 +270,9 @@ namespace OGCP.Curriculum.API.Migrations
                     b.HasDiscriminator().HasValue("ResearchEducation");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.InternshipExperience", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.InternshipExperience", b =>
                 {
-                    b.HasBaseType("OGCP.Curriculum.API.models.JobExperience");
+                    b.HasBaseType("OGCP.Curriculum.API.domainmodel.JobExperience");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -282,25 +286,20 @@ namespace OGCP.Curriculum.API.Migrations
                     b.HasDiscriminator().HasValue("InternshipExperience");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.WorkExperience", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.WorkExperience", b =>
                 {
-                    b.HasBaseType("OGCP.Curriculum.API.models.JobExperience");
-
-                    b.Property<int?>("GeneralProfileId")
-                        .HasColumnType("int");
+                    b.HasBaseType("OGCP.Curriculum.API.domainmodel.JobExperience");
 
                     b.Property<string>("Position")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("GeneralProfileId");
-
                     b.HasDiscriminator().HasValue("WorkExperience");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.GeneralProfile", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.GeneralProfile", b =>
                 {
-                    b.HasBaseType("OGCP.Curriculum.API.models.Profile");
+                    b.HasBaseType("OGCP.Curriculum.API.domainmodel.Profile");
 
                     b.Property<string>("PersonalGoals")
                         .IsRequired()
@@ -309,117 +308,103 @@ namespace OGCP.Curriculum.API.Migrations
                     b.HasDiscriminator().HasValue("GeneralProfile");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.QualifiedProfile", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.QualifiedProfile", b =>
                 {
-                    b.HasBaseType("OGCP.Curriculum.API.models.Profile");
+                    b.HasBaseType("OGCP.Curriculum.API.domainmodel.Profile");
 
                     b.Property<string>("DesiredJobRole")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasDiscriminator().HasValue("QualifiedProfile");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.StudentProfile", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.StudentProfile", b =>
                 {
-                    b.HasBaseType("OGCP.Curriculum.API.models.Profile");
+                    b.HasBaseType("OGCP.Curriculum.API.domainmodel.Profile");
 
                     b.Property<string>("CareerGoals")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Major")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("StudentProfile");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.Education", b =>
+            modelBuilder.Entity("LanguageProfile", b =>
                 {
-                    b.HasOne("OGCP.Curriculum.API.models.QualifiedProfile", null)
-                        .WithMany("Education")
-                        .HasForeignKey("QualifiedProfileId");
+                    b.HasOne("OGCP.Curriculum.API.domainmodel.Language", null)
+                        .WithMany()
+                        .HasForeignKey("LanguagesSpokenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OGCP.Curriculum.API.domainmodel.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.JobExperience", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.DetailInfo", b =>
                 {
-                    b.HasOne("OGCP.Curriculum.API.models.QualifiedProfile", null)
-                        .WithMany("WorkExperience")
-                        .HasForeignKey("QualifiedProfileId");
-                });
-
-            modelBuilder.Entity("OGCP.Curriculum.API.models.Language", b =>
-                {
-                    b.HasOne("OGCP.Curriculum.API.models.Profile", null)
-                        .WithMany("LanguagesSpoken")
-                        .HasForeignKey("ProfileId");
-                });
-
-            modelBuilder.Entity("OGCP.Curriculum.API.models.PersonalInfo", b =>
-                {
-                    b.HasOne("OGCP.Curriculum.API.models.Profile", "Profile")
+                    b.HasOne("OGCP.Curriculum.API.domainmodel.Profile", null)
                         .WithOne("PersonalInfo")
-                        .HasForeignKey("OGCP.Curriculum.API.models.PersonalInfo", "ProfileId");
-
-                    b.Navigation("Profile");
+                        .HasForeignKey("OGCP.Curriculum.API.domainmodel.DetailInfo", "ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.Skill", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.JobExperience", b =>
                 {
-                    b.HasOne("OGCP.Curriculum.API.models.Profile", null)
-                        .WithMany("Skills")
+                    b.HasOne("OGCP.Curriculum.API.domainmodel.Profile", null)
+                        .WithMany("WorkExperience")
                         .HasForeignKey("ProfileId");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.ResearchEducation", b =>
+            modelBuilder.Entity("QualifiedProfileEducation", b =>
                 {
-                    b.HasOne("OGCP.Curriculum.API.models.StudentProfile", null)
-                        .WithMany("ResearchExperiences")
+                    b.HasOne("OGCP.Curriculum.API.domainmodel.Education", null)
+                        .WithMany()
+                        .HasForeignKey("EducationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OGCP.Curriculum.API.domainmodel.QualifiedProfile", null)
+                        .WithMany()
+                        .HasForeignKey("QualifiedProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.ResearchEducation", b =>
+                {
+                    b.HasOne("OGCP.Curriculum.API.domainmodel.StudentProfile", null)
+                        .WithMany("ResearchEducation")
                         .HasForeignKey("StudentProfileId");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.InternshipExperience", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.InternshipExperience", b =>
                 {
-                    b.HasOne("OGCP.Curriculum.API.models.StudentProfile", null)
+                    b.HasOne("OGCP.Curriculum.API.domainmodel.StudentProfile", null)
                         .WithMany("Internships")
                         .HasForeignKey("StudentProfileId");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.WorkExperience", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.Profile", b =>
                 {
-                    b.HasOne("OGCP.Curriculum.API.models.GeneralProfile", null)
-                        .WithMany("WorkExperience")
-                        .HasForeignKey("GeneralProfileId");
-                });
-
-            modelBuilder.Entity("OGCP.Curriculum.API.models.Profile", b =>
-                {
-                    b.Navigation("LanguagesSpoken");
-
                     b.Navigation("PersonalInfo")
                         .IsRequired();
 
-                    b.Navigation("Skills");
-                });
-
-            modelBuilder.Entity("OGCP.Curriculum.API.models.GeneralProfile", b =>
-                {
                     b.Navigation("WorkExperience");
                 });
 
-            modelBuilder.Entity("OGCP.Curriculum.API.models.QualifiedProfile", b =>
-                {
-                    b.Navigation("Education");
-
-                    b.Navigation("WorkExperience");
-                });
-
-            modelBuilder.Entity("OGCP.Curriculum.API.models.StudentProfile", b =>
+            modelBuilder.Entity("OGCP.Curriculum.API.domainmodel.StudentProfile", b =>
                 {
                     b.Navigation("Internships");
 
-                    b.Navigation("ResearchExperiences");
+                    b.Navigation("ResearchEducation");
                 });
 #pragma warning restore 612, 618
         }

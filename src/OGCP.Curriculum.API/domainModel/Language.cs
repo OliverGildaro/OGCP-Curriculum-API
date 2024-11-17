@@ -4,6 +4,9 @@ namespace OGCP.Curriculum.API.domainmodel;
 
 public class Language
 {
+    protected Language()
+    {
+    }
     private Language(Languages name, ProficiencyLevel level)
     {
         Name = name;

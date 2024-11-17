@@ -12,10 +12,11 @@ public interface IEntity<TEntityId>
 public class Profile : IEntity<int>
 {
     private readonly List<Language> _languagesSpoken;
-    private readonly List<Skill> _skills;
+    //private readonly List<Skill> _skills;
     private DateTime _createdAt;
     private DateTime _updatedAt;
 
+    private readonly List<JobExperience> _workExperience;
     public int Id { get; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
@@ -23,17 +24,21 @@ public class Profile : IEntity<int>
     public bool IsPublic { get; private set; }
     public string Visibility { get; private set; }
     public ProfileDetailLevel DetailLevel { get; private set; }
-    public DetailInfo PersonalInfo { get; private set; }
-    public List<Language> LanguagesSpoken => _languagesSpoken;
-    public List<Skill> Skills => _skills;
     public DateTime CreatedAt => _createdAt;
     public DateTime UpdatedAt => _updatedAt;
+    public DetailInfo PersonalInfo { get; private set; }
+    public List<Language> LanguagesSpoken => _languagesSpoken;
+    public List<JobExperience> WorkExperience => _workExperience;
+
+    //public List<Skill> Skills => _skills;
 
     // Protected or private constructors to enforce controlled object creation
     protected Profile()
     {
         _languagesSpoken = new List<Language>();
-        _skills = new List<Skill>();
+        //_skills = new List<Skill>();
+        this._workExperience = new List<JobExperience>();
+
     }
 
     public Profile(string firstName, string lastName, string summary)
@@ -46,7 +51,7 @@ public class Profile : IEntity<int>
         _createdAt = DateTime.UtcNow;
         _updatedAt = DateTime.UtcNow;
         _languagesSpoken = new List<Language>();
-        _skills = new List<Skill>();
+        //_skills = new List<Skill>();
     }
 
     public Result AddLanguage(Language language)
@@ -62,12 +67,22 @@ public class Profile : IEntity<int>
     {
         _updatedAt = DateTime.UtcNow;
     }
+
+    public void AddJobExperience(JobExperience workExperience)
+    {
+        if (workExperience == null)
+        {
+            throw new ArgumentNullException(nameof(workExperience), "Job experience cannot be null.");
+        }
+
+        _workExperience.Add(workExperience);
+    }
 }
 
 public class QualifiedProfile : Profile
 {
-    private readonly EducationList _educations = new();
-    private readonly List<JobExperience> _workExperience = new();
+    private readonly EducationList _educations;
+
     private string _desiredJobRole;
     protected QualifiedProfile() { }
     private QualifiedProfile(
@@ -83,8 +98,8 @@ public class QualifiedProfile : Profile
     // Public properties for encapsulated access
     public string DesiredJobRole => _desiredJobRole;
 
-    public EducationList Educations => _educations;
-    public List<JobExperience> WorkExperience => _workExperience;
+    //public EducationList Educations => _educations;
+    public List<Education> Educations => _educations.Educations;
 
     // Factory method to create a QualifiedProfile
     public static Result<QualifiedProfile, Error> Create(
@@ -127,20 +142,11 @@ public class QualifiedProfile : Profile
         _educations.Add(education);
     }
 
-    public void AddJobExperience(JobExperience workExperience)
-    {
-        if (workExperience == null)
-        {
-            throw new ArgumentNullException(nameof(workExperience), "Job experience cannot be null.");
-        }
 
-        _workExperience.Add(workExperience);
-    }
 }
 
 public class GeneralProfile : Profile
 {
-    private readonly List<WorkExperience> _workExperience = new();
     private string[] _personalGoals = Array.Empty<string>();
 
     protected GeneralProfile() { }
@@ -151,7 +157,6 @@ public class GeneralProfile : Profile
     }
 
     // Public properties
-    public IReadOnlyCollection<WorkExperience> WorkExperience => _workExperience.AsReadOnly();
     public string[] PersonalGoals => _personalGoals;
 
     // Factory method for controlled creation
@@ -179,17 +184,6 @@ public class GeneralProfile : Profile
         return new GeneralProfile(firstName, lastName, summary, personalGoals);
     }
 
-    // Domain methods
-    public void AddWorkExperience(WorkExperience experience)
-    {
-        if (experience == null)
-        {
-            throw new ArgumentNullException(nameof(experience), "Work experience cannot be null.");
-        }
-
-        _workExperience.Add(experience);
-    }
-
     public void UpdatePersonalGoals(string[] personalGoals)
     {
         _personalGoals = personalGoals ?? Array.Empty<string>();
@@ -202,6 +196,11 @@ public class StudentProfile : Profile
     private readonly List<ResearchEducation> _researchEducation = new();
     private string _major;
     private string _careerGoals;
+
+    protected StudentProfile()
+    {
+        
+    }
 
     public StudentProfile(
         string firstName,
@@ -230,17 +229,6 @@ public class StudentProfile : Profile
         string careerGoals)
     {
         return new StudentProfile(firstName, lastName, summary, major, careerGoals);
-    }
-
-    // Domain methods
-    public void AddInternship(InternshipExperience internship)
-    {
-        if (internship == null)
-        {
-            throw new ArgumentNullException(nameof(internship), "Internship experience cannot be null.");
-        }
-
-        _internships.Add(internship);
     }
 
     public void AddEducation(ResearchEducation education)

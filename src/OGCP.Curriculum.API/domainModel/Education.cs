@@ -4,7 +4,7 @@ namespace OGCP.Curriculum.API.domainmodel;
 
 public class Education
 {
-    public Education()
+    protected Education()
     {
         
     }

@@ -5,6 +5,10 @@ namespace OGCP.Curriculum.API.domainmodel;
 
 public class JobExperience
 {
+    protected JobExperience()
+    {
+        
+    }
     protected JobExperience(string company, DateTime startDate, DateTime? endDate, string description)
     {
         Company = company;
