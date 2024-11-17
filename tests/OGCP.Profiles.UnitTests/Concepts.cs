@@ -9,7 +9,6 @@ public class Concepts
     //Fake: A working implementation not suitable for production use
     //Dummy: A test double that's never accessed or used
     //Stub: A test double that provides fake data to the system under test
-    //Spy: A test double capable of capturing indirect output and providing indirect input as needed
     //Mock: A test double that implements the expected behavior
 
     //TEST CONTEXT
@@ -19,7 +18,7 @@ public class Concepts
     //We move the arrange to the construyctor
     //WE can implement IDisposable if necessary
     //2. The class fixture approach
-    //Defined by implementing a class (e.g., GeneralProfileServiceFixtureClass).
+    //Defined by implementing a class
     //Each test within the same test class will reuse the same fixture instance.
     //Scoped to a single test class.
     //Requires the test class to implement the IClassFixture<T> interface to use the fixture.
@@ -37,6 +36,7 @@ public class Concepts
     //2. Member data
     //we can reuser the member data acrross different unit tests methods
     //3. Class data
+    //we can reuse the data across different test classes
     //4. Type safe approach
     //5. Data from an external source
 

@@ -60,11 +60,12 @@ builder.Services.AddScoped<IQualifiedProfileRepository, QualifiedProfileReposito
 var app = builder.Build();
 
 // Configure the HttP request pipeline.
-
+//the request fgoes from one midleware to the next one in the pipeline
 app.UseHttpsRedirection();
 
 app.UseCors("AllowSpecificOrigins");
 
+//In the case that the user fails authorization, from this midleware 403 is returned
 app.UseAuthorization();
 
 app.MapControllers();

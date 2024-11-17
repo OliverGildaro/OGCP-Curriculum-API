@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculum.API.repositories.utils;
 namespace OGCP.Curriculum.API.repositories
 {
     public class DbProfileContext : DbContext
@@ -25,8 +26,17 @@ namespace OGCP.Curriculum.API.repositories
         public virtual DbSet<Dictionary<string, object>> Certifications =>
                 Set<Dictionary<string, object>>("Certification");
 
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder.Properties<EducationLevel>()
+                .HaveConversion<EducationLevelConverter>();
+
+            base.ConfigureConventions(configurationBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //for value objects we can also use owned entity types with json, we can store a value type in a json format in a single column
             modelBuilder.Entity<Profile>(entity =>
             {
                 entity.HasKey(p => p.Id);
@@ -118,42 +128,65 @@ namespace OGCP.Curriculum.API.repositories
                 //Auditing: In scenarios where you need to detect unauthorized or accidental changes to critical fields, the checksum can serve as an additional layer of protection.
                 entity.Property<byte[]>("Checksum")
                     .HasComputedColumnSql("CONVERT(VARBINARY(1024),CHECKSUM([FirstName],[LastName],[UserName]))");
+                entity.Property(p => p.Name)
+                    .HasConversion<string>()
+                    .HasDefaultValue(Languages.Spanish.ToString());
+
+                entity.Property(p => p.Level)
+                    .HasConversion<string>()
+                    .HasDefaultValue(ProficiencyLevel.Beginner.ToString());
+                entity.HasKey(p => p.Id);
             });
 
+            //modelBuilder.Entity<Education>()
+            //    .HasDiscriminator<string>("EducationType")
+            //    .HasValue<Education>("BaseEducation")
+            //    .HasValue<DegreeEducation>("DegreeEducation")
+            //    .HasValue<ResearchEducation>("ResearchEducation");
 
+            modelBuilder.Entity<Education>(entity =>
+            {
+                entity.Property(p => p.StartDate)
+                    .IsRequired();
+                entity.Property(p => p.EndDate)
+                    .IsRequired(false);
+                entity.HasKey(p => p.Id);
+                entity.Property(p => p.Institution)
+                    .HasMaxLength(200)
+                    .IsRequired();
+                entity.HasDiscriminator<string>("EducationType")
+                    .HasValue<Education>("BaseEducation")
+                    .HasValue<DegreeEducation>("DegreeEducation")
+                    .HasValue<ResearchEducation>("ResearchEducation");
+            });
 
-
-
-
-
-
-
-
-
-
-            modelBuilder.Entity<Education>()
-                .HasDiscriminator<string>("EducationType")
-                .HasValue<Education>("BaseEducation")
-                .HasValue<DegreeEducation>("DegreeEducation")
-                .HasValue<ResearchEducation>("ResearchEducation");
-
+            modelBuilder.Entity<DetailInfo>(entity =>
+            {
+                entity.HasKey(p => p.Id);
+                entity.Property(p => p.Phone)
+                    .HasMaxLength(20);
+                entity.Property(p => p.Emails)
+                    .IsRequired();
+            });
 
             //We do not need to map this to an CLR class
             //Easy to add metadata without modifying database schema
             //We can add attributes in a flexible way
-            modelBuilder.SharedTypeEntity<Dictionary<string, object>>(
-                "Certification",
-                entity =>
-                {
-                    entity.Property<int>("Id"); // Primary Key
-                    entity.Property<int>("ProfileId"); // Foreign Key to Profile
-                    entity.Property<string>("CertificationName"); // Name of the certification
-                    entity.Property<string>("IssuingOrganization"); // Organization issuing the certification
-                    entity.Property<DateTime>("DateIssued"); // Issue date of the certification
-                    entity.Property<DateTime?>("ExpirationDate"); // Optional expiration date
-                    entity.Property<string>("Description"); // Description or remarks
-                    entity.HasKey("Id"); // Define the primary key explicitly
-                });
+            //This is called indexer properties and allow us to create property bags.
+            //In a many to many relationship we create a property bag, witout creating the intermediate join class.
+            //We could create a json object in settings.json to setup this property bag based on the json key/values
+            //modelBuilder.SharedTypeEntity<Dictionary<string, object>>(
+            //    "Certification",
+            //    entity =>
+            //    {
+            //        entity.Property<int>("Id");
+            //        entity.Property<int>("ProfileId");
+            //        entity.Property<string>("CertificationName");
+            //        entity.Property<string>("IssuingOrganization");
+            //        entity.Property<DateTime>("DateIssued");
+            //        entity.Property<DateTime?>("ExpirationDate");
+            //        entity.Property<string>("Description");
+            //    });
 
 
             base.OnModelCreating(modelBuilder);

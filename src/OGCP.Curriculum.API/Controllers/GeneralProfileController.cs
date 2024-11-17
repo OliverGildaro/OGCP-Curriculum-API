@@ -4,7 +4,11 @@ using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.Controllers;
-
+//This is an ASP web api MVC application
+//MVC is an architecture pattern for implementing user interfaces
+//controller depend on the view and the model
+//Allows separation of concerns and testability
+//The representation of the data => json or xml content are the view
 [Route("api/v1/profiles/general")]
 [EnableCors("AllowSpecificOrigins")]
 [Produces("application/json")]
