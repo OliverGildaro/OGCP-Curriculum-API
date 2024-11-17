@@ -101,15 +101,15 @@ namespace OGCP.Curriculum.API.repositories
                     .IsRequired(false);
 
                 entity.HasMany(p => p.Educations) // Access the collection from `EducationList`
-                      .WithMany() // Assuming `QualifiedProfiles` exists in `Education`
-                      .UsingEntity<Dictionary<string, object>>(
-                          "QualifiedProfileEducation", // Name of the join table
-                          j => j.HasOne<Education>()
-                                .WithMany()
-                                .HasForeignKey("EducationId"),
-                          j => j.HasOne<QualifiedProfile>()
-                                .WithMany()
-                                .HasForeignKey("QualifiedProfileId"));
+                      .WithMany(); // Assuming `QualifiedProfiles` exists in `Education`
+                      //.UsingEntity<Dictionary<string, object>>(
+                      //    "QualifiedProfileEducation",
+                      //    j => j.HasOne<Education>()
+                      //          .WithMany()
+                      //          .HasForeignKey("EducationId"),
+                      //    j => j.HasOne<QualifiedProfile>()
+                      //          .WithMany()
+                      //          .HasForeignKey("QualifiedProfileId"));
 
 
             });
@@ -131,7 +131,7 @@ namespace OGCP.Curriculum.API.repositories
 
                 entity.Property(p => p.Major)
                     .IsRequired(false);
-                entity.HasMany(p => p.ResearchEducation)
+                entity.HasMany(p => p.Educations)
                     .WithOne();
             });
 

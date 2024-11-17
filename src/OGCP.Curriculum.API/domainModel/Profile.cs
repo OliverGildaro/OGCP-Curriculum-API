@@ -81,7 +81,7 @@ public class Profile : IEntity<int>
 
 public class QualifiedProfile : Profile
 {
-    private readonly EducationList _educations;
+    private readonly List<Education> _educations;
 
     private string _desiredJobRole;
     protected QualifiedProfile() { }
@@ -93,13 +93,14 @@ public class QualifiedProfile : Profile
         : base(firstName, lastName, summary)
     {
         _desiredJobRole = desiredJobRole;
+        this._educations = new List<Education>();
     }
 
     // Public properties for encapsulated access
     public string DesiredJobRole => _desiredJobRole;
 
     //public EducationList Educations => _educations;
-    public List<Education> Educations => _educations.Educations;
+    public List<Education> Educations => _educations;
 
     // Factory method to create a QualifiedProfile
     public static Result<QualifiedProfile, Error> Create(
@@ -141,8 +142,6 @@ public class QualifiedProfile : Profile
 
         _educations.Add(education);
     }
-
-
 }
 
 public class GeneralProfile : Profile
@@ -192,14 +191,13 @@ public class GeneralProfile : Profile
 
 public class StudentProfile : Profile
 {
-    private readonly List<InternshipExperience> _internships = new();
-    private readonly List<ResearchEducation> _researchEducation = new();
+    private readonly List<Education> _educations = new();
     private string _major;
     private string _careerGoals;
 
     protected StudentProfile()
     {
-        
+        this._educations = new List<Education>();
     }
 
     public StudentProfile(
@@ -217,8 +215,7 @@ public class StudentProfile : Profile
     // Public properties
     public string Major => _major;
     public string CareerGoals => _careerGoals;
-    public IReadOnlyCollection<InternshipExperience> Internships => _internships.AsReadOnly();
-    public IReadOnlyCollection<ResearchEducation> ResearchEducation => _researchEducation.AsReadOnly();
+    public IReadOnlyCollection<Education> Educations => _educations.AsReadOnly();
 
     // Factory method for controlled creation
     public static Result<StudentProfile, Error> Create(
@@ -238,6 +235,6 @@ public class StudentProfile : Profile
             throw new ArgumentNullException(nameof(education), "Research education cannot be null.");
         }
 
-        _researchEducation.Add(education);
+        _educations.Add(education);
     }
 }

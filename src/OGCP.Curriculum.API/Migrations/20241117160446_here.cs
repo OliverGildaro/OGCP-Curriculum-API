@@ -83,11 +83,11 @@ namespace OGCP.Curriculum.API.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EducationType = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    StudentProfileId = table.Column<int>(type: "int", nullable: true),
                     Degree = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProjectTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Supervisor = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StudentProfileId = table.Column<int>(type: "int", nullable: true)
+                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -112,7 +112,6 @@ namespace OGCP.Curriculum.API.Migrations
                     Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     ProfileId = table.Column<int>(type: "int", nullable: true),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StudentProfileId = table.Column<int>(type: "int", nullable: true),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -121,11 +120,6 @@ namespace OGCP.Curriculum.API.Migrations
                     table.ForeignKey(
                         name: "FK_JobExperience_Profile_ProfileId",
                         column: x => x.ProfileId,
-                        principalTable: "Profile",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_JobExperience_Profile_StudentProfileId",
-                        column: x => x.StudentProfileId,
                         principalTable: "Profile",
                         principalColumn: "Id");
                 });
@@ -155,23 +149,23 @@ namespace OGCP.Curriculum.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "QualifiedProfileEducation",
+                name: "EducationQualifiedProfile",
                 columns: table => new
                 {
-                    EducationId = table.Column<int>(type: "int", nullable: false),
+                    EducationsId = table.Column<int>(type: "int", nullable: false),
                     QualifiedProfileId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QualifiedProfileEducation", x => new { x.EducationId, x.QualifiedProfileId });
+                    table.PrimaryKey("PK_EducationQualifiedProfile", x => new { x.EducationsId, x.QualifiedProfileId });
                     table.ForeignKey(
-                        name: "FK_QualifiedProfileEducation_Education_EducationId",
-                        column: x => x.EducationId,
+                        name: "FK_EducationQualifiedProfile_Education_EducationsId",
+                        column: x => x.EducationsId,
                         principalTable: "Education",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_QualifiedProfileEducation_Profile_QualifiedProfileId",
+                        name: "FK_EducationQualifiedProfile_Profile_QualifiedProfileId",
                         column: x => x.QualifiedProfileId,
                         principalTable: "Profile",
                         principalColumn: "Id",
@@ -190,24 +184,19 @@ namespace OGCP.Curriculum.API.Migrations
                 column: "StudentProfileId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EducationQualifiedProfile_QualifiedProfileId",
+                table: "EducationQualifiedProfile",
+                column: "QualifiedProfileId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JobExperience_ProfileId",
                 table: "JobExperience",
                 column: "ProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobExperience_StudentProfileId",
-                table: "JobExperience",
-                column: "StudentProfileId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LanguageProfile_ProfileId",
                 table: "LanguageProfile",
                 column: "ProfileId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QualifiedProfileEducation_QualifiedProfileId",
-                table: "QualifiedProfileEducation",
-                column: "QualifiedProfileId");
         }
 
         /// <inheritdoc />
@@ -217,19 +206,19 @@ namespace OGCP.Curriculum.API.Migrations
                 name: "DetailInfo");
 
             migrationBuilder.DropTable(
+                name: "EducationQualifiedProfile");
+
+            migrationBuilder.DropTable(
                 name: "JobExperience");
 
             migrationBuilder.DropTable(
                 name: "LanguageProfile");
 
             migrationBuilder.DropTable(
-                name: "QualifiedProfileEducation");
+                name: "Education");
 
             migrationBuilder.DropTable(
                 name: "Language");
-
-            migrationBuilder.DropTable(
-                name: "Education");
 
             migrationBuilder.DropTable(
                 name: "Profile");
