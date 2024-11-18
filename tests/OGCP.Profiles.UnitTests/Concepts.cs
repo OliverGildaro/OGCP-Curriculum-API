@@ -53,7 +53,7 @@ public class Concepts
     //SqlLite in memory database library for testing
     //2. Dummy: A test double thats never accessed or used
     //En example can be used to add a dependency to factory class that is never used, is just added because the service contract requires
-    //3. Stub: A test double that provides fake that to the system uder test
+    //3. Stub: A test double that provides fake data to the system uder test
     //4. Mock: Is an object that implements the behaviour we expect and allow us to verify whatever we are testing
     //in our test without having to use the actual object
 

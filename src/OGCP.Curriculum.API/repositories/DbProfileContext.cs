@@ -5,6 +5,35 @@ using OGCP.Curriculum.API.repositories.utils;
 using System.Reflection.Metadata;
 namespace OGCP.Curriculum.API.repositories
 {
+    //1. The DbContext affects how EF infers the db schema
+    //2. First EF create the sql query, then open a connection to database, executed the query
+    //Receives tabular objects, materialize results as objects and add tracking details to dbcontext
+    //3. Queries are composable
+    //4. Find method is an ef method not a linq method and executes inmediately from database
+    //5. OrderBy().ThenBy()
+    //6. Take().Skip()
+    //MEthods
+    // 7. LinQ to entities agregate execution methods
+    //Estos métodos calculan un valor único basado en los datos de la consulta.
+    //First() return the first element and throw and exception if not found it
+    //FirstOrdefault() reeturn the first match or null
+    //Count(), Sum(), min(), max(), average()
+    //Last and LastOrDefault will only work if you use OrderBy()
+    // 8. No aggregation methods
+    //ToList()
+    //9. DbSet.AsTracking() or DbSet.AsNoTracking()
+    //We can setup also in the DBContext what kind of tracking we want to do onCOnfiguring
+    //The dbcontext session begins add the moment we execute a query or save data
+    //The EntityEntry object tracks the state of an object, the dbcontext contains this ENtityEntry
+    //Entity is an in-memory object that the dbcontext tracker is aware
+    //TRACKING AND SAVIND DATA FLOW
+    //1. EF core create tracking object for each entity
+    //2. DBContext maintain entityEntries
+    //3. OnSaveChanges
+    //The dbcontext reads the current and original values from the EntityEntry and with a help of the provider determined the sql command
+    //4. Return # affected and keys
+    //5 updates dbcontext entities with pk and fk
+    //6. Reset entity state info
     public class DbProfileContext : DbContext
     {
 
@@ -35,6 +64,8 @@ namespace OGCP.Curriculum.API.repositories
             base.ConfigureConventions(configurationBuilder);
         }
 
+        //DbContext maintain a snapshot for any new migration, compares with the previous ones
+        //and knows exactly what to update-run for the next migration to database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //for value objects we can also use owned entity types with json, we can store a value type in a json format in a single column
@@ -89,9 +120,6 @@ namespace OGCP.Curriculum.API.repositories
                 //Indexer properties will be used to create the join table in this many to many relationship
                 entity.HasMany(p => p.LanguagesSpoken)
                     .WithMany();
-
-                entity.HasMany(p => p.WorkExperience)
-                    .WithOne();
             });
 
             modelBuilder.Entity<QualifiedProfile>(entity =>
@@ -102,15 +130,16 @@ namespace OGCP.Curriculum.API.repositories
 
                 entity.HasMany(p => p.Educations) // Access the collection from `EducationList`
                       .WithMany(); // Assuming `QualifiedProfiles` exists in `Education`
-                      //.UsingEntity<Dictionary<string, object>>(
-                      //    "QualifiedProfileEducation",
-                      //    j => j.HasOne<Education>()
-                      //          .WithMany()
-                      //          .HasForeignKey("EducationId"),
-                      //    j => j.HasOne<QualifiedProfile>()
-                      //          .WithMany()
-                      //          .HasForeignKey("QualifiedProfileId"));
-
+                                   //.UsingEntity<Dictionary<string, object>>(
+                                   //    "QualifiedProfileEducation",
+                                   //    j => j.HasOne<Education>()
+                                   //          .WithMany()
+                                   //          .HasForeignKey("EducationId"),
+                                   //    j => j.HasOne<QualifiedProfile>()
+                                   //          .WithMany()
+                                   //          .HasForeignKey("QualifiedProfileId"));
+                entity.HasMany(p => p.Experiences)
+                    .WithOne();
 
             });
 
@@ -122,6 +151,9 @@ namespace OGCP.Curriculum.API.repositories
                         goals => goals.Split(",", StringSplitOptions.RemoveEmptyEntries)
                     )
                     .Metadata.SetValueComparer(stringArrayComparer);
+
+                entity.HasMany(p => p.Experiences)
+                    .WithOne();
             });
 
             modelBuilder.Entity<StudentProfile>(entity =>
@@ -131,7 +163,11 @@ namespace OGCP.Curriculum.API.repositories
 
                 entity.Property(p => p.Major)
                     .IsRequired(false);
+
                 entity.HasMany(p => p.Educations)
+                    .WithMany();
+
+                entity.HasMany(p => p.Experiences)
                     .WithOne();
             });
 

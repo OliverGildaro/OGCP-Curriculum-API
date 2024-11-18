@@ -19,6 +19,7 @@ public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntit
     {
         try
         {
+            //this.context.Add() //the DbContext will discover the type to be added
             var result = this.context.Add<TEntity>(entity);
 
             if(result.State == EntityState.Added)
@@ -52,6 +53,9 @@ public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntit
     {
         try
         {
+            //SaveChanges() method calls tge DetectChanges internally
+            //So only after DetectChanges() is called the entities has state updated
+            //this.context.ChangeTracker.DetectChanges();
             var isSaved = this.context.SaveChanges();
             if (isSaved is > 0)
             {

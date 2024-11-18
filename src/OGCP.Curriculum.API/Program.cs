@@ -12,6 +12,7 @@ using OGCP.Curriculum.API.services.interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//The dbcontext is automatically dispose after getting out of scope along with the tracking objects
 builder.Services.AddDbContext<DbProfileContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("conectionDb")));
 
