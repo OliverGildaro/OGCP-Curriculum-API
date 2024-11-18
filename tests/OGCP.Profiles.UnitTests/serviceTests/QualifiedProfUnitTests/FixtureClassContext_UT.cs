@@ -6,13 +6,13 @@ using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services;
 using System.Runtime.Serialization;
 
-namespace OGCP.Profiles.UnitTests.QualifiedProfUnitTests;
+namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests;
 
-public class FixtureClassContext : IClassFixture<QualifiedProfileContext>
+public class FixtureClassContext_UT : IClassFixture<QualifiedProfileServiceFIxtureClass>
 {
-    private readonly QualifiedProfileContext context;
+    private readonly QualifiedProfileServiceFIxtureClass context;
 
-    public FixtureClassContext(QualifiedProfileContext context)
+    public FixtureClassContext_UT(QualifiedProfileServiceFIxtureClass context)
     {
         this.context = context;
     }
@@ -66,11 +66,11 @@ public class FixtureClassContext : IClassFixture<QualifiedProfileContext>
 }
 
 
-public class QualifiedProfileContext
+public class QualifiedProfileServiceFIxtureClass
 {
     public QualifiedProfileService service { get; }
 
-    public QualifiedProfileContext()
+    public QualifiedProfileServiceFIxtureClass()
     {
         var repo = new Mock<IQualifiedProfileRepository>();
         repo.Setup(m => m.Add(It.IsAny<QualifiedProfile>()))

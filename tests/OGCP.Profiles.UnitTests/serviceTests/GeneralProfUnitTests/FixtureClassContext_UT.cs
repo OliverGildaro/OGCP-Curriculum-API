@@ -5,15 +5,15 @@ using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services;
 
-namespace OGCP.Profiles.UnitTests.GeneralProfUnitTests;
+namespace OGCP.Profiles.UnitTests.serviceTests.GeneralProfUnitTests;
 
 //***** MEMBER DATA *****//////
 //***** FIXTURE CLASS CONTEXT *****//////
-public class GeneralProfileFixtureClassContext : IClassFixture<GeneralProfileServiceFixtureClass>
+public class FixtureClassContext_UT : IClassFixture<GeneralProfileServiceFixtureClass>
 {
     private readonly GeneralProfileServiceFixtureClass fixture;
 
-    public GeneralProfileFixtureClassContext(GeneralProfileServiceFixtureClass fixture)
+    public FixtureClassContext_UT(GeneralProfileServiceFixtureClass fixture)
     {
         this.fixture = fixture;
     }
@@ -67,7 +67,7 @@ public class GeneralProfileFixtureClassContext : IClassFixture<GeneralProfileSer
               });
 
         var service = new GeneralProfileService(mockRepo.Object);
-       
+
         var profiles = service.Get().ToArray();
 
         Assert.Equal(2, profiles.Count());

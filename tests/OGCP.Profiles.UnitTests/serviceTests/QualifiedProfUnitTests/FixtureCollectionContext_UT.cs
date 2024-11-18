@@ -1,14 +1,14 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculum.API.dtos;
 
-namespace OGCP.Profiles.UnitTests.QualifiedProfUnitTests;
+namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests;
 
-[Collection("QualifiedProfileCollection")]
-public class FixtureCollectionContext : IDisposable
+[Collection("QualifiedProfileServiceCollection")]
+public class FixtureCollectionContext_UT : IDisposable
 {
-    private readonly QualifiedProfileContext context;
+    private readonly QualifiedProfileServiceFIxtureClass context;
 
-    public FixtureCollectionContext(QualifiedProfileContext context)
+    public FixtureCollectionContext_UT(QualifiedProfileServiceFIxtureClass context)
     {
         this.context = context;
     }
@@ -30,17 +30,17 @@ public class FixtureCollectionContext : IDisposable
     }
 }
 
-[CollectionDefinition("QualifiedProfileCollection")]
-public class QualifiedProfileCollectionFixture : ICollectionFixture<QualifiedProfileContext>
+[CollectionDefinition("QualifiedProfileServiceCollection")]
+public class QualifiedProfileServiceCollectionFixture : ICollectionFixture<QualifiedProfileServiceFIxtureClass>
 {
 }
 
 public class CreateQualifiedProfileRequestClassData
-    :TheoryData<CreateQualifiedProfileRequest>
+    : TheoryData<CreateQualifiedProfileRequest>
 {
     public CreateQualifiedProfileRequestClassData()
     {
-        this.Add(new CreateQualifiedProfileRequest
+        Add(new CreateQualifiedProfileRequest
         {
             FirstName = "Oliver",
             LastName = "Castro",

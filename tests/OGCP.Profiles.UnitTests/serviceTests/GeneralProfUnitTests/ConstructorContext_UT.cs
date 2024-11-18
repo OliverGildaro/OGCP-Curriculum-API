@@ -6,14 +6,14 @@ using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services;
 using OGCP.Curriculum.API.services.interfaces;
 
-namespace OGCP.Profiles.UnitTests.GeneralProfUnitTests;
+namespace OGCP.Profiles.UnitTests.serviceTests.GeneralProfUnitTests;
 
 //***** INLIENE DATA *****//////
 //***** CONSTRUCTOR CONTEXT *****//////
-public class GeneralProfileConstructorContext : IDisposable
+public class ConstructorContext_UT : IDisposable
 {
     private IGeneralProfileService service;
-    public GeneralProfileConstructorContext()
+    public ConstructorContext_UT()
     {
         //***** CONSTRUCTOR CONTEXT *****//////
         var repository = new Mock<IGeneralProfileRepository>();
@@ -35,11 +35,12 @@ public class GeneralProfileConstructorContext : IDisposable
     [InlineData("Cristian", "Morato", "Fillstack dev", "Job here goal")]
     public void Test1(string firstName, string lastName, string summanry, string personalGoal)
     {
-        var request = new CreateGeneralProfileRequest {
+        var request = new CreateGeneralProfileRequest
+        {
             FirstName = firstName,
             LastName = lastName,
             Summary = summanry,
-            PersonalGoals = new string[] {personalGoal}
+            PersonalGoals = new string[] { personalGoal }
         };
         var result = service.Create(request);
 

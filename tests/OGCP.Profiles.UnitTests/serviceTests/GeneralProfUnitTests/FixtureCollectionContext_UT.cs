@@ -2,18 +2,18 @@
 using Moq;
 using OGCP.Curriculum.API.dtos;
 
-namespace OGCP.Profiles.UnitTests.GeneralProfUnitTests;
+namespace OGCP.Profiles.UnitTests.serviceTests.GeneralProfUnitTests;
 
 //***** CLASS DATA *****//////
 //***** FIXTURE COLLECTION CONTEXT *****//////
 
 [Collection("GeneralProfileServiceCollection")]
 //Just decorating with the collection fixture will ensure that the test context will be provided here
-public class GeneralProfileFixtureCollectionContext
+public class FixtureCollectionContext_UT
 {
     private readonly GeneralProfileServiceFixtureClass fixture;
 
-    public GeneralProfileFixtureCollectionContext(GeneralProfileServiceFixtureClass fixture)
+    public FixtureCollectionContext_UT(GeneralProfileServiceFixtureClass fixture)
     {
         this.fixture = fixture;
     }
@@ -30,7 +30,7 @@ public class GeneralProfileFixtureCollectionContext
         Assert.NotNull(result);
     }
 
-    
+
 }
 
 //We are wrapping the fixture class aproach
@@ -47,7 +47,7 @@ public class CreateGeneralProfileRequestTestData : TheoryData<CreateGeneralProfi
 {
     public CreateGeneralProfileRequestTestData()
     {
-        this.Add(
+        Add(
             new CreateGeneralProfileRequest
             {
                 FirstName = "Oliver",

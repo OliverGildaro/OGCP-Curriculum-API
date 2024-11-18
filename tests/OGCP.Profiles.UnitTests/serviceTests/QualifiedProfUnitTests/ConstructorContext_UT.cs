@@ -6,16 +6,16 @@ using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services;
 
-namespace OGCP.Profiles.UnitTests.QualifiedProfUnitTests
+namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests
 {
-    public class ConstructorContext : IDisposable
+    public class ConstructorContext_UT : IDisposable
     {
         private IReturnsResult<IQualifiedProfileRepository> repository;
         private QualifiedProfileService service;
 
-        public ConstructorContext()
+        public ConstructorContext_UT()
         {
-            var mockRepo= new Mock<IQualifiedProfileRepository>();
+            var mockRepo = new Mock<IQualifiedProfileRepository>();
             mockRepo
                 .Setup(m => m.Add(It.IsAny<QualifiedProfile>()))
                 .Returns(Result.Success);
