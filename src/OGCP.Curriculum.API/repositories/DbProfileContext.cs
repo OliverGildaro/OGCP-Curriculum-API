@@ -53,8 +53,8 @@ namespace OGCP.Curriculum.API.repositories
         public DbSet<QualifiedProfile> QualifiedProfiles { get; set; }
         public DbSet<GeneralProfile> GeneralProfiles { get; set; }
         public DbSet<StudentProfile> StudentProfiles { get; set; }
-        //public virtual DbSet<Dictionary<string, object>> Certifications =>
-        //        Set<Dictionary<string, object>>("Certification");
+        public virtual DbSet<Dictionary<string, object>> Certifications =>
+                Set<Dictionary<string, object>>("Certification");
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
@@ -268,18 +268,18 @@ namespace OGCP.Curriculum.API.repositories
             //This is called indexer properties and allow us to create property bags.
             //In a many to many relationship we create a property bag, witout creating the intermediate join class.
             //We could create a json object in settings.json to setup this property bag based on the json key/values
-            //modelBuilder.SharedTypeEntity<Dictionary<string, object>>(
-            //    "Certification",
-            //    entity =>
-            //    {
-            //        entity.Property<int>("Id");
-            //        entity.Property<int>("ProfileId");
-            //        entity.Property<string>("CertificationName");
-            //        entity.Property<string>("IssuingOrganization");
-            //        entity.Property<DateTime>("DateIssued");
-            //        entity.Property<DateTime?>("ExpirationDate");
-            //        entity.Property<string>("Description");
-            //    });
+            modelBuilder.SharedTypeEntity<Dictionary<string, object>>(
+                "Certification",
+                entity =>
+                {
+                    entity.Property<int>("Id");
+                    entity.Property<int>("ProfileId");
+                    entity.Property<string>("CertificationName");
+                    entity.Property<string>("IssuingOrganization");
+                    entity.Property<DateTime>("DateIssued");
+                    entity.Property<DateTime?>("ExpirationDate");
+                    entity.Property<string>("Description");
+                });
 
 
             base.OnModelCreating(modelBuilder);
