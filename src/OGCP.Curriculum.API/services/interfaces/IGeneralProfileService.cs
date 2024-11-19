@@ -4,8 +4,8 @@ using OGCP.Curriculum.API.dtos;
 
 namespace OGCP.Curriculum.API.services.interfaces
 {
-    public interface IGeneralProfileService : IService<GeneralProfile, int, CreateGeneralProfileRequest>
+    public interface IGeneralProfileService : IService<GeneralProfile, int>
     {
-        void AddLanguage(int id, CreateLanguageRequest languageRequest);
+        Task<Result> AddLanguage(int id, CreateLanguageRequest languageRequest);
     }
 }

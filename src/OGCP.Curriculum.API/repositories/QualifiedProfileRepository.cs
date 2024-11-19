@@ -12,7 +12,7 @@ namespace OGCP.Curriculum.API.repositories
             
         }
 
-        public override QualifiedProfile Find(int id, params Expression<Func<QualifiedProfile, object>>[] includes)
+        public override Task<QualifiedProfile> Find(int id, params Expression<Func<QualifiedProfile, object>>[] includes)
         {
             return base.Find(id, includes);
         }

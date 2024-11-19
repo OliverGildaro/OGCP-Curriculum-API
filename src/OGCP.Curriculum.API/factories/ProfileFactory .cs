@@ -1,31 +1,50 @@
-﻿using OGCP.Curriculum.API.domainmodel;
+﻿using ArtForAll.Shared.Contracts.CQRS;
+using OGCP.Curriculum.API.commanding.CreateGeneralProfile;
+using OGCP.Curriculum.API.commanding.CreateQualifiedProfile;
+using OGCP.Curriculum.API.commanding.CreateStudentProfile;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
+namespace OGCP.Curriculum.API.factories;
 
-namespace OGCP.Curriculum.API.factories
+public class ProfileFactory
 {
-    public class ProfileFactory
+    public ICommand Get(ProfileRequest request)
     {
-        public Profile Get(ProfileRequest request)
+        if (request is CreateGeneralProfileRequest generalRequest)
         {
-            if (request is CreateGeneralProfileRequest generalRequest)
+            (string firstName, string lastName, string summary, string[] personalGoals) = generalRequest;
+            var result = new CreateGeneralProfileCommand
             {
-                (string firstName, string lastName, string summary, string[] personalGoals) = generalRequest;
-                var result = GeneralProfile.Create(firstName, lastName, summary, personalGoals);
-                return result.Value;
-            }
-            else if(request is CreateQualifiedProfileRequest qualifiedProfile)
-            {
-                (string firstName, string lastName, string summary, string desiredJobRole) = qualifiedProfile;
-                var result = QualifiedProfile.Create(firstName, lastName, summary, desiredJobRole);
-                return result.Value;
-            } else if(request is CreateStudentProfileRequest studentProfile)
-            {
-                (string firstName, string lastName, string summary, string major, string careerGoals) = studentProfile;
-                var result = StudentProfile.Create(firstName, lastName, summary, major, careerGoals);
-                return result.Value;
-            }
-
-            return null;
+                FirstName = firstName,
+                LastName = lastName,
+                Summary = summary,
+                PersonalGoals = personalGoals
+            };
+            return result;
         }
+        else if(request is CreateQualifiedProfileRequest qualifiedProfile)
+        {
+            (string firstName, string lastName, string summary, string desiredJobRole) = qualifiedProfile;
+            return new CreateQualifiedProfileCommand
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Summary = summary,
+                DesiredJobRole = desiredJobRole,
+            };
+        } else if(request is CreateStudentProfileRequest studentProfile)
+        {
+            (string firstName, string lastName, string summary, string major, string careerGoals) = studentProfile;
+            return new CreateStudentProfileCommand
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Summary = summary,
+                Major = major,
+                CareerGoals = careerGoals,
+            };
+        }
+
+        return null;
     }
 }

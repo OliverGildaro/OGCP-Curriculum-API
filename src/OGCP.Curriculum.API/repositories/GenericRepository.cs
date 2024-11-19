@@ -35,15 +35,14 @@ public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntit
         }
     }
 
-    public IEnumerable<TEntity> Find()
+    public async Task<IEnumerable<TEntity>> Find()
     {
-        var result = this.context.Set<TEntity>()
+        return await this.context.Set<TEntity>()
             .AsNoTracking()
-            .ToList();
-        return result;
+            .ToListAsync();
     }
 
-    public virtual TEntity Find(TEntityId id, params Expression<Func<TEntity, object>>[] includes)
+    public virtual Task<TEntity> Find(TEntityId id, params Expression<Func<TEntity, object>>[] includes)
     {
         IQueryable<TEntity> query = context.Set<TEntity>();
 
@@ -53,17 +52,17 @@ public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntit
             query = query.Include(include);
         }
 
-        return query.FirstOrDefault(entity => EF.Property<TEntityId>(entity, "Id").Equals(id));
+        return query.FirstOrDefaultAsync(entity => EF.Property<TEntityId>(entity, "Id").Equals(id));
     }
 
-    public Result SaveChanges()
+    public async Task<Result> SaveChanges()
     {
         try
         {
             //SaveChanges() method calls tge DetectChanges internally
             //So only after DetectChanges() is called the entities has state updated
             //this.context.ChangeTracker.DetectChanges();
-            var isSaved = this.context.SaveChanges();
+            var isSaved = await this.context.SaveChangesAsync();
             if (isSaved is > 0)
             {
                 return Result.Success();

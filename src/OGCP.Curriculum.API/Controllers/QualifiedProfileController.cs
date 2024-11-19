@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
-using OGCP.Curriculum.API.commanding.CreateGeneralProfile;
 using OGCP.Curriculum.API.commanding.CreateQualifiedProfile;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.dtos.requests;
@@ -59,7 +58,6 @@ public class QualifiedProfileController : Controller
         //};
 
         this.message.DIspatch(assd);
-        this.service.Create((CreateQualifiedProfileRequest)profileRequest);
         return Ok();
     }
 

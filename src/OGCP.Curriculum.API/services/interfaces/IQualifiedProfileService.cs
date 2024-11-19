@@ -4,10 +4,10 @@ using OGCP.Curriculum.API.dtos;
 
 namespace OGCP.Curriculum.API.services.interfaces
 {
-    public interface IQualifiedProfileService : IService<QualifiedProfile, int, CreateQualifiedProfileRequest>
+    public interface IQualifiedProfileService : IService<QualifiedProfile, int>
     {
-        Result AddEducation(int id, CreateDegreeEducationRequest request);
-        Result AddJobExperience<T>(int id, T request);
-        void AddLanguage(int id, CreateLanguageRequest languageRequest);
+        Task<Result> AddEducation(int id, CreateDegreeEducationRequest request);
+        Task<Result> AddJobExperience<T>(int id, T request);
+        Task<Result> AddLanguage(int id, CreateLanguageRequest languageRequest);
     }
 }

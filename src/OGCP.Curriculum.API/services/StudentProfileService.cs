@@ -3,6 +3,7 @@ using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
+using System.Linq.Expressions;
 
 namespace OGCP.Curriculum.API.services;
 
@@ -15,9 +16,9 @@ public class StudentProfileService : IStudentProfileService
         this.repository = repository;
     }
 
-    public Result AddEducation(int id, CreateResearchEducationRequest request)
+    public async Task<Result> AddEducation(int id, CreateResearchEducationRequest request)
     {
-        StudentProfile profile = this.repository.Find(id);
+        StudentProfile profile = await this.repository.Find(id, GetQueryExpression());
         if (profile is null)
         {
             return Result.Failure("");
@@ -29,39 +30,43 @@ public class StudentProfileService : IStudentProfileService
 
         profile.AddEducation(education);
 
-        this.repository.SaveChanges();
-        return Result.Success();
-
+        return await this.repository.SaveChanges();
     }
 
-    public void AddLanguage(int id, CreateLanguageRequest languageRequest)
+    public async Task<Result> AddLanguage(int id, CreateLanguageRequest languageRequest)
     {
-        StudentProfile profile = this.repository.Find(id);
+        StudentProfile profile = await this.repository.Find(id, GetQueryExpression());
 
         Language language = Language.Create(languageRequest.Name, languageRequest.Level);
         Result result = profile.AddLanguage(language);
 
-        repository.SaveChanges();
+        return await repository.SaveChanges();
     }
 
-    public Result Create(CreateStudentProfileRequest request)
+    public Task<Result> Create(StudentProfile request)
     {
-        (string firstName, string lastName, string summary, string major, string careerGoals) = request;
-        var sdsd =  StudentProfile.Create(firstName, lastName, summary, major, careerGoals);
-        this.repository.Add(sdsd.Value);
-
-        this.repository.SaveChanges();
-        return Result.Success();
-
+        this.repository.Add(request);
+        return this.repository.SaveChanges();
     }
 
-    public IEnumerable<StudentProfile> Get()
+    public Task<IEnumerable<StudentProfile>> Get()
     {
         return this.repository.Find();
     }
 
-    public StudentProfile Get(int id)
+    public Task<StudentProfile> Get(int id)
     {
         return this.repository.Find(id);
+    }
+
+    private Expression<Func<StudentProfile, object>>[] GetQueryExpression()
+    {
+        return
+        [
+            x => x.Educations,
+            x => x.Experiences,
+            x => x.LanguagesSpoken,
+            x => x.PersonalInfo,
+        ];
     }
 }

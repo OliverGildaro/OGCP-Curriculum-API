@@ -2,11 +2,10 @@
 
 namespace OGCP.Curriculum.API.services.interfaces;
 
-public interface IService<TEntity, TEntityId, TRequest>
+public interface IService<TEntity, TEntityId>
     where TEntity : class
-    where TRequest : class
 {
-    public IEnumerable<TEntity> Get();
-    public TEntity Get(TEntityId id);
-    public Result Create(TRequest request);
+    public Task<IEnumerable<TEntity>> Get();
+    public Task<TEntity> Get(TEntityId id);
+    public Task<Result> Create(TEntity request);
 }

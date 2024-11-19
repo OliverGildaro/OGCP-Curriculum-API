@@ -3,6 +3,7 @@ using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
+using System.Linq.Expressions;
 
 namespace OGCP.Curriculum.API.services;
 
@@ -15,41 +16,45 @@ public class GeneralProfileService : IGeneralProfileService
         this.repository = repository;
     }
 
-    public void AddLanguage(int id, CreateLanguageRequest languageRequest)
+    public async Task<Result> AddLanguage(int id, CreateLanguageRequest languageRequest)
     {
-        GeneralProfile profile = this.repository.Find(id);
+        GeneralProfile profile = await this.repository.Find(id, GetQueryExpression());
 
         Language language = Language.Create(languageRequest.Name, languageRequest.Level);
         Result result = profile.AddLanguage(language);
 
-        repository.SaveChanges();
+        return await repository.SaveChanges();
     }
 
-    public Result Create(CreateGeneralProfileRequest request)
+    private Expression<Func<GeneralProfile, object>>[] GetQueryExpression()
     {
-        (string firstName, string lastName, string summary, string[] personalGoals) = request;
-        var res = GeneralProfile.Create(firstName, lastName, summary, personalGoals);
-        var result = this.repository.Add(res.Value);
-
-        if (result.IsFailure)
-        {
-            throw new ArgumentException();
-        }
-
-        result = this.repository.SaveChanges();
-        if (result.IsFailure)
-        {
-            throw new ArgumentException();
-        }
-        return Result.Success();
+        return
+        [
+            x => x.Experiences,
+            x => x.LanguagesSpoken,
+            x => x.PersonalInfo,
+        ];
     }
 
-    public IEnumerable<GeneralProfile> Get()
+    public Task<Result> Create(GeneralProfile request)
+    {
+
+        var result = this.repository.Add(request);
+
+        if (result.IsFailure)
+        {
+            throw new ArgumentException();
+        }
+
+        return this.repository.SaveChanges();
+    }
+
+    public Task<IEnumerable<GeneralProfile>> Get()
     {
         return this.repository.Find();
     }
 
-    public GeneralProfile Get(int id)
+    public Task<GeneralProfile> Get(int id)
     {
         return this.repository.Find(id);
     }

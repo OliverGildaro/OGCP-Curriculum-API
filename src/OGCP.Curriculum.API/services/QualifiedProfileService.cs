@@ -16,9 +16,9 @@ public class QualifiedProfileService : IQualifiedProfileService
         this.repository = repository;
     }
 
-    public Result AddEducation(int id, CreateDegreeEducationRequest request)
+    public async Task<Result> AddEducation(int id, CreateDegreeEducationRequest request)
     {
-        QualifiedProfile profile = this.repository.Find(id);
+        QualifiedProfile profile = await this.repository.Find(id);
         if (profile is null)
         {
             return Result.Failure("");
@@ -34,55 +34,52 @@ public class QualifiedProfileService : IQualifiedProfileService
 
     }
 
-    public Result AddJobExperience<T>(int id, T request)
+    public async Task<Result> AddJobExperience<T>(int id, T request)
     {
-        var profile = this.repository.Find(id);
+        var profile = await this.repository.Find(id);
         JobExperience jobExperince = FactoryJob.Get(request);
         profile.AddJobExperience(jobExperince);
 
-        this.repository.SaveChanges();
+        await this.repository.SaveChanges();
         return Result.Success();
 
     }
 
-    public void AddLanguage(int id, CreateLanguageRequest languageRequest)
+    public async Task<Result> AddLanguage(int id, CreateLanguageRequest languageRequest)
     {
-        QualifiedProfile profile = this.Find(id);
+        QualifiedProfile profile = await this.repository.Find(id, GetQueryExpression());
 
         Language language = Language.Create(languageRequest.Name, languageRequest.Level);
         Result result = profile.AddLanguage(language);
 
-        repository.SaveChanges();
+        return await repository.SaveChanges();
     }
 
-    private QualifiedProfile Find(int id)
+    private Expression<Func<QualifiedProfile, object>>[] GetQueryExpression()
     {
-        var defaultIncludes = new Expression<Func<QualifiedProfile, object>>[]
+        return new Expression<Func<QualifiedProfile, object>>[]
         {
             x => x.Educations,
             x => x.Experiences,
             x => x.LanguagesSpoken,
             x => x.PersonalInfo,
         };
-
-        return this.repository.Find(id, defaultIncludes);
     }
 
-    public Result Create(CreateQualifiedProfileRequest request)
+    public Task<Result> Create(QualifiedProfile request)
     {
-        (string firstName, string lastName, string summary, string desiredJobRole) = request;
-        var resu = QualifiedProfile.Create(firstName, lastName, summary, desiredJobRole);
-        this.repository.Add(resu.Value);
-        this.repository.SaveChanges();
-        return Result.Success();
+
+        this.repository.Add(request);
+
+        return this.repository.SaveChanges();
     }
 
-    public IEnumerable<QualifiedProfile> Get()
+    public Task<IEnumerable<QualifiedProfile>> Get()
     {
         return this.repository.Find();
     }
 
-    public QualifiedProfile Get(int id)
+    public Task<QualifiedProfile> Get(int id)
     {
         return this.repository.Find(id);
     }
