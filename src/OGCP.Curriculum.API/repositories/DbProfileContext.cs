@@ -107,8 +107,11 @@ namespace OGCP.Curriculum.API.repositories
                     .IsRequired(false);
 
                 entity.Property(p => p.DetailLevel)
-                    .HasConversion<string>()
-                    //.HasDefaultValue(ProfileDetailLevel.Minimal.ToString())
+                    .HasConversion(
+                        v => v.ToString(),
+                        v => (ProfileDetailLevel)Enum.Parse(typeof(ProfileDetailLevel), v)
+                    )
+                    .HasMaxLength(18)
                     .IsRequired();
 
                 entity.Property(p => p.CreatedAt)

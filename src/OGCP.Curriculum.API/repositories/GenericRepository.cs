@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.interfaces;
+using System.Linq.Expressions;
 
 namespace OGCP.Curriculum.API.repositories;
 
@@ -42,11 +43,17 @@ public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntit
         return result;
     }
 
-    public TEntity Find(TEntityId entityId)
+    public virtual TEntity Find(TEntityId id, params Expression<Func<TEntity, object>>[] includes)
     {
-        var result = this.context.Set<TEntity>()
-            .FirstOrDefault(entity => entity.Id.Equals(entityId));
-        return result;
+        IQueryable<TEntity> query = context.Set<TEntity>();
+
+        // Include specified navigation properties
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        return query.FirstOrDefault(entity => EF.Property<TEntityId>(entity, "Id").Equals(id));
     }
 
     public Result SaveChanges()

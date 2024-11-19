@@ -3,6 +3,7 @@ using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
+using System.Linq.Expressions;
 
 namespace OGCP.Curriculum.API.services;
 
@@ -46,12 +47,25 @@ public class QualifiedProfileService : IQualifiedProfileService
 
     public void AddLanguage(int id, CreateLanguageRequest languageRequest)
     {
-        QualifiedProfile profile = this.repository.Find(id);
+        QualifiedProfile profile = this.Find(id);
 
         Language language = Language.Create(languageRequest.Name, languageRequest.Level);
         Result result = profile.AddLanguage(language);
 
         repository.SaveChanges();
+    }
+
+    private QualifiedProfile Find(int id)
+    {
+        var defaultIncludes = new Expression<Func<QualifiedProfile, object>>[]
+        {
+            x => x.Educations,
+            x => x.Experiences,
+            x => x.LanguagesSpoken,
+            x => x.PersonalInfo,
+        };
+
+        return this.repository.Find(id, defaultIncludes);
     }
 
     public Result Create(CreateQualifiedProfileRequest request)

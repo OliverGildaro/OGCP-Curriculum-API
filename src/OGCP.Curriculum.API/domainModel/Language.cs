@@ -29,4 +29,10 @@ public class Language
     {
         Level = newLevel;
     }
+
+    public bool IsEquivalent(Language language)
+    {
+        return this.Name.Equals(language.Name)
+            && this.Level.Equals(language.Level);
+    }
 }

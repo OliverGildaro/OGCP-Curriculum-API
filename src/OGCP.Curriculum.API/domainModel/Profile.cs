@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
+using System.Linq;
 
 namespace OGCP.Curriculum.API.domainmodel;
 
@@ -55,17 +56,27 @@ public class Profile : IProfile
     
     public virtual Result AddLanguage(Language language)
     {
-        if (language == null) return Result.Failure("");
-
-        if (_languagesSpoken.Any(l => l.Name.Equals(language.Name)))
+        if (_languagesSpoken.Any(l => l.IsEquivalent(language)))
         {
             return Result.Failure($"{language.Name} can not be added twice");
         }
 
-        _languagesSpoken.Add(language);
+        var currentLanguage = this.LanguagesSpoken.FirstOrDefault(l => l.Name == language.Name);
+
+        if (currentLanguage != null)
+        {
+            var index = LanguagesSpoken.IndexOf(currentLanguage);
+            LanguagesSpoken[index] = language;
+            currentLanguage = language;
+        } else
+        {
+            this._languagesSpoken.Add(language);
+        }
+
         UpdateTimestamp();
         return Result.Success();
     }
+
     private void UpdateTimestamp()
     {
         _updatedAt = DateTime.UtcNow;
