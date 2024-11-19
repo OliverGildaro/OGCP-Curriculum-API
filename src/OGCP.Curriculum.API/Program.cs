@@ -1,7 +1,11 @@
+using ArtForAll.Shared.Contracts.CQRS;
+using ArtForAll.Shared.ErrorHandler;
 using JsonSubTypes;
 using Microsoft.EntityFrameworkCore;
+using OGCP.Curriculum.API.commanding;
+using OGCP.Curriculum.API.commanding.CreateGeneralProfile;
+using OGCP.Curriculum.API.commanding.CreateQualifiedProfile;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.domainModel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.repositories;
@@ -57,6 +61,9 @@ builder.Services.AddScoped<IGeneralProfileService, GeneralProfileService>();
 builder.Services.AddScoped<IGeneralProfileRepository, GeneralProfileRepository>();
 builder.Services.AddScoped<IStudentProfileRepository, StudentProfileRepository>();
 builder.Services.AddScoped<IQualifiedProfileRepository, QualifiedProfileRepository>();
+builder.Services.AddScoped<ICommandHandler<CreateGeneralProfileCommand, Result>, CreateGeneralProfileCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<CreateQualifiedProfileCommand, Result>, CreateQualifiedProfileCommandHandler>();
+builder.Services.AddScoped<Message>();
 
 var app = builder.Build();
 

@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using ArtForAll.Shared.Contracts.CQRS;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using OGCP.Curriculum.API.commanding;
+using OGCP.Curriculum.API.commanding.CreateGeneralProfile;
+using OGCP.Curriculum.API.commanding.CreateQualifiedProfile;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.services.interfaces;
@@ -12,10 +16,12 @@ namespace OGCP.Curriculum.API.Controllers;
 public class QualifiedProfileController : Controller
 {
     private readonly IQualifiedProfileService service;
+    private readonly Message message;
 
-    public QualifiedProfileController(IQualifiedProfileService service)
+    public QualifiedProfileController(IQualifiedProfileService service, Message message)
     {
         this.service = service;
+        this.message = message;
     }
 
     [HttpGet]
@@ -36,6 +42,23 @@ public class QualifiedProfileController : Controller
     [Consumes("application/json")]
     public IActionResult CreateProfile([FromBody] ProfileRequest profileRequest)
     {
+        ICommand assd = new CreateQualifiedProfileCommand
+        {
+            FirstName = profileRequest.FirstName,
+            LastName = profileRequest.LastName,
+            RequestType = profileRequest.RequestType,
+            Summary = profileRequest.Summary,
+        };
+
+        //ICommand assd = new CreateGeneralProfileCommand
+        //{
+        //    FirstName = profileRequest.FirstName,
+        //    LastName = profileRequest.LastName,
+        //    RequestType = profileRequest.RequestType,
+        //    Summary = profileRequest.Summary,
+        //};
+
+        this.message.DIspatch(assd);
         this.service.Create((CreateQualifiedProfileRequest)profileRequest);
         return Ok();
     }
