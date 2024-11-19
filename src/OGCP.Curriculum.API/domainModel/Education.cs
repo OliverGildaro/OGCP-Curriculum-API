@@ -1,57 +1,128 @@
-﻿using OGCP.Curriculum.API.domainModel;
+﻿using ArtForAll.Shared.Contracts.DDD;
+using ArtForAll.Shared.ErrorHandler;
 
 namespace OGCP.Curriculum.API.domainmodel;
 
-public class Education
+public abstract class Education
 {
-    protected Education()
-    {
-        
-    }
-    protected Education(string institution, DateTime startDate, DateTime? endDate)
-    {
-        Institution = institution;
-        StartDate = startDate;
-        EndDate = endDate;
-    }
+    protected int _id;
+    protected string _institution;
+    protected DateTime _startDate;
+    protected DateTime? _endDate;
 
-    public int Id { get; set; }
-    public string Institution { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
+    public int Id => _id;
+    public string Institution => _institution;
+    public DateTime StartDate => _startDate;
+    public DateTime? EndDate => _endDate;
+
+    public abstract bool IsEquivalent(Education other);
 }
-
 
 public class DegreeEducation : Education
 {
-    public DegreeEducation()
-    {
+    private EducationLevel _degree;
 
-    }
-    public DegreeEducation(string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
-        : base(institution, startDate, endDate)
+    private DegreeEducation(string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
     {
-        Degree = degree;
+        _degree = degree;
+        _institution = institution;
+        _startDate = startDate;
+        _endDate = endDate;
     }
 
-    public EducationLevel Degree { get; set; }//TODO enum to string ocnversion on FluentAPI
+    public EducationLevel Degree => _degree;
+
+    public static Result<DegreeEducation, Error> Create(string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
+    {
+        if (string.IsNullOrWhiteSpace(institution))
+        {
+            return new Error("Institution is required.", "InvalidInstitution");
+        }
+
+        if (startDate > DateTime.Now)
+        {
+            return new Error("Start date cannot be in the future.", "InvalidStartDate");
+        }
+
+        if (!Enum.IsDefined(typeof(EducationLevel), degree))
+        {
+            return new Error("Invalid degree value.", "InvalidDegree");
+        }
+
+        return new DegreeEducation(institution, degree, startDate, endDate);
+    }
+
+    public override bool IsEquivalent(Education other)
+    {
+        if (other is DegreeEducation degree)
+        {
+            return this.Institution.Equals(degree.Institution)
+                && this.Degree.Equals(degree.Degree);
+        }
+
+        return false;
+    }
 }
 
 public class ResearchEducation : Education
 {
-    public ResearchEducation()
-    {
+    private string _projectTitle;
+    private string _supervisor;
+    private string _summary;
 
-    }
-    public ResearchEducation(string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary)
-        : base(institution, startDate, endDate)
+    private ResearchEducation(string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary)
     {
-        ProjectTitle = projectTitle;
-        Supervisor = supervisor;
-        Summary = summary;
+        _institution = institution;
+        _startDate = startDate;
+        _endDate = endDate;
+        _projectTitle = projectTitle;
+        _supervisor = supervisor;
+        _summary = summary;
     }
 
-    public string ProjectTitle { get; set; }
-    public string Supervisor { get; set; }
-    public string Summary { get; set; }
+    public string ProjectTitle => _projectTitle;
+    public string Supervisor => _supervisor;
+    public string Summary => _summary;
+
+    public static Result<ResearchEducation, Error> Create(
+        string institution,
+        DateTime startDate,
+        DateTime? endDate,
+        string projectTitle,
+        string supervisor,
+        string summary)
+    {
+        if (string.IsNullOrWhiteSpace(institution))
+        {
+            return new Error("Institution is required.", "InvalidInstitution");
+        }
+
+        if (startDate > DateTime.Now)
+        {
+            return new Error("Start date cannot be in the future.", "InvalidStartDate");
+        }
+
+        if (string.IsNullOrWhiteSpace(projectTitle))
+        {
+            return new Error("Project title is required.", "InvalidProjectTitle");
+        }
+
+        if (string.IsNullOrWhiteSpace(supervisor))
+        {
+            return new Error("Supervisor is required.", "InvalidSupervisor");
+        }
+
+        return new ResearchEducation(institution, startDate, endDate, projectTitle, supervisor, summary);
+    }
+
+    public override bool IsEquivalent(Education other)
+    {
+        if (other is ResearchEducation degree)
+        {
+            return this.Institution == degree.Institution
+                && this.ProjectTitle == degree.ProjectTitle;
+
+        }
+        return false;
+    }
 }

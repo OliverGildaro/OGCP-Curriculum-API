@@ -24,7 +24,7 @@ public class QualifiedProfileService : IQualifiedProfileService
         }
 
         (string institution, EducationLevel degree, DateTime startDate, DateTime? endDate ) = request;
-        Education education = new DegreeEducation(institution, degree, startDate, endDate);
+        Education education = DegreeEducation.Create(institution, degree, startDate, endDate).Value;
 
         profile.AddEducation(education);
 

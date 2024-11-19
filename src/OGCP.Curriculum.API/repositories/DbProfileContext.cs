@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.utils;
-using System.Reflection.Metadata;
 namespace OGCP.Curriculum.API.repositories
 {
     //1. The DbContext affects how EF infers the db schema
@@ -68,9 +67,22 @@ namespace OGCP.Curriculum.API.repositories
         //and knows exactly what to update-run for the next migration to database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            this.AddPRofileModel(modelBuilder);
+            this.AddLanguageModel(modelBuilder);
+            this.AddJobExperienceModel(modelBuilder);
+            this.AddEducationModeling(modelBuilder);
+            this.AddDetailInfo(modelBuilder);
+            this.AddPropertyBags(modelBuilder);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        private void AddPRofileModel(ModelBuilder modelBuilder)
+        {
             //for value objects we can also use owned entity types with json, we can store a value type in a json format in a single column
             modelBuilder.Entity<Profile>(entity =>
             {
+                entity.ToTable("Profiles");
                 entity.HasKey(p => p.Id);
                 //alternateKey has unique values, can be used as fk from other tables
                 entity.HasAlternateKey(p => p.LastName);
@@ -119,45 +131,67 @@ namespace OGCP.Curriculum.API.repositories
                 //This shadow property is not defined in our Language entity domain class
                 //Indexer properties will be used to create the join table in this many to many relationship
                 entity.HasMany(p => p.LanguagesSpoken)
-                    .WithMany();
+                    .WithMany()
+                    .UsingEntity<Dictionary<string, object>>(
+                        "ProfileLanguages",
+                        j => j.HasOne<Language>()
+                            .WithMany()
+                            .HasForeignKey("LanguageId")
+                            .OnDelete(DeleteBehavior.Cascade),
+                        j => j.HasOne<Profile>()
+                            .WithMany()
+                            .HasForeignKey("ProfileId")
+                            .OnDelete(DeleteBehavior.Cascade)
+                        );
             });
 
             modelBuilder.Entity<QualifiedProfile>(entity =>
             {
+                entity.ToTable("Profiles");
                 entity.Property(p => p.DesiredJobRole)
                     .HasMaxLength(200)
                     .IsRequired(false);
 
-                entity.HasMany(p => p.Educations) // Access the collection from `EducationList`
-                      .WithMany(); // Assuming `QualifiedProfiles` exists in `Education`
-                                   //.UsingEntity<Dictionary<string, object>>(
-                                   //    "QualifiedProfileEducation",
-                                   //    j => j.HasOne<Education>()
-                                   //          .WithMany()
-                                   //          .HasForeignKey("EducationId"),
-                                   //    j => j.HasOne<QualifiedProfile>()
-                                   //          .WithMany()
-                                   //          .HasForeignKey("QualifiedProfileId"));
-                entity.HasMany(p => p.Experiences)
-                    .WithOne();
+                entity.HasMany(p => p.Educations)
+                    .WithMany()
+                    .UsingEntity<Dictionary<string, object>>(
+                        "ProfileEducations",
+                        j => j.HasOne<Education>()
+                            .WithMany()
+                            .HasForeignKey("EducationId")
+                            .OnDelete(DeleteBehavior.Cascade),
+                        j => j.HasOne<QualifiedProfile>()
+                            .WithMany()
+                            .HasForeignKey("ProfileId")
+                            .OnDelete(DeleteBehavior.Cascade)
+                    );
 
+                entity.HasMany(p => p.Experiences)
+                    .WithOne()
+                    .HasForeignKey("ProfileId")// We need to define fk to avoid adding aditional fk
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<GeneralProfile>(entity =>
             {
+                entity.ToTable("Profiles");
+
                 entity.Property(e => e.PersonalGoals)
                     .HasConversion(
                         goals => string.Join(",", goals),
                         goals => goals.Split(",", StringSplitOptions.RemoveEmptyEntries)
                     )
                     .Metadata.SetValueComparer(stringArrayComparer);
-
                 entity.HasMany(p => p.Experiences)
-                    .WithOne();
+                    .WithOne() 
+                    .HasForeignKey("ProfileId") // We need to define fk to avoid adding aditional fk
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<StudentProfile>(entity =>
             {
+                entity.ToTable("Profiles");
+
                 entity.Property(p => p.CareerGoals)
                     .IsRequired(false);
 
@@ -165,14 +199,31 @@ namespace OGCP.Curriculum.API.repositories
                     .IsRequired(false);
 
                 entity.HasMany(p => p.Educations)
-                    .WithMany();
-
+                    .WithMany()
+                    .UsingEntity<Dictionary<string, object>>(
+                        "ProfileEducations",
+                        j => j.HasOne<ResearchEducation>()
+                            .WithMany()
+                            .HasForeignKey("EducationId")
+                            .OnDelete(DeleteBehavior.Cascade),
+                        j => j.HasOne<StudentProfile>()
+                            .WithMany()
+                            .HasForeignKey("ProfileId")
+                            .OnDelete(DeleteBehavior.Cascade)
+                    );
                 entity.HasMany(p => p.Experiences)
-                    .WithOne();
+                    .WithOne()
+                    .HasForeignKey("ProfileId") // We need to define fk to avoid adding aditional fk
+                    .OnDelete(DeleteBehavior.Cascade);
             });
+        }
 
+        private void AddLanguageModel(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Language>(entity =>
             {
+                entity.ToTable("Languages");
+                entity.HasKey(p => p.Id);
                 //In a system where you synchronize user profiles between databases, you can compare the checksum values to quickly identify records that need updates.
                 //You can validate the integrity of user data during migrations or imports by ensuring that the checksum matches the recalculated value based on the migrated columns.
                 //Auditing: In scenarios where you need to detect unauthorized or accidental changes to critical fields, the checksum can serve as an additional layer of protection.
@@ -180,58 +231,31 @@ namespace OGCP.Curriculum.API.repositories
                     .HasComputedColumnSql("CONVERT(VARBINARY(1024),CHECKSUM([Name],[Level]))");
                 entity.Property(p => p.Name)
                     .HasConversion<string>();
-                    //.HasDefaultValue(Languages.Spanish.ToString());
 
                 entity.Property(p => p.Level)
                     .HasConversion<string>();
-                    //.HasDefaultValue(ProficiencyLevel.Beginner.ToString());
-                entity.HasKey(p => p.Id);
             });
+        }
 
-            modelBuilder.Entity<JobExperience>(entity =>
-            {
-                entity.HasKey(p => p.Id);
-                entity.Property(p => p.Company)
-                    .IsRequired();
-                entity.Property(p => p.StartDate)
-                    .IsRequired();
-                entity.Property(p => p.EndDate)
-                    .IsRequired(false);
-                entity.Property(p => p.Description)
-                    .IsRequired(false);
-            });
-
-            modelBuilder.Entity<InternshipExperience>(entity =>
-            {
-                entity.Property(p => p.Role)
-                    .IsRequired();
-            });
-
-
-            modelBuilder.Entity<WorkExperience>(entity =>
-            {
-                entity.Property(p => p.Position)
-                    .IsRequired();
-            });
-
-            //modelBuilder.Entity<Education>()
-            //    .HasDiscriminator<string>("EducationType")
-            //    .HasValue<Education>("BaseEducation")
-            //    .HasValue<DegreeEducation>("DegreeEducation")
-            //    .HasValue<ResearchEducation>("ResearchEducation");
-
+        private void AddEducationModeling(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Education>(entity =>
             {
+                entity.ToTable("Educations");
+
                 entity.HasKey(p => p.Id);
+                
                 entity.Property(p => p.StartDate)
                     .IsRequired();
+
                 entity.Property(p => p.EndDate)
                     .IsRequired(false);
-                entity.HasKey(p => p.Id);
+
                 entity.Property(p => p.Institution)
                     .HasMaxLength(200)
                     .IsRequired();
-                entity.HasDiscriminator<string>("EducationType")
+
+                entity.HasDiscriminator<string>("Discriminator")
                     .HasValue<Education>("BaseEducation")
                     .HasValue<DegreeEducation>("DegreeEducation")
                     .HasValue<ResearchEducation>("ResearchEducation");
@@ -239,12 +263,16 @@ namespace OGCP.Curriculum.API.repositories
 
             modelBuilder.Entity<DegreeEducation>(entity =>
             {
+                entity.ToTable("Educations");
+
                 entity.Property(p => p.Degree)
                     .HasConversion<string>();
             });
 
             modelBuilder.Entity<ResearchEducation>(entity =>
             {
+                entity.ToTable("Educations");
+
                 entity.Property(p => p.ProjectTitle)
                     .IsRequired();
                 entity.Property(p => p.Supervisor)
@@ -252,15 +280,10 @@ namespace OGCP.Curriculum.API.repositories
                 entity.Property(p => p.Summary)
                     .IsRequired();
             });
+        }
 
-            modelBuilder.Entity<DetailInfo>(entity =>
-            {
-                entity.HasKey(p => p.Id);
-                entity.Property(p => p.Phone)
-                    .HasMaxLength(20);
-                entity.Property(p => p.Emails)
-                    .IsRequired();
-            });
+        private void AddPropertyBags(ModelBuilder modelBuilder)
+        {
 
             //We do not need to map this to an CLR class
             //Easy to add metadata without modifying database schema
@@ -269,7 +292,7 @@ namespace OGCP.Curriculum.API.repositories
             //In a many to many relationship we create a property bag, witout creating the intermediate join class.
             //We could create a json object in settings.json to setup this property bag based on the json key/values
             modelBuilder.SharedTypeEntity<Dictionary<string, object>>(
-                "Certification",
+                "Certifications",
                 entity =>
                 {
                     entity.Property<int>("Id");
@@ -280,10 +303,57 @@ namespace OGCP.Curriculum.API.repositories
                     entity.Property<DateTime?>("ExpirationDate");
                     entity.Property<string>("Description");
                 });
-
-
-            base.OnModelCreating(modelBuilder);
         }
+
+        private void AddJobExperienceModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<JobExperience>(entity =>
+            {
+                entity.ToTable("JobExperiences");
+                entity.HasKey(p => p.Id);
+                entity.Property(p => p.Company)
+                    .IsRequired();
+                entity.Property(p => p.StartDate)
+                    .IsRequired();
+                entity.Property(p => p.EndDate)
+                    .IsRequired(false);
+                entity.Property(p => p.Description)
+                    .IsRequired(false);
+
+                entity.HasDiscriminator<string>("Discriminator")
+                    .HasValue("InternshipExperience")
+                    .HasValue("WorkExperience");
+            });
+
+            modelBuilder.Entity<InternshipExperience>(entity =>
+            {
+                entity.ToTable("JobExperiences");
+                entity.Property(p => p.Role)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<WorkExperience>(entity =>
+            {
+                entity.ToTable("JobExperiences");
+                entity.Property(p => p.Position)
+                    .IsRequired();
+            });
+        }
+
+        private void AddDetailInfo(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DetailInfo>(entity =>
+            {
+                entity.ToTable("DetailInfos");
+
+                entity.HasKey(p => p.Id);
+                entity.Property(p => p.Phone)
+                    .HasMaxLength(20);
+                entity.Property(p => p.Emails)
+                    .IsRequired();
+            });
+        }
+
         //FLUENT API
         //Can be complex to setup
         //Keeps code clean

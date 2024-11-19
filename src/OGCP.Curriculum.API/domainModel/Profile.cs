@@ -31,8 +31,8 @@ public class Profile : IProfile
 
     public Profile(string firstName, string lastName, string summary)
     {
-        this._firstName = firstName;
-        this._lastName = lastName;
+        this._firstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
+        this._lastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
         this._summary = summary;
         this._isPublic = true;
         this._visibility = string.Empty;
@@ -52,9 +52,15 @@ public class Profile : IProfile
     public DateTime UpdatedAt => _updatedAt;
     public DetailInfo PersonalInfo => _personalInfo;
     public List<Language> LanguagesSpoken => _languagesSpoken;
+    
     public virtual Result AddLanguage(Language language)
     {
         if (language == null) return Result.Failure("");
+
+        if (_languagesSpoken.Any(l => l.Name.Equals(language.Name)))
+        {
+            return Result.Failure($"{language.Name} can not be added twice");
+        }
 
         _languagesSpoken.Add(language);
         UpdateTimestamp();
@@ -68,8 +74,8 @@ public class Profile : IProfile
 
 public interface IQualifiedProfile
 {
-    public void AddEducation(Education education);
-    public void AddJobExperience(JobExperience experience);
+    public Result AddEducation(Education education);
+    public Result AddJobExperience(JobExperience experience);
 }
 
 public class QualifiedProfile : Profile, IQualifiedProfile
@@ -87,6 +93,7 @@ public class QualifiedProfile : Profile, IQualifiedProfile
     {
         _desiredJobRole = desiredJobRole;
         this._educations = new List<Education>();
+        _experiences = new List<JobExperience>();
     }
 
     public string DesiredJobRole => _desiredJobRole;
@@ -103,45 +110,49 @@ public class QualifiedProfile : Profile, IQualifiedProfile
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {
-            return new Error("InvalidFirstName", "First name is required.");
+            return new Error("First name is required.", "InvalidFirstName");
         }
 
         if (string.IsNullOrWhiteSpace(lastName))
         {
-            return new Error("InvalidLastName", "Last name is required.");
-        }
-
-        if (string.IsNullOrWhiteSpace(summary))
-        {
-            return new Error("InvalidSummary", "Summary is required.");
+            return new Error("Last name is required.", "InvalidLastName");
         }
 
         if (string.IsNullOrWhiteSpace(desiredJobRole))
         {
-            return new Error("InvalidDesiredJobRole", "Desired job role is required.");
+            return new Error("Desired job role is required.", "InvalidDesiredJobRole");
         }
 
         return new QualifiedProfile(firstName, lastName, summary, desiredJobRole);
     }
 
-    public void AddEducation(Education education)
+    public Result AddEducation(Education education)
     {
         if (education == null)
         {
             throw new ArgumentNullException(nameof(education), "Education cannot be null.");
         }
 
+        if (_educations.Any(e => e.IsEquivalent(education)))
+        {
+            return Result.Failure("This education can not be added twice");
+        }
+
         _educations.Add(education);
+
+        return Result.Success();
     }
 
-    public void AddJobExperience(JobExperience workExperience)
+    public Result AddJobExperience(JobExperience workExperience)
     {
-        if (workExperience == null)
+        if (this.Experiences.Any(e => e.IsEquivalent(workExperience)))
         {
-            throw new ArgumentNullException(nameof(workExperience), "Job experience cannot be null.");
+            return Result.Failure("This work experience can not be added twice");
         }
 
         this._experiences.Add(workExperience);
+
+        return Result.Success();
     }
 }
 

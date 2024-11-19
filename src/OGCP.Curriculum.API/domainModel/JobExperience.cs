@@ -3,54 +3,25 @@ using ArtForAll.Shared.ErrorHandler;
 
 namespace OGCP.Curriculum.API.domainmodel;
 
-public class JobExperience
+public abstract class JobExperience
 {
-    protected JobExperience()
-    {
-        
-    }
-    protected JobExperience(string company, DateTime startDate, DateTime? endDate, string description)
+    // Properties
+    public int Id { get; protected set; }
+    public string Company { get; protected set; }
+    public DateTime StartDate { get; protected set; }
+    public DateTime? EndDate { get; protected set; }
+    public string Description { get; protected set; }
+    public abstract bool IsEquivalent(JobExperience jobExperience);
+}
+
+public class InternshipExperience : JobExperience
+{
+    private InternshipExperience(string company, DateTime startDate, DateTime? endDate, string description, string role)
     {
         Company = company;
         StartDate = startDate;
         EndDate = endDate;
         Description = description;
-    }
-
-    // Properties
-    public int Id { get; private set; }
-    public string Company { get; private set; }
-    public DateTime StartDate { get; private set; }
-    public DateTime? EndDate { get; private set; }
-    public string Description { get; private set; }
-
-    // Static factory method
-    public static Result<JobExperience, Error> Create(string company, DateTime startDate, DateTime? endDate, string description)
-    {
-        // Validations
-        if (string.IsNullOrWhiteSpace(company))
-            return new Error("Company", "Company name is required.");
-
-        if (startDate == default)
-            return new Error("StartDate", "Start date must be a valid date.");
-
-        if (endDate.HasValue && endDate.Value < startDate)
-            return new Error("EndDate", "End date cannot be earlier than start date.");
-
-        if (string.IsNullOrWhiteSpace(description))
-            return new Error("Description", "Description is required.");
-
-        // Create and return the result
-        return new JobExperience(company, startDate, endDate, description);
-    }
-}
-
-
-public class InternshipExperience : JobExperience
-{
-    private InternshipExperience(string company, DateTime startDate, DateTime? endDate, string description, string role)
-        : base(company, startDate, endDate, description)
-    {
         Role = role;
     }
 
@@ -79,13 +50,28 @@ public class InternshipExperience : JobExperience
         // Create and return the result
         return new InternshipExperience(company, startDate, endDate, description, role);
     }
+
+    public override bool IsEquivalent(JobExperience jobExperience)
+    {
+        if (jobExperience is InternshipExperience workExp)
+        {
+            return this.Company.Equals(workExp.Company)
+                && this.StartDate.Equals(workExp.StartDate)
+                && this.EndDate.Equals(workExp.EndDate);
+        }
+
+        return false;
+    }
 }
 
 public class WorkExperience : JobExperience
 {
     private WorkExperience(string company, DateTime startDate, DateTime? endDate, string description, string position)
-        : base(company, startDate, endDate, description)
     {
+        Company = company;
+        StartDate = startDate;
+        EndDate = endDate;
+        Description = description;
         Position = position;
     }
 
@@ -113,5 +99,24 @@ public class WorkExperience : JobExperience
 
         // Create and return the result
         return new WorkExperience(company, startDate, endDate, description, position);
+    }
+
+    public override bool IsEquivalent(JobExperience jobExperience)
+    {
+        if (jobExperience is InternshipExperience internship)
+        {
+            return this.Company.Equals(internship.Company)
+                && this.StartDate.Equals(internship.StartDate)
+                && this.EndDate.Equals(internship.EndDate);
+        }
+
+        if (jobExperience is WorkExperience workExp)
+        {
+            return this.Company.Equals(workExp.Company)
+                && this.StartDate.Equals(workExp.StartDate)
+                && this.EndDate.Equals(workExp.EndDate);
+        }
+
+        return false;
     }
 }

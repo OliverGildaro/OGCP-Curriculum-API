@@ -25,7 +25,7 @@ public class StudentProfileService : IStudentProfileService
         }
 
         (string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary ) = request;
-        ResearchEducation education = new ResearchEducation(institution, startDate, endDate, projectTitle, supervisor, summary);
+        ResearchEducation education = ResearchEducation.Create(institution, startDate, endDate, projectTitle, supervisor, summary).Value;
 
         profile.AddEducation(education);
 
