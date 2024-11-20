@@ -23,7 +23,8 @@ public class GeneralProfileService : IGeneralProfileService
         Language language = Language.Create(languageRequest.Name, languageRequest.Level);
         Result result = profile.AddLanguage(language);
 
-        return await repository.SaveChanges();
+        var resultSave = await repository.SaveChanges();
+        return Result.Success();
     }
 
     private Expression<Func<GeneralProfile, object>>[] GetQueryExpression()
@@ -36,7 +37,7 @@ public class GeneralProfileService : IGeneralProfileService
         ];
     }
 
-    public Task<Result> Create(GeneralProfile request)
+    public Task<int> Create(GeneralProfile request)
     {
 
         var result = this.repository.Add(request);
@@ -46,7 +47,7 @@ public class GeneralProfileService : IGeneralProfileService
             throw new ArgumentException();
         }
 
-        return this.repository.SaveChanges();
+        return repository.SaveChanges();
     }
 
     public Task<IEnumerable<GeneralProfile>> Get()

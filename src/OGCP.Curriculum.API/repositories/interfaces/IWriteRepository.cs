@@ -6,5 +6,5 @@ public interface IWriteRepository<TEntity>
     where TEntity : class
 {
     Result Add(TEntity entity);
-    Task<Result> SaveChanges();
+    Task<int> SaveChanges();
 }

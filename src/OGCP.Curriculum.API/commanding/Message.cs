@@ -11,14 +11,14 @@ namespace OGCP.Curriculum.API.commanding
         {
             this.provider = provider;
         }
-        public Result DIspatch(ICommand command)
+        public async Task<Result> DIspatch(ICommand command)
         {
             Type type = typeof(ICommandHandler<,>);
             Type[] args = { command.GetType(), typeof(Result) };
             Type genericType = type.MakeGenericType(args);
             
             dynamic handler = provider.GetService(genericType);
-            return handler.HandleAsync((dynamic)command);
+            return await handler.HandleAsync((dynamic)command);
         }
     }
 }

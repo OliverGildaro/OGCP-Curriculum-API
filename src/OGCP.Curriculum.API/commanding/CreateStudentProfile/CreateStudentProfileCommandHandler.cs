@@ -1,6 +1,5 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
 using ArtForAll.Shared.ErrorHandler;
-using Azure.Core;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
 
@@ -19,6 +18,8 @@ public class CreateStudentProfileCommandHandler : ICommandHandler<CreateStudentP
     {
         (string firstName, string lastName, string summary, string major, string careerGoals) = command;
         var studentProfile = StudentProfile.Create(firstName, lastName, summary, major, careerGoals);
-        return await this.profileService.Create(studentProfile.Value);
+        var asa = await this.profileService.Create(studentProfile.Value);
+
+        return Result.Success();
     }
 }

@@ -14,11 +14,13 @@ namespace OGCP.Curriculum.API.commanding.CreateGeneralProfile
         {
             this.profileService = profileService;
         }
-        public Task<Result> HandleAsync(CreateGeneralProfileCommand command)
+        public async Task<Result> HandleAsync(CreateGeneralProfileCommand command)
         {
             (string firstName, string lastName, string summary, string[] personalGoals) = command;
             var generalProfile = GeneralProfile.Create(firstName, lastName, summary, personalGoals);
-            return this.profileService.Create(generalProfile.Value);
+            var asa = await this.profileService.Create(generalProfile.Value);
+
+            return Result.Success();
         }
     }
 }

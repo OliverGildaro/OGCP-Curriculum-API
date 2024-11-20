@@ -55,24 +55,24 @@ public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntit
         return query.FirstOrDefaultAsync(entity => EF.Property<TEntityId>(entity, "Id").Equals(id));
     }
 
-    public async Task<Result> SaveChanges()
+    public Task<int> SaveChanges()
     {
         try
         {
             //SaveChanges() method calls tge DetectChanges internally
             //So only after DetectChanges() is called the entities has state updated
             //this.context.ChangeTracker.DetectChanges();
-            var isSaved = await this.context.SaveChangesAsync();
-            if (isSaved is > 0)
-            {
-                return Result.Success();
-            }
+            return this.context.SaveChangesAsync();
+            //if (isSaved is > 0)
+            //{
+            //    return Result.Success();
+            //}
 
-            return Result.Failure("");
+            //return Result.Failure("");
         }
         catch (Exception ex)
         {
-            return Result.Failure("");
+            return Task.FromResult(-1);
         }
     }
 }

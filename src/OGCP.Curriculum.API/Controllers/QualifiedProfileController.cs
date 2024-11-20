@@ -5,6 +5,7 @@ using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.CreateQualifiedProfile;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.dtos.requests;
+using OGCP.Curriculum.API.factories;
 using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.Controllers;
@@ -39,25 +40,10 @@ public class QualifiedProfileController : Controller
 
     [HttpPost]
     [Consumes("application/json")]
-    public IActionResult CreateProfile([FromBody] ProfileRequest profileRequest)
+    public async Task<IActionResult> CreateProfile([FromBody] ProfileRequest profileRequest)
     {
-        ICommand assd = new CreateQualifiedProfileCommand
-        {
-            FirstName = profileRequest.FirstName,
-            LastName = profileRequest.LastName,
-            RequestType = profileRequest.RequestType,
-            Summary = profileRequest.Summary,
-        };
-
-        //ICommand assd = new CreateGeneralProfileCommand
-        //{
-        //    FirstName = profileRequest.FirstName,
-        //    LastName = profileRequest.LastName,
-        //    RequestType = profileRequest.RequestType,
-        //    Summary = profileRequest.Summary,
-        //};
-
-        this.message.DIspatch(assd);
+        var command = ProfileFactory.Get(profileRequest);
+        await this.message.DIspatch(command);
         return Ok();
     }
 

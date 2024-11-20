@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.CreateGeneralProfile;
 using OGCP.Curriculum.API.commanding.CreateQualifiedProfile;
+using OGCP.Curriculum.API.commanding.CreateStudentProfile;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.dtos.requests;
@@ -63,6 +64,7 @@ builder.Services.AddScoped<IStudentProfileRepository, StudentProfileRepository>(
 builder.Services.AddScoped<IQualifiedProfileRepository, QualifiedProfileRepository>();
 builder.Services.AddScoped<ICommandHandler<CreateGeneralProfileCommand, Result>, CreateGeneralProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<CreateQualifiedProfileCommand, Result>, CreateQualifiedProfileCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<CreateStudentProfileCommand, Result>, CreateStudentProfileCommandHandler>();
 builder.Services.AddScoped<Message>();
 
 var app = builder.Build();

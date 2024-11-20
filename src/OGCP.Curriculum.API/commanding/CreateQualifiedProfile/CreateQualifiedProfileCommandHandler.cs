@@ -14,11 +14,13 @@ namespace OGCP.Curriculum.API.commanding.CreateQualifiedProfile
         {
             this.profileService = profileService;
         }
-        public Task<Result> HandleAsync(CreateQualifiedProfileCommand command)
+        public async Task<Result> HandleAsync(CreateQualifiedProfileCommand command)
         {
             (string firstName, string lastName, string summary, string desiredJobRole) = command;
             var qualified = QualifiedProfile.Create(firstName, lastName, summary, desiredJobRole);
-            return this.profileService.Create(qualified.Value);
+            var asa = await this.profileService.Create(qualified.Value);
+
+            return Result.Success();
         }
     }
 }

@@ -2,13 +2,13 @@
 using OGCP.Curriculum.API.commanding.CreateGeneralProfile;
 using OGCP.Curriculum.API.commanding.CreateQualifiedProfile;
 using OGCP.Curriculum.API.commanding.CreateStudentProfile;
-using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
+
 namespace OGCP.Curriculum.API.factories;
 
 public class ProfileFactory
 {
-    public ICommand Get(ProfileRequest request)
+    public static ICommand Get(ProfileRequest request)
     {
         if (request is CreateGeneralProfileRequest generalRequest)
         {

@@ -30,7 +30,8 @@ public class StudentProfileService : IStudentProfileService
 
         profile.AddEducation(education);
 
-        return await this.repository.SaveChanges();
+        var result = await this.repository.SaveChanges();
+        return Result.Success();
     }
 
     public async Task<Result> AddLanguage(int id, CreateLanguageRequest languageRequest)
@@ -40,10 +41,11 @@ public class StudentProfileService : IStudentProfileService
         Language language = Language.Create(languageRequest.Name, languageRequest.Level);
         Result result = profile.AddLanguage(language);
 
-        return await repository.SaveChanges();
+        var resultSave = await repository.SaveChanges();
+        return Result.Success();
     }
 
-    public Task<Result> Create(StudentProfile request)
+    public Task<int> Create(StudentProfile request)
     {
         this.repository.Add(request);
         return this.repository.SaveChanges();
