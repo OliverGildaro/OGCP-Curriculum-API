@@ -1,16 +1,16 @@
-﻿using ArtForAll.Shared.Contracts.CQRS;
-using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
-using OGCP.Curriculum.API.commanding.CreateQualifiedProfile;
+using OGCP.Curriculum.API.commanding.AddLanguageToProfile;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.factories;
 using OGCP.Curriculum.API.services.interfaces;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace OGCP.Curriculum.API.Controllers;
 
-[Route("api/v1/profiles/qualified")]
+[Route("api/v1/profiles")]
 [EnableCors("AllowSpecificOrigins")]
 [Produces("application/json")]
 public class QualifiedProfileController : Controller
@@ -49,11 +49,18 @@ public class QualifiedProfileController : Controller
 
     [HttpPut("{id}/languages")]
     [ProducesResponseType(203)]
-    public IActionResult AddLanguageToProfile(int id, [FromBody] CreateLanguageRequest request)
+    public async Task<IActionResult> AddLanguageToProfile(int id, [FromBody] CreateLanguageRequest request)
     {
         try
         {
-            this.service.AddLanguage(id, request);
+            var command = new AddLangueToProfileCommand
+            {
+                Id = id,
+                Level = request.Level,
+                Name = request.Name,
+            };
+
+            await this.message.DIspatch(command);
 
             return NoContent();
         }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.interfaces;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OGCP.Curriculum.API.repositories;
 
@@ -53,6 +54,12 @@ public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntit
         }
 
         return query.FirstOrDefaultAsync(entity => EF.Property<TEntityId>(entity, "Id").Equals(id));
+    }
+
+    public Task<TEntity> Find(TEntityId id)
+    {
+        return this.context.Set<TEntity>()
+            .FirstOrDefaultAsync(p => p.Id.Equals(id));
     }
 
     public Task<int> SaveChanges()

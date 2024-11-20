@@ -3,6 +3,7 @@ using ArtForAll.Shared.ErrorHandler;
 using JsonSubTypes;
 using Microsoft.EntityFrameworkCore;
 using OGCP.Curriculum.API.commanding;
+using OGCP.Curriculum.API.commanding.AddLanguageToProfile;
 using OGCP.Curriculum.API.commanding.CreateGeneralProfile;
 using OGCP.Curriculum.API.commanding.CreateQualifiedProfile;
 using OGCP.Curriculum.API.commanding.CreateStudentProfile;
@@ -59,12 +60,15 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddScoped<IStudentProfileService, StudentProfileService>();
 builder.Services.AddScoped<IQualifiedProfileService, QualifiedProfileService>();
 builder.Services.AddScoped<IGeneralProfileService, GeneralProfileService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IGeneralProfileRepository, GeneralProfileRepository>();
 builder.Services.AddScoped<IStudentProfileRepository, StudentProfileRepository>();
 builder.Services.AddScoped<IQualifiedProfileRepository, QualifiedProfileRepository>();
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<ICommandHandler<CreateGeneralProfileCommand, Result>, CreateGeneralProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<CreateQualifiedProfileCommand, Result>, CreateQualifiedProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<CreateStudentProfileCommand, Result>, CreateStudentProfileCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
 builder.Services.AddScoped<Message>();
 
 var app = builder.Build();

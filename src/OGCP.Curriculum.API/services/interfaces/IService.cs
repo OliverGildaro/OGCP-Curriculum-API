@@ -1,6 +1,4 @@
-﻿using ArtForAll.Shared.ErrorHandler;
-
-namespace OGCP.Curriculum.API.services.interfaces;
+﻿namespace OGCP.Curriculum.API.services.interfaces;
 
 public interface IService<TEntity, TEntityId>
     where TEntity : class
