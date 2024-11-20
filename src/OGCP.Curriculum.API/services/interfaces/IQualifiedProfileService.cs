@@ -8,6 +8,5 @@ namespace OGCP.Curriculum.API.services.interfaces
     {
         Task<Result> AddEducation(int id, CreateDegreeEducationRequest request);
         Task<Result> AddJobExperience<T>(int id, T request);
-        Task<Result> AddLanguage(int id, CreateLanguageRequest languageRequest);
     }
 }

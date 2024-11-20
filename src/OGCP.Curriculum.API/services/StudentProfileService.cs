@@ -34,17 +34,6 @@ public class StudentProfileService : IStudentProfileService
         return Result.Success();
     }
 
-    public async Task<Result> AddLanguage(int id, CreateLanguageRequest languageRequest)
-    {
-        StudentProfile profile = await this.repository.Find(id, GetQueryExpression());
-
-        Language language = Language.Create(languageRequest.Name, languageRequest.Level);
-        Result result = profile.AddLanguage(language);
-
-        var resultSave = await repository.SaveChanges();
-        return Result.Success();
-    }
-
     public Task<int> Create(StudentProfile request)
     {
         this.repository.Add(request);

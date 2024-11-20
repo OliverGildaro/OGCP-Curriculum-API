@@ -16,17 +16,6 @@ public class GeneralProfileService : IGeneralProfileService
         this.repository = repository;
     }
 
-    public async Task<Result> AddLanguage(int id, CreateLanguageRequest languageRequest)
-    {
-        GeneralProfile profile = await this.repository.Find(id, GetQueryExpression());
-
-        Language language = Language.Create(languageRequest.Name, languageRequest.Level);
-        Result result = profile.AddLanguage(language);
-
-        var resultSave = await repository.SaveChanges();
-        return Result.Success();
-    }
-
     private Expression<Func<GeneralProfile, object>>[] GetQueryExpression()
     {
         return

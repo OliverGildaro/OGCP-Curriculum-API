@@ -6,7 +6,6 @@ using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.factories;
 using OGCP.Curriculum.API.services.interfaces;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace OGCP.Curriculum.API.Controllers;
 

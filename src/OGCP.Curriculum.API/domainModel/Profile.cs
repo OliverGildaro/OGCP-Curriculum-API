@@ -67,8 +67,6 @@ public class Profile : IProfile
         {
             var index = LanguagesSpoken.IndexOf(currentLanguage);
             LanguagesSpoken[index] = language;
-            //currentLanguage = language;
-            //currentLanguage.UpdateProficiencyLevel(language.Level);
         } else
         {
             this._languagesSpoken.Add(language);

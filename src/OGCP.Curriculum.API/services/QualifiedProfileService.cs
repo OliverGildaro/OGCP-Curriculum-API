@@ -45,16 +45,6 @@ public class QualifiedProfileService : IQualifiedProfileService
 
     }
 
-    public async Task<Result> AddLanguage(int id, CreateLanguageRequest languageRequest)
-    {
-        QualifiedProfile profile = await this.repository.Find(id, GetQueryExpression());
-
-        Language language = Language.Create(languageRequest.Name, languageRequest.Level);
-        Result result = profile.AddLanguage(language);
-        var resultSave = await repository.SaveChanges();
-        return Result.Success();
-    }
-
     private Expression<Func<QualifiedProfile, object>>[] GetQueryExpression()
     {
         return new Expression<Func<QualifiedProfile, object>>[]
