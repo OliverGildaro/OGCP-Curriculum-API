@@ -2,6 +2,8 @@ using ArtForAll.Shared.Contracts.CQRS;
 using ArtForAll.Shared.ErrorHandler;
 using JsonSubTypes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.AddLanguageToProfile;
 using OGCP.Curriculum.API.commanding.CreateGeneralProfile;
@@ -12,6 +14,7 @@ using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.repositories;
 using OGCP.Curriculum.API.repositories.interfaces;
+using OGCP.Curriculum.API.repositories.utils;
 using OGCP.Curriculum.API.services;
 using OGCP.Curriculum.API.services.interfaces;
 
@@ -69,6 +72,12 @@ builder.Services.AddScoped<ICommandHandler<CreateGeneralProfileCommand, Result>,
 builder.Services.AddScoped<ICommandHandler<CreateQualifiedProfileCommand, Result>, CreateQualifiedProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<CreateStudentProfileCommand, Result>, CreateStudentProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
+builder.Services.AddScoped<DbProfileContext>();
+builder.Services.AddScoped(provider => new DbProfileContextConfig
+{
+    ConnectionString = builder.Configuration.GetConnectionString("conectionDb"),
+    UseConsoleLogger = true
+});
 builder.Services.AddScoped<Message>();
 
 var app = builder.Build();
@@ -83,5 +92,6 @@ app.UseCors("AllowSpecificOrigins");
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();

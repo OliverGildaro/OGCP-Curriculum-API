@@ -10,7 +10,7 @@ namespace OGCP.Curriculum.API.repositories;
 public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntity, TEntityId>
     where TEntity : class, IEntity<TEntityId>
 {
-    private DbContext context;
+    protected DbContext context;
 
     protected GenericRepository(DbContext context)
     {

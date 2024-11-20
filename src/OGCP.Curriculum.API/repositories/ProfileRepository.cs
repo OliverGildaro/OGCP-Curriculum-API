@@ -9,5 +9,11 @@ namespace OGCP.Curriculum.API.repositories
         public ProfileRepository(DbProfileContext context) : base(context)
         {
         }
+
+        public Task<Language?> FindLanguageByNameAndLevel(Languages name, ProficiencyLevel level)
+        {
+            return context.Set<Language>()
+                .FirstOrDefaultAsync(l => l.Name == name && l.Level == level);
+        }
     }
 }

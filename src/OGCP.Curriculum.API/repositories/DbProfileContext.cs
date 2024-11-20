@@ -35,23 +35,29 @@ namespace OGCP.Curriculum.API.repositories
     //6. Reset entity state info
     public class DbProfileContext : DbContext
     {
-
         //ValueComparer code helps Entity Framework Core track changes within string[]
         //Maybe value objects may help tp dp this calculation
         private ValueComparer<string[]> stringArrayComparer = new ValueComparer<string[]>(
             (c1, c2) => c1.SequenceEqual(c2),                // Compare two arrays for equality
             c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),  // Generate a hash code for the array
             c => c.ToArray());                               // Create a snapshot of the array
+        private DbProfileContextConfig config;
 
-        public DbProfileContext(DbContextOptions<DbProfileContext> dbContext)
-            : base(dbContext)
+        public DbProfileContext(DbProfileContextConfig config)
         {
-
+            this.config = config;
         }
+
+        //public DbProfileContext(DbContextOptions<DbProfileContext> dbContext)
+        //    : base(dbContext)
+        //{
+
+        //}
 
         public DbSet<QualifiedProfile> QualifiedProfiles { get; set; }
         public DbSet<GeneralProfile> GeneralProfiles { get; set; }
         public DbSet<StudentProfile> StudentProfiles { get; set; }
+        public DbSet<Language> Languages { get; set; }
         public virtual DbSet<Dictionary<string, object>> Certifications =>
                 Set<Dictionary<string, object>>("Certification");
 
@@ -61,6 +67,28 @@ namespace OGCP.Curriculum.API.repositories
                 .HaveConversion<EducationLevelConverter>();
 
             base.ConfigureConventions(configurationBuilder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder
+                    .AddFilter((category, level) =>
+                        category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information)
+                    .AddConsole();
+            });
+
+            optionsBuilder
+                .UseSqlServer(this.config.ConnectionString);
+                //.UseLazyLoadingProxies();//To enable lazy loading (Only writes, never reads)
+
+            if (this.config.UseConsoleLogger)
+            {
+                optionsBuilder
+                    .UseLoggerFactory(loggerFactory)
+                    .EnableSensitiveDataLogging();//Now we can see the sql query on the console for performance purposes
+            }
         }
 
         //DbContext maintain a snapshot for any new migration, compares with the previous ones

@@ -19,7 +19,18 @@ namespace OGCP.Curriculum.API.services
         {
             Profile profile = await this.repository.Find(id, this.GetQueryExpression());
 
-            var langAdded = profile.AddLanguage(language);
+            if (profile is null)
+            {
+
+            }
+            Language languageFound = await this.repository.FindLanguageByNameAndLevel(language.Name, language.Level);
+            var languageToAdd = languageFound ?? language;
+            var langAdded = profile.AddLanguage(languageToAdd);
+
+            if (langAdded.IsFailure)
+            {
+                return langAdded;
+            }
             await this.repository.SaveChanges();
             return langAdded;
         }
