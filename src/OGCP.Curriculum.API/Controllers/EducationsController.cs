@@ -3,6 +3,7 @@ using ArtForAll.Shared.ErrorHandler;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
+using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 using OGCP.Curriculum.API.factories;
 using OGCP.Curriculum.API.POCOS.requests;
 
@@ -26,7 +27,7 @@ namespace OGCP.Curriculum.API.Controllers
         {
             try
             {
-                ICommand command = EducationFactory.Get(request, id);
+                AddEducationToProfileCommand command = EducationFactory.Get(request, id);
                 Result sds = await this.message.DispatchCommand(command);
                 return NoContent();
             }

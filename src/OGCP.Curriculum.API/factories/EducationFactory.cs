@@ -10,7 +10,7 @@ namespace OGCP.Curriculum.API.factories;
 
 public class EducationFactory
 {
-    public static ICommand Get(AddEducationRequest request, int id)
+    public static AddEducationToProfileCommand Get(AddEducationRequest request, int id)
     {
         if (request is AddDegreeEducationRequest generalRequest)
         {
