@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
+using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.commanding.queries;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
@@ -73,6 +74,30 @@ public class QualifiedProfileController : Controller
             var command = new AddLangueToProfileCommand
             {
                 Id = id,
+                Level = request.Level,
+                Name = request.Name,
+            };
+
+            await this.message.DispatchCommand(command);
+
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest();
+        }
+    }
+
+    [HttpPut("{id}/languages/{languageId}")]
+    [ProducesResponseType(203)]
+    public async Task<IActionResult> EditLanguageFromProfile(int id, int languageId, [FromBody] EditLanguageRequest request)
+    {
+        try
+        {
+            var command = new EditLangueFromProfileCommand
+            {
+                Id = id,
+                LanguageId = languageId,
                 Level = request.Level,
                 Name = request.Name,
             };

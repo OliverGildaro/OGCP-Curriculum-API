@@ -40,6 +40,24 @@ namespace OGCP.Curriculum.API.services
             throw new NotImplementedException();
         }
 
+        public async Task<Result> EdiLanguage(int id, Language language)
+        {
+            Profile profile = await this.repository.Find(id, this.GetQueryExpression());
+
+            if (profile is null)
+            {
+                return Result.Failure($"The profile id: {id}, not found");
+            }
+            Result result = profile.EditLanguage(language);
+
+            if (result.IsFailure)
+            {
+                return result;
+            }
+            await this.repository.SaveChanges();
+            return result;
+        }
+
         public Task<IReadOnlyList<Profile>> Get()
         {
             return this.repository.Find();

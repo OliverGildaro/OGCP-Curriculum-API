@@ -4,11 +4,7 @@ using OGCP.Curriculum.API.domainmodel;
 
 namespace OGCP.Curriculum.API.dtos;
 
-public class CreateLanguageRequest
-{
-    public Languages Name { get; set; }
-    public ProficiencyLevel Level { get; set; }
-}
+
 
 public class PersonalInfoRequest
 {

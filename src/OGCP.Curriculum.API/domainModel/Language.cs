@@ -13,6 +13,12 @@ public class Language
         Level = level;
     }
 
+    public Language(Languages name, ProficiencyLevel level, int id)
+        :this(name, level)
+    {
+        Id = id;
+    }
+
     // Properties
     public int Id { get; private set; }
     public Languages Name { get; private set; }
@@ -22,6 +28,11 @@ public class Language
     public static Language Create(Languages name, ProficiencyLevel level)
     {
         return new Language(name, level);
+    }
+
+    public static Language Hidrate(Languages name, ProficiencyLevel level, int id)
+    {
+        return new Language(name, level, id);
     }
 
     // Domain method for updating proficiency level
@@ -34,5 +45,11 @@ public class Language
     {
         return this.Name.Equals(language.Name)
             && this.Level.Equals(language.Level);
+    }
+
+    internal void Update(Language language)
+    {
+        this.Name = language.Name;
+        this.Level = language.Level;
     }
 }

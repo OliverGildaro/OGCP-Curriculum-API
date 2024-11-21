@@ -1,6 +1,5 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
-using System.Linq;
 
 namespace OGCP.Curriculum.API.domainmodel;
 
@@ -56,21 +55,18 @@ public class Profile : IProfile
     
     public virtual Result AddLanguage(Language language)
     {
-        if (_languagesSpoken.Any(l => l.IsEquivalent(language)))
-        {
-            return Result.Failure($"{language.Name} can not be added twice");
-        }
+        //if (_languagesSpoken.Any(l => l.IsEquivalent(language)))
+        //{
+        //    return Result.Failure($"{language.Name} can not be added twice");
+        //}
 
         var currentLanguage = this.LanguagesSpoken.FirstOrDefault(l => l.Name == language.Name);
-
         if (currentLanguage != null)
         {
-            var index = LanguagesSpoken.IndexOf(currentLanguage);
-            LanguagesSpoken[index] = language;
-        } else
-        {
-            this._languagesSpoken.Add(language);
+            return Result.Failure($"Invalid operation: two same languages can not be added");
         }
+        
+        this._languagesSpoken.Add(language);
 
         UpdateTimestamp();
         return Result.Success();
@@ -79,6 +75,25 @@ public class Profile : IProfile
     private void UpdateTimestamp()
     {
         _updatedAt = DateTime.UtcNow;
+    }
+
+    internal Result EditLanguage(Language language)
+    {
+        if (this.LanguagesSpoken.Any(lang => lang.Id != language.Id && lang.Name == language.Name))
+        {
+            return Result.Failure($"Invalid operation: two same languages can not be added");
+        }
+
+        var languageToUpdate = this.LanguagesSpoken.FirstOrDefault(l => l.Id == language.Id);
+
+        if (languageToUpdate == null)
+        {
+            return Result.Failure($"A language with this id: {language.Id}, not found");
+        }
+
+        languageToUpdate.Update(language);
+        UpdateTimestamp();
+        return Result.Success();
     }
 }
 
@@ -138,18 +153,24 @@ public class QualifiedProfile : Profile, IQualifiedProfile
 
     public Result AddEducation(Education education)
     {
-        if (education == null)
+        if (_educations.Any(educ => educ.IsEquivalent(education)))
         {
-            throw new ArgumentNullException(nameof(education), "Education cannot be null.");
+            return Result.Failure($"{education.Institution} can not be added twice");
         }
 
-        if (_educations.Any(e => e.IsEquivalent(education)))
+        var currentLanguage = this._educations.FirstOrDefault(currentEduc => currentEduc == education);
+
+        if (currentLanguage != null)
         {
-            return Result.Failure("This education can not be added twice");
+            var index = _educations.IndexOf(currentLanguage);
+            _educations[index] = education;
+        }
+        else
+        {
+            this._educations.Add(education);
         }
 
-        _educations.Add(education);
-
+        //UpdateTimestamp();
         return Result.Success();
     }
 
