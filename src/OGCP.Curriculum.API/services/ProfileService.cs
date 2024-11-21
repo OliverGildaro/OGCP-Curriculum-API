@@ -40,9 +40,9 @@ namespace OGCP.Curriculum.API.services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Profile>> Get()
+        public Task<IReadOnlyList<Profile>> Get()
         {
-            throw new NotImplementedException();
+            return this.repository.Find();
         }
 
         public Task<Profile> Get(int id)

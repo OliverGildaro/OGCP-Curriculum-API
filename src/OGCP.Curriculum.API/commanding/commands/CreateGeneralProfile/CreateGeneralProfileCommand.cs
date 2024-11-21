@@ -2,7 +2,7 @@
 using ArtForAll.Shared.Contracts.CQRS;
 using OGCP.Curriculum.API.domainmodel;
 
-namespace OGCP.Curriculum.API.commanding.CreateGeneralProfile;
+namespace OGCP.Curriculum.API.commanding.commands.CreateGeneralProfile;
 
 public class CreateGeneralProfileCommand : ICommand
 {
@@ -14,9 +14,9 @@ public class CreateGeneralProfileCommand : ICommand
 
     public void Deconstruct(out string firstName, out string lastName, out string summary, out string[] personalGoals)
     {
-        firstName = this.FirstName;  // Assuming FirstName is a property in ProfileRequest
-        lastName = this.LastName;    // Assuming LastName is a property in ProfileRequest
-        summary = this.Summary;      // Assuming Summary is a property in ProfileRequest
-        personalGoals = this.PersonalGoals;
+        firstName = FirstName;  // Assuming FirstName is a property in ProfileRequest
+        lastName = LastName;    // Assuming LastName is a property in ProfileRequest
+        summary = Summary;      // Assuming Summary is a property in ProfileRequest
+        personalGoals = PersonalGoals;
     }
 }

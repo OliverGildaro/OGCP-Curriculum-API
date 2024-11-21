@@ -3,7 +3,7 @@ using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
 
-namespace OGCP.Curriculum.API.commanding.CreateStudentProfile;
+namespace OGCP.Curriculum.API.commanding.commands.CreateStudentProfile;
 
 public class CreateStudentProfileCommandHandler : ICommandHandler<CreateStudentProfileCommand, Result>
 {
@@ -18,7 +18,7 @@ public class CreateStudentProfileCommandHandler : ICommandHandler<CreateStudentP
     {
         (string firstName, string lastName, string summary, string major, string careerGoals) = command;
         var studentProfile = StudentProfile.Create(firstName, lastName, summary, major, careerGoals);
-        var asa = await this.profileService.Create(studentProfile.Value);
+        var asa = await profileService.Create(studentProfile.Value);
 
         return Result.Success();
     }

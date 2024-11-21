@@ -1,7 +1,7 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
 using OGCP.Curriculum.API.domainmodel;
 
-namespace OGCP.Curriculum.API.commanding.AddLanguageToProfile
+namespace OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile
 {
     public class AddLangueToProfileCommand : ICommand
     {

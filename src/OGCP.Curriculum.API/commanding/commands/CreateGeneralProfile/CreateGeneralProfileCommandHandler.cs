@@ -4,7 +4,7 @@ using Azure.Core;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
 
-namespace OGCP.Curriculum.API.commanding.CreateGeneralProfile
+namespace OGCP.Curriculum.API.commanding.commands.CreateGeneralProfile
 {
     public class CreateGeneralProfileCommandHandler : ICommandHandler<CreateGeneralProfileCommand, Result>
     {
@@ -18,7 +18,7 @@ namespace OGCP.Curriculum.API.commanding.CreateGeneralProfile
         {
             (string firstName, string lastName, string summary, string[] personalGoals) = command;
             var generalProfile = GeneralProfile.Create(firstName, lastName, summary, personalGoals);
-            var asa = await this.profileService.Create(generalProfile.Value);
+            var asa = await profileService.Create(generalProfile.Value);
 
             return Result.Success();
         }

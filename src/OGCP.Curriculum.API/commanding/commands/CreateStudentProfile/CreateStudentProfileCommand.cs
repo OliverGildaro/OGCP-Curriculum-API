@@ -1,6 +1,6 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
 
-namespace OGCP.Curriculum.API.commanding.CreateStudentProfile;
+namespace OGCP.Curriculum.API.commanding.commands.CreateStudentProfile;
 
 public class CreateStudentProfileCommand : ICommand
 {
@@ -12,10 +12,10 @@ public class CreateStudentProfileCommand : ICommand
 
     public void Deconstruct(out string firstName, out string lastName, out string summary, out string major, out string careerGoals)
     {
-        firstName = this.FirstName;  // Assuming FirstName is a property in ProfileRequest
-        lastName = this.LastName;    // Assuming LastName is a property in ProfileRequest
-        summary = this.Summary;      // Assuming Summary is a property in ProfileRequest
-        major = this.Major;
-        careerGoals = this.CareerGoals;
+        firstName = FirstName;  // Assuming FirstName is a property in ProfileRequest
+        lastName = LastName;    // Assuming LastName is a property in ProfileRequest
+        summary = Summary;      // Assuming Summary is a property in ProfileRequest
+        major = Major;
+        careerGoals = CareerGoals;
     }
 }

@@ -64,7 +64,7 @@ public class QualifiedProfileService : IQualifiedProfileService
         return this.repository.SaveChanges();
     }
 
-    public Task<IEnumerable<QualifiedProfile>> Get()
+    public Task<IReadOnlyList<QualifiedProfile>> Get()
     {
         return this.repository.Find();
     }

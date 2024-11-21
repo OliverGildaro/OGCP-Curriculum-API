@@ -4,7 +4,7 @@ using Azure.Core;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
 
-namespace OGCP.Curriculum.API.commanding.CreateQualifiedProfile
+namespace OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile
 {
     public class CreateQualifiedProfileCommandHandler : ICommandHandler<CreateQualifiedProfileCommand, Result>
     {
@@ -18,7 +18,7 @@ namespace OGCP.Curriculum.API.commanding.CreateQualifiedProfile
         {
             (string firstName, string lastName, string summary, string desiredJobRole) = command;
             var qualified = QualifiedProfile.Create(firstName, lastName, summary, desiredJobRole);
-            var asa = await this.profileService.Create(qualified.Value);
+            var asa = await profileService.Create(qualified.Value);
 
             return Result.Success();
         }

@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
-using OGCP.Curriculum.API.commanding.AddLanguageToProfile;
+using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
+using OGCP.Curriculum.API.commanding.queries;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.factories;
+using OGCP.Curriculum.API.POCOS.requests;
+using OGCP.Curriculum.API.POCOS.responses;
 using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.Controllers;
@@ -24,10 +28,24 @@ public class QualifiedProfileController : Controller
     }
 
     [HttpGet]
-    public IActionResult GetProfiles()
+    public async Task<IActionResult> GetProfiles()
     {
-        var profiles = this.service.Get();
+        var query = new GetProfilesQuery();
+        IReadOnlyList<Profile> profiles = await this.message.Dispatch(query);
+        IReadOnlyList<ProfileResponse> response = profiles.Select(p => GetProfileDto(p)).ToArray();
+        
         return Ok(profiles);
+    }
+
+    private ProfileResponse GetProfileDto(Profile p)
+    {
+        return new ProfileResponse
+        {
+            FirstName = p.FirstName,
+            LastName = p.LastName,
+            Summary = p.Summary,
+            Id = p.Id
+        };
     }
 
     [HttpGet("{id}")]

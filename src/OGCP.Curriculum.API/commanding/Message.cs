@@ -20,5 +20,18 @@ namespace OGCP.Curriculum.API.commanding
             dynamic handler = provider.GetService(genericType);
             return await handler.HandleAsync((dynamic)command);
         }
+
+        public async Task<T> Dispatch<T>(IQuery<T> query)
+        {
+            Type typeHandler = typeof(IQueryHandler<,>);
+            Type[] args = {query.GetType(), typeof(T) };
+            Type genericType = typeHandler.MakeGenericType(args);
+
+            dynamic handler = provider.GetService(genericType);
+
+            T result = await handler.Handle((dynamic)query);
+        
+            return result;
+        }
     }
 }

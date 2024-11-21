@@ -1,6 +1,4 @@
-﻿using ArtForAll.Shared.ErrorHandler;
-using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.dtos;
+﻿using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
 using System.Linq.Expressions;
@@ -39,7 +37,7 @@ public class GeneralProfileService : IGeneralProfileService
         return repository.SaveChanges();
     }
 
-    public Task<IEnumerable<GeneralProfile>> Get()
+    public Task<IReadOnlyList<GeneralProfile>> Get()
     {
         return this.repository.Find();
     }

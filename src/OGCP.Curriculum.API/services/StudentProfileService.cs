@@ -40,7 +40,7 @@ public class StudentProfileService : IStudentProfileService
         return this.repository.SaveChanges();
     }
 
-    public Task<IEnumerable<StudentProfile>> Get()
+    public Task<IReadOnlyList<StudentProfile>> Get()
     {
         return this.repository.Find();
     }

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.interfaces;
 using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OGCP.Curriculum.API.repositories;
 
@@ -36,7 +35,7 @@ public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntit
         }
     }
 
-    public async Task<IEnumerable<TEntity>> Find()
+    public async Task<IReadOnlyList<TEntity>> Find()
     {
         return await this.context.Set<TEntity>()
             .AsNoTracking()

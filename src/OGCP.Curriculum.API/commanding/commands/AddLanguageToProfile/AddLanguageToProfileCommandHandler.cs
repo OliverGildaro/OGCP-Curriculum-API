@@ -3,7 +3,7 @@ using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
 
-namespace OGCP.Curriculum.API.commanding.AddLanguageToProfile;
+namespace OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
 
 public class AddLanguageToProfileCommandHandler : ICommandHandler<AddLangueToProfileCommand, Result>
 {
@@ -17,6 +17,6 @@ public class AddLanguageToProfileCommandHandler : ICommandHandler<AddLangueToPro
     public Task<Result> HandleAsync(AddLangueToProfileCommand command)
     {
         var language = Language.Create(command.Name, command.Level);
-        return this.profileService.AddLangue(command.Id, language);
+        return profileService.AddLangue(command.Id, language);
     }
 }
