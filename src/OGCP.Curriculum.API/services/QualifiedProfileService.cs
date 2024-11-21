@@ -15,7 +15,7 @@ public class QualifiedProfileService : IQualifiedProfileService
         this.repository = repository;
     }
 
-    public async Task<Result> AddEducation(int id, DegreeEducation education)
+    public async Task<Result> AddEducation(int id, Education education)
     {
         QualifiedProfile profile = await this.repository.Find(id, GetQueryExpression());
         if (profile is null)

@@ -72,7 +72,7 @@ public class Profile : IProfile
         return Result.Success();
     }
 
-    private void UpdateTimestamp()
+    protected void UpdateTimestamp()
     {
         _updatedAt = DateTime.UtcNow;
     }
@@ -170,6 +170,19 @@ public class QualifiedProfile : Profile, IQualifiedProfile
     }
 
     public Result AddEducation(Education education)
+    {
+        if (_educations.Any(educ => educ.IsEquivalent(education)))
+        {
+            return Result.Failure($"{education.Institution} can not be added twice");
+        }
+
+        this._educations.Add(education);
+
+        UpdateTimestamp();
+        return Result.Success();
+    }
+
+    public Result EditEducation(Education education)
     {
         if (_educations.Any(educ => educ.IsEquivalent(education)))
         {

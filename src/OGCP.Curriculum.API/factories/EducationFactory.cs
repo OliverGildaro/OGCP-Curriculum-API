@@ -1,6 +1,6 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
 using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
-using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
+//using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
 using OGCP.Curriculum.API.commanding.commands.CreateGeneralProfile;
 using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
 using OGCP.Curriculum.API.commanding.commands.CreateStudentProfile;

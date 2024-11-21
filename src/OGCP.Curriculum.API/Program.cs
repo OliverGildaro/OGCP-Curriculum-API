@@ -4,7 +4,7 @@ using JsonSubTypes;
 using Microsoft.EntityFrameworkCore;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
-using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
+//using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
 using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
 using OGCP.Curriculum.API.commanding.commands.CreateGeneralProfile;
 using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
@@ -85,8 +85,8 @@ builder.Services.AddScoped<ICommandHandler<CreateStudentProfileCommand, Result>,
 builder.Services.AddScoped<ICommandHandler<EditLangueFromProfileCommand, Result>, EditLanguageFromProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<RemoveLangueFromProfileCommand, Result>, RemoveLanguageFromProfileCommandHandler>();
-builder.Services.AddScoped<ICommandHandler<AddEducationDegreeToProfileCommand, Result>, AddEducationDegreeToProfileCommandHandler>();
-builder.Services.AddScoped<ICommandHandler<AddEducationResearchToProfileCommand, Result>, AddEducationResearchToProfileCommandHandler>();
+//builder.Services.AddScoped<ICommandHandler<AddEducationDegreeToProfileCommand, Result>, AddEducationDegreeToProfileCommandHandler>();
+//builder.Services.AddScoped<ICommandHandler<AddEducationResearchToProfileCommand, Result>, AddEducationResearchToProfileCommandHandler>();
 builder.Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile>>, GetProfilesQueryHandler>();
 builder.Services.AddScoped<DbProfileContext>();
 builder.Services.AddScoped(provider => new DbProfileContextConfig

@@ -7,3 +7,4 @@ public interface IService<TEntity, TEntityId>
     public Task<TEntity> Get(TEntityId id);
     public Task<int> Create(TEntity request);
 }
+

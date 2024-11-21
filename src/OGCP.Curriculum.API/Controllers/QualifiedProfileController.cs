@@ -150,7 +150,7 @@ public class QualifiedProfileController : Controller
             //    var asas = interReq;
             //}
 
-            this.service.AddJobExperience(id, request);
+            //this.service.AddJobExperience(id, request);
 
             return NoContent();
         }

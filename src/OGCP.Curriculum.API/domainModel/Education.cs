@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
+using CustomResult = ArtForAll.Shared.ErrorHandler.Results;
 
 namespace OGCP.Curriculum.API.domainmodel;
 
@@ -32,24 +33,24 @@ public class DegreeEducation : Education
 
     public EducationLevel Degree => _degree;
 
-    public static Result<DegreeEducation, Error> Create(string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
+    public static CustomResult.IResult<DegreeEducation, Error> Create(string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
     {
         if (string.IsNullOrWhiteSpace(institution))
         {
-            return new Error("Institution is required.", "InvalidInstitution");
+            return Result<DegreeEducation, Error>.Failure(new Error("Institution is required.", "InvalidInstitution"));
         }
 
         if (startDate > DateTime.Now)
         {
-            return new Error("Start date cannot be in the future.", "InvalidStartDate");
+            return Result<DegreeEducation, Error>.Failure(new Error("Start date cannot be in the future.", "InvalidStartDate"));
         }
 
         if (!Enum.IsDefined(typeof(EducationLevel), degree))
         {
-            return new Error("Invalid degree value.", "InvalidDegree");
+            return Result<DegreeEducation, Error>.Failure(new Error("Invalid degree value.", "InvalidDegree"));
         }
 
-        return new DegreeEducation(institution, degree, startDate, endDate);
+        return Result<DegreeEducation, Error>.Success(new DegreeEducation(institution, degree, startDate, endDate));
     }
 
     public override bool IsEquivalent(Education other)
