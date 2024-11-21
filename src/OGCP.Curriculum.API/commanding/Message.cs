@@ -11,7 +11,7 @@ namespace OGCP.Curriculum.API.commanding
         {
             this.provider = provider;
         }
-        public async Task<Result> DIspatch(ICommand command)
+        public async Task<Result> DispatchCommand(ICommand command)
         {
             Type type = typeof(ICommandHandler<,>);
             Type[] args = { command.GetType(), typeof(Result) };
@@ -21,7 +21,7 @@ namespace OGCP.Curriculum.API.commanding
             return await handler.HandleAsync((dynamic)command);
         }
 
-        public async Task<T> Dispatch<T>(IQuery<T> query)
+        public async Task<T> DispatchQuery<T>(IQuery<T> query)
         {
             Type typeHandler = typeof(IQueryHandler<,>);
             Type[] args = {query.GetType(), typeof(T) };

@@ -31,7 +31,7 @@ public class QualifiedProfileController : Controller
     public async Task<IActionResult> GetProfiles()
     {
         var query = new GetProfilesQuery();
-        IReadOnlyList<Profile> profiles = await this.message.Dispatch(query);
+        IReadOnlyList<Profile> profiles = await this.message.DispatchQuery(query);
         IReadOnlyList<ProfileResponse> response = profiles.Select(p => GetProfileDto(p)).ToArray();
         
         return Ok(profiles);
@@ -60,7 +60,7 @@ public class QualifiedProfileController : Controller
     public async Task<IActionResult> CreateProfile([FromBody] ProfileRequest profileRequest)
     {
         var command = ProfileFactory.Get(profileRequest);
-        await this.message.DIspatch(command);
+        await this.message.DispatchCommand(command);
         return Ok();
     }
 
@@ -77,23 +77,7 @@ public class QualifiedProfileController : Controller
                 Name = request.Name,
             };
 
-            await this.message.DIspatch(command);
-
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest();
-        }
-    }
-
-    [HttpPut("{id}/educations")]
-    [ProducesResponseType(203)]
-    public IActionResult AddEducationToProfile(int id, [FromBody] CreateDegreeEducationRequest request)
-    {
-        try
-        {
-            this.service.AddEducation(id, request);
+            await this.message.DispatchCommand(command);
 
             return NoContent();
         }

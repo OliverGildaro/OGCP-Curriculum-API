@@ -16,7 +16,7 @@ public class StudentProfileService : IStudentProfileService
         this.repository = repository;
     }
 
-    public async Task<Result> AddEducation(int id, CreateResearchEducationRequest request)
+    public async Task<Result> AddEducation(int id, ResearchEducation education)
     {
         StudentProfile profile = await this.repository.Find(id, GetQueryExpression());
         if (profile is null)
@@ -24,9 +24,6 @@ public class StudentProfileService : IStudentProfileService
             return Result.Failure("");
 
         }
-
-        (string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary ) = request;
-        ResearchEducation education = ResearchEducation.Create(institution, startDate, endDate, projectTitle, supervisor, summary).Value;
 
         profile.AddEducation(education);
 

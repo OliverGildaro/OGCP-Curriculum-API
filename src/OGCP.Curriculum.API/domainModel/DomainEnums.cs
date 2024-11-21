@@ -49,6 +49,12 @@ public enum ProfileTypes
     CreateStudentProfileRequest
 }
 
+public enum EducationTypes
+{
+    AddEducationDegreeRequest = 1,
+    AddEducationResearchRequest = 2,
+}
+
 public enum CategorySkill
 {
     Programming = 1,

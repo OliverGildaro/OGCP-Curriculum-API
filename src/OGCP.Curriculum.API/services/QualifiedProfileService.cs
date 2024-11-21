@@ -1,6 +1,5 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
 using System.Linq.Expressions;
@@ -16,7 +15,7 @@ public class QualifiedProfileService : IQualifiedProfileService
         this.repository = repository;
     }
 
-    public async Task<Result> AddEducation(int id, CreateDegreeEducationRequest request)
+    public async Task<Result> AddEducation(int id, DegreeEducation education)
     {
         QualifiedProfile profile = await this.repository.Find(id);
         if (profile is null)
@@ -24,12 +23,9 @@ public class QualifiedProfileService : IQualifiedProfileService
             return Result.Failure("");
         }
 
-        (string institution, EducationLevel degree, DateTime startDate, DateTime? endDate ) = request;
-        Education education = DegreeEducation.Create(institution, degree, startDate, endDate).Value;
-
         profile.AddEducation(education);
 
-        this.repository.SaveChanges();
+        await this.repository.SaveChanges();
         return Result.Success();
 
     }
