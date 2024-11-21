@@ -95,6 +95,24 @@ public class Profile : IProfile
         UpdateTimestamp();
         return Result.Success();
     }
+
+    private bool IsValidToRemoveLanguage(int languageId)
+    {
+        return this._languagesSpoken.Any(lang => lang.Id == languageId);
+    }
+
+    internal Result RemoveLanguage(int languageId)
+    {
+        if(this.IsValidToRemoveLanguage(languageId))
+        {
+            var language = this._languagesSpoken.Find(lang => lang.Id == languageId);
+            this._languagesSpoken.Remove(language);
+            return Result.Success();
+        }
+
+        return Result.Failure($"The profile id: {languageId}, not found");
+
+    }
 }
 
 public interface IQualifiedProfile

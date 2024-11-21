@@ -84,6 +84,7 @@ builder.Services.AddScoped<ICommandHandler<CreateQualifiedProfileCommand, Result
 builder.Services.AddScoped<ICommandHandler<CreateStudentProfileCommand, Result>, CreateStudentProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<EditLangueFromProfileCommand, Result>, EditLanguageFromProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<RemoveLangueFromProfileCommand, Result>, RemoveLanguageFromProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<AddEducationDegreeToProfileCommand, Result>, AddEducationDegreeToProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<AddEducationResearchToProfileCommand, Result>, AddEducationResearchToProfileCommandHandler>();
 builder.Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile>>, GetProfilesQueryHandler>();

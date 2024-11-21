@@ -68,6 +68,20 @@ namespace OGCP.Curriculum.API.services
             throw new NotImplementedException();
         }
 
+        public async Task<Result> RemoveLanguage(int id, int languageId)
+        {
+            Profile profile = await this.repository.Find(id, this.GetQueryExpression());
+
+            Result result = profile.RemoveLanguage(languageId);
+
+            if (result.IsFailure)
+            {
+                return result;
+            }
+            await this.repository.SaveChanges();
+            return result;
+        }
+
         private Expression<Func<Profile, object>>[] GetQueryExpression()
         {
             return new Expression<Func<Profile, object>>[]

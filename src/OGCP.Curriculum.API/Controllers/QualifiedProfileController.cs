@@ -112,6 +112,29 @@ public class QualifiedProfileController : Controller
         }
     }
 
+
+    [HttpDelete("{id}/languages/{languageId}")]
+    [ProducesResponseType(203)]
+    public async Task<IActionResult> RemoveLanguageFromProfile(int id, int languageId)
+    {
+        try
+        {
+            var command = new RemoveLangueFromProfileCommand
+            {
+                Id = id,
+                LanguageId = languageId,
+            };
+
+            await this.message.DispatchCommand(command);
+
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest();
+        }
+    }
+
     [HttpPut("{id}/WorkExperienceTypes")]
     [ProducesResponseType(203)]
     public IActionResult AddJobExperienceToProfile(int id, [FromBody] CreateJobExperienceRequest request)
