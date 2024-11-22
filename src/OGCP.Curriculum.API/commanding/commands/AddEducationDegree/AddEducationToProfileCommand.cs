@@ -66,8 +66,9 @@ public class AddEducationResearchToProfileCommand : AddEducationToProfileCommand
         summary = this.Summary;
     }
 
-    public override Result<Education, Error> MapTo()
+    public override CustomResult.IResult<Education, Error> MapTo()
     {
-        throw new NotImplementedException();
+        return ResearchEducation.Create(Institution, StartDate, EndDate, ProjectTitle, Supervisor, Summary);
+
     }
 }

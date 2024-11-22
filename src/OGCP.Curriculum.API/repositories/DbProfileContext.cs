@@ -154,7 +154,9 @@ namespace OGCP.Curriculum.API.repositories
                 entity.HasOne(e => e.PersonalInfo)
                         .WithOne()
                         .HasForeignKey<DetailInfo>("ProfileId")
-                        .IsRequired();
+                        .IsRequired()
+                        .OnDelete(DeleteBehavior.Cascade);
+
                 //.HasForeignKey(p => p.id)
                 //.HasPrincipalKey(e => e.Id);
 
