@@ -10,14 +10,14 @@ namespace OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 
 //Generics are invariant by default
 //Covariance and contravariance is supported only for interfaces and delegates
-public class AddEducationToProfileCommandHandler<TCommand, TResult>
+public class AddEducationToQualifiedProfileCommandHandler<TCommand, TResult>
     : ICommandHandler<TCommand, TResult>
-    where TCommand : AddEducationToProfileCommand
+    where TCommand : AddEducationToQualifiedProfileCommand
     where TResult : Result
 {
     private readonly IQualifiedProfileService qualifiedService;
 
-    public AddEducationToProfileCommandHandler(IQualifiedProfileService qualifiedService)
+    public AddEducationToQualifiedProfileCommandHandler(IQualifiedProfileService qualifiedService)
     {
         this.qualifiedService = qualifiedService;
     }

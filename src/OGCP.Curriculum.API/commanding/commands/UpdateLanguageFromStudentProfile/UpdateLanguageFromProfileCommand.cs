@@ -3,7 +3,7 @@ using OGCP.Curriculum.API.domainmodel;
 
 namespace OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile
 {
-    public class EditLangueFromProfileCommand : ICommand
+    public class UpdateLanguageFromProfileCommand : ICommand
     {
         public int Id { get; set; }
         public int LanguageId { get; set; }

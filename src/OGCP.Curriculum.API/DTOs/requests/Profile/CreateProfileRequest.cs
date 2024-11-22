@@ -1,4 +1,5 @@
 ﻿using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculum.API.DTOs;
 
 namespace OGCP.Curriculum.API.POCOS.requests.Profile;
 public abstract class ProfileRequest
@@ -6,7 +7,7 @@ public abstract class ProfileRequest
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Summary { get; set; }
-    public ProfileTypes RequestType { get; set; } // Discriminator field
+    public ProfileRequests RequestType { get; set; } // Discriminator field
 }
 
 

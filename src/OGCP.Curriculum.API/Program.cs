@@ -15,6 +15,7 @@ using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.commanding.queries;
 using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculum.API.DTOs;
 using OGCP.Curriculum.API.POCOS.requests.Education;
 using OGCP.Curriculum.API.POCOS.requests.Profile;
 using OGCP.Curriculum.API.POCOS.requests.work;
@@ -49,9 +50,9 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.Converters.Add(
         JsonSubtypesConverterBuilder
         .Of(typeof(ProfileRequest), "RequestType")
-        .RegisterSubtype(typeof(CreateGeneralProfileRequest), ProfileTypes.CreateGeneralProfileRequest)
-        .RegisterSubtype(typeof(CreateQualifiedProfileRequest), ProfileTypes.CreateQualifiedProfileRequest)
-        .RegisterSubtype(typeof(CreateStudentProfileRequest), ProfileTypes.CreateStudentProfileRequest)
+        .RegisterSubtype(typeof(CreateGeneralProfileRequest), ProfileRequests.CreateGeneral)
+        .RegisterSubtype(typeof(CreateQualifiedProfileRequest), ProfileRequests.CreateQualified)
+        .RegisterSubtype(typeof(CreateStudentProfileRequest), ProfileRequests.CreateStudent)
         .SerializeDiscriminatorProperty()
         .Build()
     );
@@ -59,9 +60,9 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.Converters.Add(
         JsonSubtypesConverterBuilder
         .Of(typeof(AddEducationRequest), "EducationType")
-        .RegisterSubtype(typeof(AddResearchEducationRequest), EducationTypes.AddEducationResearchRequest)
-        .RegisterSubtype(typeof(AddDegreeEducationRequest), EducationTypes.AddEducationDegreeRequest)
-        .RegisterSubtype(typeof(AddEducationToStudentProfileRequest), EducationTypes.AddEducationToStudentProfileRequest)
+        .RegisterSubtype(typeof(AddResearchEducationRequest), EducationRequests.AddResearch)
+        .RegisterSubtype(typeof(AddDegreeEducationRequest), EducationRequests.AddDegree)
+        .RegisterSubtype(typeof(AddResearchEducationToStudentProfileRequest), EducationRequests.AddResearchToStudent)
         .SerializeDiscriminatorProperty()
         .Build()
     );
@@ -69,9 +70,9 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.Converters.Add(
     JsonSubtypesConverterBuilder
     .Of(typeof(UpdateEducationRequest), "EducationType")
-    .RegisterSubtype(typeof(UpdateDegreeEducationRequest), EducationTypes.UpdateEducationDegreeRequest)
-    .RegisterSubtype(typeof(UpdateResearchEducationRequest), EducationTypes.UpdateEducationResearchRequest)
-    .RegisterSubtype(typeof(UpdateEducationToStudentProfileRequest), EducationTypes.UpdateEducationFromStudentProfileRequest)
+    .RegisterSubtype(typeof(UpdateDegreeEducationRequest), EducationRequests.UpdateDegree)
+    .RegisterSubtype(typeof(UpdateResearchEducationRequest), EducationRequests.UpdateResearch)
+    .RegisterSubtype(typeof(UpdateEducationToStudentProfileRequest), EducationRequests.UpdateResearchFromStudent)
     .SerializeDiscriminatorProperty()
     .Build()
 );
@@ -97,11 +98,11 @@ builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<ICommandHandler<CreateGeneralProfileCommand, Result>, CreateGeneralProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<CreateQualifiedProfileCommand, Result>, CreateQualifiedProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<CreateStudentProfileCommand, Result>, CreateStudentProfileCommandHandler>();
-builder.Services.AddScoped<ICommandHandler<EditLangueFromProfileCommand, Result>, EditLanguageFromProfileCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateLanguageFromProfileCommand, Result>, UpdateLanguageFromProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<RemoveLangueFromProfileCommand, Result>, RemoveLanguageFromProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<AddEducationToStudentProfileCommand, Result>, AddEducationToStudentProfileCommandHandler>();
-builder.Services.AddScoped(typeof(ICommandHandler<,>), typeof(AddEducationToProfileCommandHandler<,>));
+builder.Services.AddScoped(typeof(ICommandHandler<,>), typeof(AddEducationToQualifiedProfileCommandHandler<,>));
 builder.Services.AddScoped(typeof(ICommandHandler<,>), typeof(UpdateEducationFromProfileCommandHandler<,>));
 builder.Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile>>, GetProfilesQueryHandler>();
 builder.Services.AddScoped<DbProfileContext>();

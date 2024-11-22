@@ -30,7 +30,7 @@ namespace OGCP.Curriculum.API.Controllers
         {
             try
             {
-                AddEducationToProfileCommand command = EducationFactory.Get(request, id);
+                AddEducationToQualifiedProfileCommand command = EducationFactory.Get(request, id);
                 Result sds = await this.message.DispatchCommand(command);
                 return NoContent();
             }

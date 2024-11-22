@@ -2,15 +2,16 @@
 using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculum.API.DTOs;
 using OGCP.Curriculum.API.POCOS.requests.Education;
 
 namespace OGCP.Curriculum.API.factories;
 
 public class EducationFactory
 {
-    public static AddEducationToProfileCommand Get(AddEducationRequest request, int id)
+    public static AddEducationToQualifiedProfileCommand Get(AddEducationRequest request, int id)
     {
-        if (request.EducationType.Equals(EducationTypes.AddEducationDegreeRequest) 
+        if (request.EducationType.Equals(EducationRequests.AddDegree) 
             && request is AddDegreeEducationRequest degreeEduc)
         {
             var result = new AddEducationDegreeToProfileCommand
@@ -23,7 +24,7 @@ public class EducationFactory
             };
             return result;
         }
-        else if(request.EducationType.Equals(EducationTypes.AddEducationResearchRequest) &&
+        else if(request.EducationType.Equals(EducationRequests.AddResearch) &&
             request is AddResearchEducationRequest researchEduc)
         {
             return new AddEducationResearchToProfileCommand
@@ -37,8 +38,8 @@ public class EducationFactory
                 Supervisor = researchEduc.Supervisor
             };
         }
-        else if(request.EducationType.Equals(EducationTypes.AddEducationToStudentProfileRequest)
-            && request is AddEducationToStudentProfileRequest researchStudentEduc)
+        else if(request.EducationType.Equals(EducationRequests.AddResearchToStudent)
+            && request is AddResearchEducationToStudentProfileRequest researchStudentEduc)
         {
             return new AddEducationToStudentProfileCommand
             {

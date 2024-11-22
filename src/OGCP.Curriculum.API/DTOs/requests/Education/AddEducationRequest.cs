@@ -1,16 +1,16 @@
 ﻿using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculum.API.DTOs;
 
 namespace OGCP.Curriculum.API.POCOS.requests.Education
 {
-    public class UpdateEducationRequest
+    public abstract class AddEducationRequest
     {
         public string Institution { get; set; }
-        public EducationTypes EducationType { get; set; }
+        public EducationRequests EducationType { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
     }
-
-    public class UpdateDegreeEducationRequest : UpdateEducationRequest
+    public class AddDegreeEducationRequest : AddEducationRequest
     {
         public EducationLevel Degree { get; set; }
 
@@ -22,7 +22,7 @@ namespace OGCP.Curriculum.API.POCOS.requests.Education
             endDate = EndDate;
         }
     }
-    public class UpdateResearchEducationRequest : UpdateEducationRequest
+    public class AddResearchEducationRequest : AddEducationRequest
     {
         public string ProjectTitle { get; set; }
         public string Supervisor { get; set; }
@@ -44,7 +44,7 @@ namespace OGCP.Curriculum.API.POCOS.requests.Education
         }
     }
 
-    public class UpdateEducationToStudentProfileRequest : UpdateResearchEducationRequest
+    public class AddResearchEducationToStudentProfileRequest : AddResearchEducationRequest
     {
     }
 }

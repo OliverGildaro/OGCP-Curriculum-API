@@ -2,7 +2,7 @@
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.POCOS.requests.Education;
 
-namespace OGCP.Curriculum.API.POCOS.profiles;
+namespace OGCP.Curriculum.API.POCOS.mappers;
 
 public class EducationProfile : Profile
 {

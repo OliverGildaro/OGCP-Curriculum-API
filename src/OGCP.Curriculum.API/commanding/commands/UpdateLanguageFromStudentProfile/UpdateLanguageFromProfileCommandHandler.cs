@@ -5,16 +5,16 @@ using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 
-public class EditLanguageFromProfileCommandHandler : ICommandHandler<EditLangueFromProfileCommand, Result>
+public class UpdateLanguageFromProfileCommandHandler : ICommandHandler<UpdateLanguageFromProfileCommand, Result>
 {
     private readonly IProfileService profileService;
 
-    public EditLanguageFromProfileCommandHandler(IProfileService profileService)
+    public UpdateLanguageFromProfileCommandHandler(IProfileService profileService)
     {
         this.profileService = profileService;
     }
 
-    public Task<Result> HandleAsync(EditLangueFromProfileCommand command)
+    public Task<Result> HandleAsync(UpdateLanguageFromProfileCommand command)
     {
         var language = Language.Hidrate(command.Name, command.Level, command.LanguageId);
         return profileService.EdiLanguage(command.Id, language);

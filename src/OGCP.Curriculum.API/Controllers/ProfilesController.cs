@@ -68,7 +68,7 @@ public class ProfilesController : Controller
 
     [HttpPut("{id}/languages")]
     [ProducesResponseType(203)]
-    public async Task<IActionResult> AddLanguageToProfile(int id, [FromBody] CreateLanguageRequest request)
+    public async Task<IActionResult> AddLanguageToProfile(int id, [FromBody] AddLanguageRequest request)
     {
         try
         {
@@ -95,7 +95,7 @@ public class ProfilesController : Controller
     {
         try
         {
-            var command = new EditLangueFromProfileCommand
+            var command = new UpdateLanguageFromProfileCommand
             {
                 Id = id,
                 LanguageId = languageId,

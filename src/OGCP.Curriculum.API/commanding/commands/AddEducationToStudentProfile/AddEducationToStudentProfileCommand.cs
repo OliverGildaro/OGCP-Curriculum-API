@@ -5,7 +5,7 @@ using OGCP.Curriculum.API.domainmodel;
 
 namespace OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
 
-public class AddEducationToStudentProfileCommand : AddEducationToProfileCommand
+public class AddEducationToStudentProfileCommand : AddEducationToQualifiedProfileCommand
 {
     public int Id { get; set; }
     public string Institution { get; set; }
