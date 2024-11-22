@@ -6,9 +6,10 @@ using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.commanding.queries;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.dtos.requests;
 using OGCP.Curriculum.API.factories;
-using OGCP.Curriculum.API.POCOS.requests;
+using OGCP.Curriculum.API.POCOS.requests.Language;
+using OGCP.Curriculum.API.POCOS.requests.Profile;
+using OGCP.Curriculum.API.POCOS.requests.work;
 using OGCP.Curriculum.API.POCOS.responses;
 using OGCP.Curriculum.API.services.interfaces;
 
@@ -90,7 +91,7 @@ public class ProfilesController : Controller
 
     [HttpPut("{id}/languages/{languageId}")]
     [ProducesResponseType(203)]
-    public async Task<IActionResult> EditLanguageFromProfile(int id, int languageId, [FromBody] EditLanguageRequest request)
+    public async Task<IActionResult> EditLanguageFromProfile(int id, int languageId, [FromBody] UpdateLanguageRequest request)
     {
         try
         {

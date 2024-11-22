@@ -1,6 +1,6 @@
 ﻿using OGCP.Curriculum.API.domainmodel;
 
-namespace OGCP.Curriculum.API.POCOS.requests
+namespace OGCP.Curriculum.API.POCOS.requests.Education
 {
     public abstract class AddEducationRequest
     {
@@ -15,10 +15,10 @@ namespace OGCP.Curriculum.API.POCOS.requests
 
         public void Deconstruct(out string institution, out EducationLevel degree, out DateTime startDate, out DateTime? endDate)
         {
-            institution = base.Institution;
-            degree = this.Degree;
-            startDate = base.StartDate;
-            endDate = base.EndDate;
+            institution = Institution;
+            degree = Degree;
+            startDate = StartDate;
+            endDate = EndDate;
         }
     }
     public class AddResearchEducationRequest : AddEducationRequest
@@ -34,34 +34,16 @@ namespace OGCP.Curriculum.API.POCOS.requests
             out string supervisor,
             out string summary)
         {
-            institution = this.Institution;
-            startDate = this.StartDate;
-            endDate = this.EndDate;
-            projectTitle = this.ProjectTitle;
-            supervisor = this.Supervisor;
-            summary = this.Summary;
+            institution = Institution;
+            startDate = StartDate;
+            endDate = EndDate;
+            projectTitle = ProjectTitle;
+            supervisor = Supervisor;
+            summary = Summary;
         }
     }
 
     public class AddEducationToStudentProfileRequest : AddResearchEducationRequest
     {
-        //public string ProjectTitle { get; set; }
-        //public string Supervisor { get; set; }
-        //public string Summary { get; set; }
-        //public void Deconstruct(
-        //    out string institution,
-        //    out DateTime startDate,
-        //    out DateTime? endDate,
-        //    out string projectTitle,
-        //    out string supervisor,
-        //    out string summary)
-        //{
-        //    institution = this.Institution;
-        //    startDate = this.StartDate;
-        //    endDate = this.EndDate;
-        //    projectTitle = this.ProjectTitle;
-        //    supervisor = this.Supervisor;
-        //    summary = this.Summary;
-        //}
     }
 }

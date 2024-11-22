@@ -12,10 +12,12 @@ using OGCP.Curriculum.API.commanding.commands.CreateGeneralProfile;
 using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
 using OGCP.Curriculum.API.commanding.commands.CreateStudentProfile;
 using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
+using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.commanding.queries;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.dtos.requests;
-using OGCP.Curriculum.API.POCOS.requests;
+using OGCP.Curriculum.API.POCOS.requests.Education;
+using OGCP.Curriculum.API.POCOS.requests.Profile;
+using OGCP.Curriculum.API.POCOS.requests.work;
 using OGCP.Curriculum.API.repositories;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.repositories.utils;
@@ -65,6 +67,16 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     );
 
     options.SerializerSettings.Converters.Add(
+    JsonSubtypesConverterBuilder
+    .Of(typeof(UpdateEducationRequest), "EducationType")
+    .RegisterSubtype(typeof(UpdateDegreeEducationRequest), EducationTypes.UpdateEducationDegreeRequest)
+    .RegisterSubtype(typeof(UpdateResearchEducationRequest), EducationTypes.UpdateEducationResearchRequest)
+    .RegisterSubtype(typeof(UpdateEducationToStudentProfileRequest), EducationTypes.UpdateEducationFromStudentProfileRequest)
+    .SerializeDiscriminatorProperty()
+    .Build()
+);
+
+    options.SerializerSettings.Converters.Add(
         JsonSubtypesConverterBuilder
         .Of(typeof(CreateJobExperienceRequest), "ExperiencesType")
         .RegisterSubtype(typeof(CreateInternshipExperienceRequest), WorkExperienceCategory.Internship)
@@ -90,6 +102,7 @@ builder.Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, A
 builder.Services.AddScoped<ICommandHandler<RemoveLangueFromProfileCommand, Result>, RemoveLanguageFromProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<AddEducationToStudentProfileCommand, Result>, AddEducationToStudentProfileCommandHandler>();
 builder.Services.AddScoped(typeof(ICommandHandler<,>), typeof(AddEducationToProfileCommandHandler<,>));
+builder.Services.AddScoped(typeof(ICommandHandler<,>), typeof(UpdateEducationFromProfileCommandHandler<,>));
 builder.Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile>>, GetProfilesQueryHandler>();
 builder.Services.AddScoped<DbProfileContext>();
 builder.Services.AddScoped(provider => new DbProfileContextConfig
@@ -98,7 +111,7 @@ builder.Services.AddScoped(provider => new DbProfileContextConfig
     UseConsoleLogger = true
 });
 builder.Services.AddScoped<Message>();
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 
 // Configure the HttP request pipeline.

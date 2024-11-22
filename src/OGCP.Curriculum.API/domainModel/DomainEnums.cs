@@ -54,6 +54,9 @@ public enum EducationTypes
     AddEducationDegreeRequest = 1,
     AddEducationResearchRequest = 2,
     AddEducationToStudentProfileRequest = 3,
+    UpdateEducationDegreeRequest = 4,
+    UpdateEducationResearchRequest = 5,
+    UpdateEducationFromStudentProfileRequest = 6,
 }
 
 public enum CategorySkill

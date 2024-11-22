@@ -1,6 +1,6 @@
 ﻿using OGCP.Curriculum.API.domainmodel;
 
-namespace OGCP.Curriculum.API.dtos.requests;
+namespace OGCP.Curriculum.API.POCOS.requests.work;
 public abstract class CreateJobExperienceRequest
 {
     public string Company { get; set; }
@@ -11,10 +11,10 @@ public abstract class CreateJobExperienceRequest
 
     public void Deconstruct(out string company, out DateTime startDate, out DateTime? endDate, out string description)
     {
-        company = this.Company;
-        startDate = this.StartDate;
-        endDate = this.EndDate;
-        description = this.Description;
+        company = Company;
+        startDate = StartDate;
+        endDate = EndDate;
+        description = Description;
     }
 }
 
@@ -30,8 +30,8 @@ public class CreateWorkExperienceRequest : CreateJobExperienceRequest
         out string description,
         out string position)
     {
-        base.Deconstruct(out company, out startDate, out endDate, out description);
-        position = this.Position;
+        Deconstruct(out company, out startDate, out endDate, out description);
+        position = Position;
     }
 }
 
@@ -46,8 +46,8 @@ public class CreateInternshipExperienceRequest : CreateJobExperienceRequest
         out string description,
         out string role)
     {
-        base.Deconstruct(out company, out startDate, out endDate, out description);
-        role = this.Role;
+        Deconstruct(out company, out startDate, out endDate, out description);
+        role = Role;
     }
 }
 

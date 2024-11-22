@@ -1,11 +1,12 @@
-﻿using ArtForAll.Shared.Contracts.CQRS;
-using ArtForAll.Shared.ErrorHandler;
+﻿using ArtForAll.Shared.ErrorHandler;
+using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
+using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.factories;
-using OGCP.Curriculum.API.POCOS.requests;
+using OGCP.Curriculum.API.POCOS.requests.Education;
 
 namespace OGCP.Curriculum.API.Controllers
 {
@@ -15,10 +16,12 @@ namespace OGCP.Curriculum.API.Controllers
     public class EducationsController : Controller
     {
         private readonly Message message;
+        private readonly IMapper mapper;
 
-        public EducationsController(Message message)
+        public EducationsController(Message message, IMapper mapper)
         {
             this.message = message;
+            this.mapper = mapper;
         }
 
         [HttpPut("{id}/educations")]
@@ -28,6 +31,24 @@ namespace OGCP.Curriculum.API.Controllers
             try
             {
                 AddEducationToProfileCommand command = EducationFactory.Get(request, id);
+                Result sds = await this.message.DispatchCommand(command);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut("{id}/educations/{educationId}")]
+        [ProducesResponseType(203)]
+        public async Task<IActionResult> UpdateEducationFromProfile(int id, int educationId, [FromBody] UpdateEducationRequest request)
+        {
+            try
+            {
+                var command = this.mapper.Map<UpdateEducationFromProfileCommand>(request);
+                command.ProfileId = id;
+                command.EducationId = educationId;
                 Result sds = await this.message.DispatchCommand(command);
                 return NoContent();
             }
