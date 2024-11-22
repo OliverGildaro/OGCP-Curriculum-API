@@ -1,27 +1,35 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
+using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
+using ArtForAll.Shared.ErrorHandler.Results;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 
+
+//Generics are invariant by default
+//Covariance and contravariance is supported only for interfaces and delegates
 public class AddEducationToProfileCommandHandler<TCommand, TResult>
     : ICommandHandler<TCommand, TResult>
     where TCommand : AddEducationToProfileCommand
     where TResult : Result
 {
-    private readonly IQualifiedProfileService profileService;
+    private readonly IQualifiedProfileService qualifiedService;
 
-    public AddEducationToProfileCommandHandler(IQualifiedProfileService profileService)
+    public AddEducationToProfileCommandHandler(IQualifiedProfileService qualifiedService)
     {
-        this.profileService = profileService;
+        this.qualifiedService = qualifiedService;
     }
 
     public async Task<TResult> HandleAsync(TCommand command)
     {
-        var result = command.MapTo();
-        var addEducationResult = await this.profileService.AddEducation(command.Id, result.Value);
+        IResult<Education, Error> educationResult = command.MapTo();
+        var education = educationResult.Value;
+
+        Result addEducationResult = await this.qualifiedService.AddEducation(command.Id, education);
 
         // Return TResult if needed (you might need to cast or map it here)
-        return (TResult)(object)addEducationResult; // Explicit cast if TResult is Result
+        return (TResult)addEducationResult; // Explicit cast if TResult is Result
     }
 }

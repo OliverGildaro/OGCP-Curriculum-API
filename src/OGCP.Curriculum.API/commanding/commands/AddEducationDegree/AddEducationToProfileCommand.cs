@@ -36,6 +36,7 @@ public class AddEducationDegreeToProfileCommand : AddEducationToProfileCommand
         endDate = base.EndDate;
     }
 
+    //Here we are using covariance on an interface
     public override CustomResult.IResult<Education, Error> MapTo()
     {
         return DegreeEducation.Create(Institution, Degree, StartDate, EndDate);
@@ -66,7 +67,9 @@ public class AddEducationResearchToProfileCommand : AddEducationToProfileCommand
         summary = this.Summary;
     }
 
-    public override CustomResult.IResult<Education, Error> MapTo()
+    //Generics are invariant by default
+    //Covariance and contravariance is supported only for interfaces and delegates
+    public override CustomResult.IResult<ResearchEducation, Error> MapTo()
     {
         return ResearchEducation.Create(Institution, StartDate, EndDate, ProjectTitle, Supervisor, Summary);
 
