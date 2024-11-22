@@ -42,4 +42,26 @@ namespace OGCP.Curriculum.API.POCOS.requests
             summary = this.Summary;
         }
     }
+
+    public class AddEducationToStudentProfileRequest : AddResearchEducationRequest
+    {
+        //public string ProjectTitle { get; set; }
+        //public string Supervisor { get; set; }
+        //public string Summary { get; set; }
+        //public void Deconstruct(
+        //    out string institution,
+        //    out DateTime startDate,
+        //    out DateTime? endDate,
+        //    out string projectTitle,
+        //    out string supervisor,
+        //    out string summary)
+        //{
+        //    institution = this.Institution;
+        //    startDate = this.StartDate;
+        //    endDate = this.EndDate;
+        //    projectTitle = this.ProjectTitle;
+        //    supervisor = this.Supervisor;
+        //    summary = this.Summary;
+        //}
+    }
 }

@@ -280,7 +280,7 @@ public class GeneralProfile : Profile, IGeneralProfile
 
 public interface IStudentProfile
 {
-    public void AddEducation(ResearchEducation education);
+    public Result AddEducation(ResearchEducation education);
     public void AddJobExperience(InternshipExperience experience);
 }
 
@@ -326,14 +326,26 @@ public class StudentProfile : Profile, IStudentProfile
         return new StudentProfile(firstName, lastName, summary, major, careerGoals);
     }
 
-    public void AddEducation(ResearchEducation education)
+    public Result AddEducation(ResearchEducation education)
     {
-        if (education == null)
+        if (_educations.Any(educ => educ.IsEquivalent(education)))
         {
-            throw new ArgumentNullException(nameof(education), "Research education cannot be null.");
+            return Result.Failure($"{education.Institution} can not be added twice");
         }
 
-        _educations.Add(education);
+        //var currentLanguage = this._educations.FirstOrDefault(currentEduc => currentEduc == education);
+
+        //if (currentLanguage != null)
+        //{
+        //    var index = _educations.IndexOf(currentLanguage);
+        //    _educations[index] = education;
+        //}
+        //else
+        //{
+        //}
+        this._educations.Add(education);
+
+        return Result.Success();
     }
 
     public void AddJobExperience(InternshipExperience experience)

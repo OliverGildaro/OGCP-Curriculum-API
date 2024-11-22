@@ -53,6 +53,7 @@ public enum EducationTypes
 {
     AddEducationDegreeRequest = 1,
     AddEducationResearchRequest = 2,
+    AddEducationToStudentProfileRequest = 3,
 }
 
 public enum CategorySkill

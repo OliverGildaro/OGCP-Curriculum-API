@@ -17,12 +17,12 @@ namespace OGCP.Curriculum.API.Controllers;
 [Route("api/v1/profiles")]
 [EnableCors("AllowSpecificOrigins")]
 [Produces("application/json")]
-public class QualifiedProfileController : Controller
+public class ProfilesController : Controller
 {
     private readonly IQualifiedProfileService service;
     private readonly Message message;
 
-    public QualifiedProfileController(IQualifiedProfileService service, Message message)
+    public ProfilesController(IQualifiedProfileService service, Message message)
     {
         this.service = service;
         this.message = message;

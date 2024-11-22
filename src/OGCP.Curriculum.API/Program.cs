@@ -4,6 +4,8 @@ using JsonSubTypes;
 using Microsoft.EntityFrameworkCore;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
+using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
+
 //using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
 using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
 using OGCP.Curriculum.API.commanding.commands.CreateGeneralProfile;
@@ -57,6 +59,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
         .Of(typeof(AddEducationRequest), "EducationType")
         .RegisterSubtype(typeof(AddResearchEducationRequest), EducationTypes.AddEducationResearchRequest)
         .RegisterSubtype(typeof(AddDegreeEducationRequest), EducationTypes.AddEducationDegreeRequest)
+        .RegisterSubtype(typeof(AddEducationToStudentProfileRequest), EducationTypes.AddEducationToStudentProfileRequest)
         .SerializeDiscriminatorProperty()
         .Build()
     );
@@ -85,11 +88,8 @@ builder.Services.AddScoped<ICommandHandler<CreateStudentProfileCommand, Result>,
 builder.Services.AddScoped<ICommandHandler<EditLangueFromProfileCommand, Result>, EditLanguageFromProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<RemoveLangueFromProfileCommand, Result>, RemoveLanguageFromProfileCommandHandler>();
-//builder.Services.AddScoped<ICommandHandler<AddEducationToProfileCommand, Result>, AddEducationToProfileCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<AddEducationToStudentProfileCommand, Result>, AddEducationToStudentProfileCommandHandler>();
 builder.Services.AddScoped(typeof(ICommandHandler<,>), typeof(AddEducationToProfileCommandHandler<,>));
-//builder.Services.AddScoped<ICommandHandler<AddEducationDegreeToProfileCommand, Result>, AddEducationToProfileCommandHandler>();
-//builder.Services.AddScoped<ICommandHandler<AddEducationResearchToProfileCommand, Result>, AddEducationToProfileCommandHandler>();
-//builder.Services.AddScoped<ICommandHandler<AddEducationResearchToProfileCommand, Result>, AddEducationResearchToProfileCommandHandler>();
 builder.Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile>>, GetProfilesQueryHandler>();
 builder.Services.AddScoped<DbProfileContext>();
 builder.Services.AddScoped(provider => new DbProfileContextConfig

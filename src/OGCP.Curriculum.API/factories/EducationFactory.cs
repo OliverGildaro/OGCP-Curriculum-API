@@ -1,9 +1,6 @@
-﻿using ArtForAll.Shared.Contracts.CQRS;
-using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
-//using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
-using OGCP.Curriculum.API.commanding.commands.CreateGeneralProfile;
-using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
-using OGCP.Curriculum.API.commanding.commands.CreateStudentProfile;
+﻿using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
+using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.POCOS.requests;
 
 namespace OGCP.Curriculum.API.factories;
@@ -12,29 +9,45 @@ public class EducationFactory
 {
     public static AddEducationToProfileCommand Get(AddEducationRequest request, int id)
     {
-        if (request is AddDegreeEducationRequest generalRequest)
+        if (request.EducationType.Equals(EducationTypes.AddEducationDegreeRequest) 
+            && request is AddDegreeEducationRequest degreeEduc)
         {
             var result = new AddEducationDegreeToProfileCommand
             {
                 Id = id,
-                Degree = generalRequest.Degree,
-                EndDate = generalRequest.EndDate,
-                StartDate = generalRequest.StartDate,
-                Institution = generalRequest.Institution
+                Degree = degreeEduc.Degree,
+                EndDate = degreeEduc.EndDate,
+                StartDate = degreeEduc.StartDate,
+                Institution = degreeEduc.Institution
             };
             return result;
         }
-        else if(request is AddResearchEducationRequest qualifiedProfile)
+        else if(request.EducationType.Equals(EducationTypes.AddEducationResearchRequest) &&
+            request is AddResearchEducationRequest researchEduc)
         {
             return new AddEducationResearchToProfileCommand
             {
                 Id = id,
-                EndDate = qualifiedProfile.EndDate,
-                StartDate = qualifiedProfile.StartDate,
-                Institution = qualifiedProfile.Institution,
-                ProjectTitle = qualifiedProfile.ProjectTitle,
-                Summary = qualifiedProfile.Summary,
-                Supervisor = qualifiedProfile.Supervisor
+                EndDate = researchEduc.EndDate,
+                StartDate = researchEduc.StartDate,
+                Institution = researchEduc.Institution,
+                ProjectTitle = researchEduc.ProjectTitle,
+                Summary = researchEduc.Summary,
+                Supervisor = researchEduc.Supervisor
+            };
+        }
+        else if(request.EducationType.Equals(EducationTypes.AddEducationToStudentProfileRequest)
+            && request is AddEducationToStudentProfileRequest researchStudentEduc)
+        {
+            return new AddEducationToStudentProfileCommand
+            {
+                Id = id,
+                EndDate = researchStudentEduc.EndDate,
+                StartDate = researchStudentEduc.StartDate,
+                Institution = researchStudentEduc.Institution,
+                ProjectTitle = researchStudentEduc.ProjectTitle,
+                Summary = researchStudentEduc.Summary,
+                Supervisor = researchStudentEduc.Supervisor
             };
         }
 

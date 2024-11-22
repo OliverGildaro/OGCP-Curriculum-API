@@ -29,7 +29,6 @@ public class AddEducationToProfileCommandHandler<TCommand, TResult>
 
         Result addEducationResult = await this.qualifiedService.AddEducation(command.Id, education);
 
-        // Return TResult if needed (you might need to cast or map it here)
-        return (TResult)addEducationResult; // Explicit cast if TResult is Result
+        return (TResult)addEducationResult;
     }
 }
