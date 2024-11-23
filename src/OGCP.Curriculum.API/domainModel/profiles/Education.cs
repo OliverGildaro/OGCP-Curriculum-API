@@ -1,7 +1,7 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
 using ArtForAll.Shared.ErrorHandler.Results;
-using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 //using CustomResult = ArtForAll.Shared.ErrorHandler.Results;
 
 namespace OGCP.Curriculum.API.domainmodel;
@@ -19,11 +19,7 @@ public abstract class Education
     public DateTime? EndDate => _endDate;
 
     public abstract bool IsEquivalent(Education other);
-
-    internal Result Update(Education education)
-    {
-        throw new NotImplementedException();
-    }
+    public abstract Result Update(Education education);
 }
 
 public class DegreeEducation : Education
@@ -36,6 +32,12 @@ public class DegreeEducation : Education
         _institution = institution;
         _startDate = startDate;
         _endDate = endDate;
+    }
+
+    public DegreeEducation(int educationId, string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
+        :this(institution, degree, startDate, endDate)
+    {
+        base._id = educationId;
     }
 
     public EducationLevel Degree => _degree;
@@ -60,6 +62,17 @@ public class DegreeEducation : Education
         return new DegreeEducation(institution, degree, startDate, endDate);
     }
 
+    public override Result Update(Education other)
+    {
+        var degreeEduc = (DegreeEducation)other;
+        _degree = degreeEduc.Degree;
+        _institution = degreeEduc.Institution;
+        _startDate = degreeEduc.StartDate;
+        _endDate = degreeEduc.EndDate;
+
+        return Result.Success();
+    }
+
     public override bool IsEquivalent(Education other)
     {
         if (other is DegreeEducation degree)
@@ -69,6 +82,12 @@ public class DegreeEducation : Education
         }
 
         return false;
+    }
+
+    internal static Result<DegreeEducation, Error> Hidrate(int educationId, string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
+    {
+        return new DegreeEducation(educationId, institution, degree, startDate, endDate);
+
     }
 }
 
@@ -156,5 +175,18 @@ public class ResearchEducation : Education
 
         }
         return false;
+    }
+
+    public override Result Update(Education other)
+    {
+        var researchEduc = (ResearchEducation)other;
+        _projectTitle = researchEduc.ProjectTitle;
+        _supervisor = researchEduc.Supervisor;
+        _summary = researchEduc.Summary;
+        _institution = researchEduc.Institution;
+        _startDate = researchEduc.StartDate;
+        _endDate = researchEduc.EndDate;
+
+        return Result.Success();
     }
 }

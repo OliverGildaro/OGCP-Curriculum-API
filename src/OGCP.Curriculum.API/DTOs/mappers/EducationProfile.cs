@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
+using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.POCOS.requests.Education;
 
@@ -39,6 +40,7 @@ public class EducationProfile : Profile
         CreateMap<AddEducationRequest, AddEducationToQualifiedProfileCommand>()
             .Include<AddDegreeEducationRequest, AddDegreeEducationToQualifiedProfileCommand>()
             .Include<AddResearchEducationRequest, AddResearchEducationToQualifiedProfileCommand>()
+            .Include<AddResearchEducationToStudentProfileRequest, AddEducationToStudentProfileCommand>()
             .ForMember(dest => dest.ProfileId, opt => opt.Ignore());
 
         CreateMap<AddDegreeEducationRequest, AddDegreeEducationToQualifiedProfileCommand>()
@@ -46,6 +48,12 @@ public class EducationProfile : Profile
             .ForMember(dest => dest.Degree, opt => opt.MapFrom(src => src.Degree));
 
         CreateMap<AddResearchEducationRequest, AddResearchEducationToQualifiedProfileCommand>()
+            .ForMember(dest => dest.ProfileId, opt => opt.Ignore())
+            .ForMember(dest => dest.ProjectTitle, opt => opt.MapFrom(src => src.ProjectTitle))
+            .ForMember(dest => dest.Summary, opt => opt.MapFrom(src => src.Summary))
+            .ForMember(dest => dest.Supervisor, opt => opt.MapFrom(src => src.Supervisor));
+
+        CreateMap<AddResearchEducationToStudentProfileRequest, AddEducationToStudentProfileCommand>()
             .ForMember(dest => dest.ProfileId, opt => opt.Ignore())
             .ForMember(dest => dest.ProjectTitle, opt => opt.MapFrom(src => src.ProjectTitle))
             .ForMember(dest => dest.Summary, opt => opt.MapFrom(src => src.Summary))

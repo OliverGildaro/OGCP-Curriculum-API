@@ -43,7 +43,7 @@ public class EducationFactory
         {
             return new AddEducationToStudentProfileCommand
             {
-                Id = id,
+                ProfileId = id,
                 EndDate = researchStudentEduc.EndDate,
                 StartDate = researchStudentEduc.StartDate,
                 Institution = researchStudentEduc.Institution,

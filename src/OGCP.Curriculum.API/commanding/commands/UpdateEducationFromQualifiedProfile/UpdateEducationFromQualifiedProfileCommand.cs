@@ -37,7 +37,7 @@ public class UpdateDegreeEducationFromQualifiedProfileCommand : UpdateEducationF
     //Here we are using covariance on an interface
     public override CustomResult.IResult<Education, Error> MapTo()
     {
-        return DegreeEducation.Create(Institution, Degree, StartDate, EndDate);
+        return DegreeEducation.Hidrate(EducationId, Institution, Degree, StartDate, EndDate);
     }
 }
 
