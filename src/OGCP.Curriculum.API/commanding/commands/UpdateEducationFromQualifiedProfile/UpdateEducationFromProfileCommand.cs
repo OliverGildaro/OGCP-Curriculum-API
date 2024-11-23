@@ -5,17 +5,14 @@ using CustomResult = ArtForAll.Shared.ErrorHandler.Results;
 
 namespace OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 
-public class UpdateEducationFromProfileCommand : ICommand
+public abstract class UpdateEducationFromProfileCommand : ICommand
 {
     public int ProfileId { get; set; }
     public int EducationId { get; set; }
     public string Institution { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
-    public CustomResult.IResult<Education, Error> MapTo()
-    {
-        return null;
-    }
+    public abstract CustomResult.IResult<Education, Error> MapTo();
 }
 
 public class UpdateEducationDegreeFromProfileCommand : UpdateEducationFromProfileCommand
@@ -38,7 +35,7 @@ public class UpdateEducationDegreeFromProfileCommand : UpdateEducationFromProfil
     }
 
     //Here we are using covariance on an interface
-    public CustomResult.IResult<Education, Error> MapTo()
+    public override CustomResult.IResult<Education, Error> MapTo()
     {
         return DegreeEducation.Create(Institution, Degree, StartDate, EndDate);
     }
@@ -70,7 +67,7 @@ public class UpdateEducationResearchFromProfileCommand : UpdateEducationFromProf
 
     //Generics are invariant by default
     //Covariance and contravariance is supported only for interfaces and delegates
-    public CustomResult.IResult<ResearchEducation, Error> MapTo()
+    public override CustomResult.IResult<ResearchEducation, Error> MapTo()
     {
         return ResearchEducation.Create(Institution, StartDate, EndDate, ProjectTitle, Supervisor, Summary);
 

@@ -69,4 +69,18 @@ public class QualifiedProfileService : IQualifiedProfileService
     {
         return this.repository.Find(id);
     }
+
+    public async Task<Result> UpdateEducation(int profileId, Education education)
+    {
+        QualifiedProfile profile = await this.repository.Find(profileId, GetQueryExpression());
+        if (profile is null)
+        {
+            return Result.Failure("");
+        }
+
+        profile.UpdateEducation(education);
+
+        await this.repository.SaveChanges();
+        return Result.Success();
+    }
 }

@@ -30,7 +30,8 @@ namespace OGCP.Curriculum.API.Controllers
         {
             try
             {
-                AddEducationToQualifiedProfileCommand command = EducationFactory.Get(request, id);
+                //AddEducationToQualifiedProfileCommand command = EducationFactory.Get(request, id);
+                var command = this.mapper.Map<AddEducationToQualifiedProfileCommand>(request);
                 Result sds = await this.message.DispatchCommand(command);
                 return NoContent();
             }

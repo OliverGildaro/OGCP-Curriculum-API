@@ -182,7 +182,19 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         return Result.Success();
     }
 
-    public Result EditEducation(Education education)
+    public Result AddJobExperience(JobExperience workExperience)
+    {
+        if (this.Experiences.Any(e => e.IsEquivalent(workExperience)))
+        {
+            return Result.Failure("This work experience can not be added twice");
+        }
+
+        this._experiences.Add(workExperience);
+
+        return Result.Success();
+    }
+
+    internal Result UpdateEducation(Education education)
     {
         if (_educations.Any(educ => educ.IsEquivalent(education)))
         {
@@ -202,18 +214,6 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         }
 
         //UpdateTimestamp();
-        return Result.Success();
-    }
-
-    public Result AddJobExperience(JobExperience workExperience)
-    {
-        if (this.Experiences.Any(e => e.IsEquivalent(workExperience)))
-        {
-            return Result.Failure("This work experience can not be added twice");
-        }
-
-        this._experiences.Add(workExperience);
-
         return Result.Success();
     }
 }

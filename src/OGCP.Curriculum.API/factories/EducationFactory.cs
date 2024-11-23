@@ -14,7 +14,7 @@ public class EducationFactory
         if (request.EducationType.Equals(EducationRequests.AddDegree) 
             && request is AddDegreeEducationRequest degreeEduc)
         {
-            var result = new AddEducationDegreeToProfileCommand
+            var result = new AddDegreeEducationToQualifiedProfileCommand
             {
                 Id = id,
                 Degree = degreeEduc.Degree,
@@ -27,7 +27,7 @@ public class EducationFactory
         else if(request.EducationType.Equals(EducationRequests.AddResearch) &&
             request is AddResearchEducationRequest researchEduc)
         {
-            return new AddEducationResearchToProfileCommand
+            return new AddResearchEducationToQualifiedProfileCommand
             {
                 Id = id,
                 EndDate = researchEduc.EndDate,

@@ -15,7 +15,7 @@ public abstract class AddEducationToQualifiedProfileCommand : ICommand
     public abstract CustomResult.IResult<Education, Error> MapTo();
 }
 
-public class AddEducationDegreeToProfileCommand : AddEducationToQualifiedProfileCommand
+public class AddDegreeEducationToQualifiedProfileCommand : AddEducationToQualifiedProfileCommand
 {
 
     public EducationLevel Degree { get; set; }
@@ -41,7 +41,7 @@ public class AddEducationDegreeToProfileCommand : AddEducationToQualifiedProfile
     }
 }
 
-public class AddEducationResearchToProfileCommand : AddEducationToQualifiedProfileCommand
+public class AddResearchEducationToQualifiedProfileCommand : AddEducationToQualifiedProfileCommand
 {
     public string ProjectTitle { get; set; }
     public string Supervisor { get; set; }
