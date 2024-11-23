@@ -16,7 +16,7 @@ public class EducationFactory
         {
             var result = new AddDegreeEducationToQualifiedProfileCommand
             {
-                Id = id,
+                ProfileId = id,
                 Degree = degreeEduc.Degree,
                 EndDate = degreeEduc.EndDate,
                 StartDate = degreeEduc.StartDate,
@@ -29,7 +29,7 @@ public class EducationFactory
         {
             return new AddResearchEducationToQualifiedProfileCommand
             {
-                Id = id,
+                ProfileId = id,
                 EndDate = researchEduc.EndDate,
                 StartDate = researchEduc.StartDate,
                 Institution = researchEduc.Institution,

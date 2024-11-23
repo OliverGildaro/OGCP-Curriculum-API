@@ -102,8 +102,14 @@ builder.Services.AddScoped<ICommandHandler<UpdateLanguageFromProfileCommand, Res
 builder.Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<RemoveLangueFromProfileCommand, Result>, RemoveLanguageFromProfileCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<AddEducationToStudentProfileCommand, Result>, AddEducationToStudentProfileCommandHandler>();
-builder.Services.AddScoped(typeof(ICommandHandler<,>), typeof(AddEducationToQualifiedProfileCommandHandler<,>));
-builder.Services.AddScoped(typeof(ICommandHandler<,>), typeof(UpdateEducationFromProfileCommandHandler<,>));
+builder.Services.AddScoped(typeof(ICommandHandler<UpdateDegreeEducationFromQualifiedProfileCommand, Result>),
+    typeof(UpdateEducationFromQualifiedProfileCommandHandler<UpdateDegreeEducationFromQualifiedProfileCommand, Result>));
+builder.Services.AddScoped(typeof(ICommandHandler<UpdateResearchEducationFromQualifiedProfileCommand, Result>),
+    typeof(UpdateEducationFromQualifiedProfileCommandHandler<UpdateResearchEducationFromQualifiedProfileCommand,Result>));
+builder.Services.AddScoped(typeof(ICommandHandler<AddDegreeEducationToQualifiedProfileCommand, Result>),
+    typeof(AddEducationToQualifiedProfileCommandHandler<AddDegreeEducationToQualifiedProfileCommand,Result>));
+builder.Services.AddScoped(typeof(ICommandHandler<AddResearchEducationToQualifiedProfileCommand, Result>),
+    typeof(AddEducationToQualifiedProfileCommandHandler<AddResearchEducationToQualifiedProfileCommand,Result>));
 builder.Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile>>, GetProfilesQueryHandler>();
 builder.Services.AddScoped<DbProfileContext>();
 builder.Services.AddScoped(provider => new DbProfileContextConfig

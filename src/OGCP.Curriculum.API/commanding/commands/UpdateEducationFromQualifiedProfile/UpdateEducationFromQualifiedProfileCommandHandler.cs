@@ -7,14 +7,14 @@ using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 
-public class UpdateEducationFromProfileCommandHandler<TCommand, TResult>
+public class UpdateEducationFromQualifiedProfileCommandHandler<TCommand, TResult>
     : ICommandHandler<TCommand, TResult>
-    where TCommand : UpdateEducationFromProfileCommand
+    where TCommand : UpdateEducationFromQualifiedProfileCommand
     where TResult : Result
 {
     private readonly IQualifiedProfileService qualifiedService;
 
-    public UpdateEducationFromProfileCommandHandler(IQualifiedProfileService qualifiedService)
+    public UpdateEducationFromQualifiedProfileCommandHandler(IQualifiedProfileService qualifiedService)
     {
         this.qualifiedService = qualifiedService;
     }

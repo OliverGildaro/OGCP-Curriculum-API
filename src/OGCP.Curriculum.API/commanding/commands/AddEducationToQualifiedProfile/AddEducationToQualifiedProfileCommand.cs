@@ -8,7 +8,7 @@ namespace OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 
 public abstract class AddEducationToQualifiedProfileCommand : ICommand
 {
-    public int Id { get; set; }
+    public int ProfileId { get; set; }
     public string Institution { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
@@ -27,7 +27,7 @@ public class AddDegreeEducationToQualifiedProfileCommand : AddEducationToQualifi
         out DateTime startDate,
         out DateTime? endDate)
     {
-        id = base.Id;
+        id = base.ProfileId;
         institution = base.Institution;
         degree = this.Degree;
         startDate = base.StartDate;
@@ -56,7 +56,7 @@ public class AddResearchEducationToQualifiedProfileCommand : AddEducationToQuali
         out string supervisor,
         out string summary)
     {
-        id = base.Id;
+        id = base.ProfileId;
         institution = base.Institution;
         startDate = base.StartDate;
         endDate = base.EndDate;

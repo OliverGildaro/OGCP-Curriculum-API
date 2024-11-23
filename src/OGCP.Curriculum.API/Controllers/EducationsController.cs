@@ -26,12 +26,13 @@ namespace OGCP.Curriculum.API.Controllers
 
         [HttpPut("{id}/educations")]
         [ProducesResponseType(203)]
-        public async Task<IActionResult> AddEducationToProfile(int id, [FromBody] AddEducationRequest request)
+        public async Task<IActionResult> AddEducationToProfile(int profileId, [FromBody] AddEducationRequest request)
         {
             try
             {
                 //AddEducationToQualifiedProfileCommand command = EducationFactory.Get(request, id);
                 var command = this.mapper.Map<AddEducationToQualifiedProfileCommand>(request);
+                command.ProfileId = profileId;
                 Result sds = await this.message.DispatchCommand(command);
                 return NoContent();
             }
@@ -41,14 +42,14 @@ namespace OGCP.Curriculum.API.Controllers
             }
         }
 
-        [HttpPut("{id}/educations/{educationId}")]
+        [HttpPut("{profileId}/educations/{educationId}")]
         [ProducesResponseType(203)]
-        public async Task<IActionResult> UpdateEducationFromProfile(int id, int educationId, [FromBody] UpdateEducationRequest request)
+        public async Task<IActionResult> UpdateEducationFromProfile(int profileId, int educationId, [FromBody] UpdateEducationRequest request)
         {
             try
             {
-                var command = this.mapper.Map<UpdateEducationFromProfileCommand>(request);
-                command.ProfileId = id;
+                var command = this.mapper.Map<UpdateEducationFromQualifiedProfileCommand>(request);
+                command.ProfileId = profileId;
                 command.EducationId = educationId;
                 Result sds = await this.message.DispatchCommand(command);
                 return NoContent();
