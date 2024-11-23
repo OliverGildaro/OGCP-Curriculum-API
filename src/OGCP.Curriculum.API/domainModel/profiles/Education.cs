@@ -1,5 +1,7 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
+using ArtForAll.Shared.ErrorHandler.Results;
+using System.Runtime.CompilerServices;
 //using CustomResult = ArtForAll.Shared.ErrorHandler.Results;
 
 namespace OGCP.Curriculum.API.domainmodel;
@@ -17,6 +19,11 @@ public abstract class Education
     public DateTime? EndDate => _endDate;
 
     public abstract bool IsEquivalent(Education other);
+
+    internal Result Update(Education education)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public class DegreeEducation : Education
@@ -81,6 +88,18 @@ public class ResearchEducation : Education
         _summary = summary;
     }
 
+    private ResearchEducation(int educationId,
+        string institution,
+        DateTime startDate,
+        DateTime? endDate,
+        string projectTitle,
+        string supervisor,
+        string summary)
+        :this(institution, startDate, endDate, projectTitle, supervisor, summary)
+    {
+        base._id = educationId;
+    }
+
     public string ProjectTitle => _projectTitle;
     public string Supervisor => _supervisor;
     public string Summary => _summary;
@@ -114,6 +133,18 @@ public class ResearchEducation : Education
         }
 
         return new ResearchEducation(institution, startDate, endDate, projectTitle, supervisor, summary);
+    }
+
+    internal static Result<ResearchEducation, Error> Hidrate(
+        int educationId,
+        string institution,
+        DateTime startDate,
+        DateTime? endDate,
+        string projectTitle,
+        string supervisor,
+        string summary)
+    {
+        return new ResearchEducation(educationId, institution, startDate, endDate, projectTitle, supervisor, summary);
     }
 
     public override bool IsEquivalent(Education other)

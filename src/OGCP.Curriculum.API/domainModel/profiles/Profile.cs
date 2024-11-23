@@ -198,23 +198,12 @@ public class QualifiedProfile : Profile, IQualifiedProfile
     {
         if (_educations.Any(educ => educ.IsEquivalent(education)))
         {
-            return Result.Failure($"{education.Institution} can not be added twice");
+            return Result.Success("Education already updated");
         }
 
-        var currentLanguage = this._educations.FirstOrDefault(currentEduc => currentEduc == education);
-
-        if (currentLanguage != null)
-        {
-            var index = _educations.IndexOf(currentLanguage);
-            _educations[index] = education;
-        }
-        else
-        {
-            this._educations.Add(education);
-        }
-
+        var currentLanguage = this._educations.FirstOrDefault(currentEduc => currentEduc.Id == education.Id);
         //UpdateTimestamp();
-        return Result.Success();
+        return currentLanguage.Update(education);
     }
 }
 

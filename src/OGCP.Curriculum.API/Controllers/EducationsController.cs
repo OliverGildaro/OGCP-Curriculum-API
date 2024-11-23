@@ -24,7 +24,7 @@ namespace OGCP.Curriculum.API.Controllers
             this.mapper = mapper;
         }
 
-        [HttpPut("{id}/educations")]
+        [HttpPut("{profileId}/educations")]
         [ProducesResponseType(203)]
         public async Task<IActionResult> AddEducationToProfile(int profileId, [FromBody] AddEducationRequest request)
         {

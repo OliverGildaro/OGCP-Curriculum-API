@@ -69,7 +69,7 @@ public class UpdateResearchEducationFromQualifiedProfileCommand : UpdateEducatio
     //Covariance and contravariance is supported only for interfaces and delegates
     public override CustomResult.IResult<ResearchEducation, Error> MapTo()
     {
-        return ResearchEducation.Create(Institution, StartDate, EndDate, ProjectTitle, Supervisor, Summary);
+        return ResearchEducation.Hidrate(EducationId, Institution, StartDate, EndDate, ProjectTitle, Supervisor, Summary);
 
     }
 }
