@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
+using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile;
 using OGCP.Curriculum.API.factories;
 using OGCP.Curriculum.API.POCOS.requests.Education;
 
@@ -51,6 +52,26 @@ namespace OGCP.Curriculum.API.Controllers
                 var command = this.mapper.Map<UpdateEducationFromQualifiedProfileCommand>(request);
                 command.ProfileId = profileId;
                 command.EducationId = educationId;
+                Result sds = await this.message.DispatchCommand(command);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("{profileId}/educations/{educationId}")]
+        [ProducesResponseType(203)]
+        public async Task<IActionResult> RemoveEducationFromProfile(int profileId, int educationId)
+        {
+            try
+            {
+                var command = new RemoveEducationFromQualifiedProfileCommand
+                {
+                    Id = profileId,
+                    EducationId = educationId
+                };
                 Result sds = await this.message.DispatchCommand(command);
                 return NoContent();
             }

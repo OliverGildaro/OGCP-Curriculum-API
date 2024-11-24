@@ -23,9 +23,7 @@ namespace OGCP.Curriculum.API.services
             {
 
             }
-            Language languageFound = await this.repository.FindLanguageByNameAndLevel(language.Name, language.Level);
-            var languageToAdd = languageFound ?? language;
-            var langAdded = profile.AddLanguage(languageToAdd);
+            var langAdded = profile.AddLanguage(language);
 
             if (langAdded.IsFailure)
             {
@@ -79,6 +77,7 @@ namespace OGCP.Curriculum.API.services
                 return result;
             }
             await this.repository.SaveChanges();
+
             return result;
         }
 

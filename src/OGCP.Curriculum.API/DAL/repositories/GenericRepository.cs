@@ -50,6 +50,7 @@ public abstract class GenericRepository<TEntity, TEntityId> : IRepository<TEntit
         foreach (var include in includes)
         {
             query = query.Include(include);
+            //.ThenInclude(b => b.??)Is to get the children on an include nav property
         }
 
         return query.FirstOrDefaultAsync(entity => EF.Property<TEntityId>(entity, "Id").Equals(id));

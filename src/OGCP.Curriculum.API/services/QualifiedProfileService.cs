@@ -83,4 +83,18 @@ public class QualifiedProfileService : IQualifiedProfileService
         await this.repository.SaveChanges();
         return Result.Success();
     }
+
+    public async Task<Result> RemoveEducation(int id, int educationId)
+    {
+        QualifiedProfile profile = await this.repository.Find(id, this.GetQueryExpression());
+
+        Result result = profile.RemoveEducation(educationId);
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
+        await this.repository.SaveChanges();
+        return result;
+    }
 }

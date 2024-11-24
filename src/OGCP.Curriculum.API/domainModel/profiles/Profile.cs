@@ -205,6 +205,18 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         //UpdateTimestamp();
         return currentLanguage.Update(education);
     }
+
+    internal Result RemoveEducation(int educationId)
+    {
+        if (this.Educations.Any(edu => edu.Id == educationId))
+        {
+            var educationToRemove = this.Educations.Find(edu => edu.Id == educationId);
+            this.Educations.Remove(educationToRemove);
+            return Result.Success();
+        }
+
+        return Result.Failure($"The profile id: {educationId}, not found");
+    }
 }
 
 public interface IGeneralProfile

@@ -14,6 +14,7 @@ using OGCP.Curriculum.API.commanding.commands.CreateStudentProfile;
 using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.commanding.queries;
+using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.DTOs;
 using OGCP.Curriculum.API.POCOS.requests.Education;
@@ -110,6 +111,8 @@ builder.Services.AddScoped(typeof(ICommandHandler<AddDegreeEducationToQualifiedP
     typeof(AddEducationToQualifiedProfileCommandHandler<AddDegreeEducationToQualifiedProfileCommand,Result>));
 builder.Services.AddScoped(typeof(ICommandHandler<AddResearchEducationToQualifiedProfileCommand, Result>),
     typeof(AddEducationToQualifiedProfileCommandHandler<AddResearchEducationToQualifiedProfileCommand,Result>));
+builder.Services.AddScoped<ICommandHandler<RemoveEducationFromQualifiedProfileCommand, Result>, RemoveEducationFromQualifiedProfileCommandHandler>();
+
 builder.Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile>>, GetProfilesQueryHandler>();
 builder.Services.AddScoped<DbProfileContext>();
 builder.Services.AddScoped(provider => new DbProfileContextConfig
