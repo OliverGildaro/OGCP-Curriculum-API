@@ -13,7 +13,7 @@ public interface IProfile : IEntity<int>
     public Result AddLanguage(Language language);
 }
 
-public class Profile : IProfile
+public abstract class Profile : IProfile
 {
     private int _id;
     private string _firstName;
@@ -352,5 +352,17 @@ public class StudentProfile : Profile, IStudentProfile
     public void AddJobExperience(InternshipExperience experience)
     {
         this._experience.Add(experience);
+    }
+
+    internal Result RemoveEducation(int educationId)
+    {
+        if (this.Educations.Any(edu => edu.Id == educationId))
+        {
+            var educationToRemove = this._educations.Find(edu => edu.Id == educationId);
+            this._educations.Remove(educationToRemove);
+            return Result.Success();
+        }
+
+        return Result.Failure($"The profile id: {educationId}, not found");
     }
 }

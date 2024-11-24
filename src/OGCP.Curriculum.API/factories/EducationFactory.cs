@@ -9,7 +9,7 @@ namespace OGCP.Curriculum.API.factories;
 
 public class EducationFactory
 {
-    public static AddEducationToQualifiedProfileCommand Get(AddEducationRequest request, int id)
+    public static AddEducationToProfileCommand Get(AddEducationRequest request, int id)
     {
         if (request.EducationType.Equals(EducationRequests.AddDegree) 
             && request is AddDegreeEducationRequest degreeEduc)

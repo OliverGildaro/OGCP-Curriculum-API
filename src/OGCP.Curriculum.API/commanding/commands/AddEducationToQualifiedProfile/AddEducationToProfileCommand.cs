@@ -6,7 +6,7 @@ using CustomResult = ArtForAll.Shared.ErrorHandler.Results;
 
 namespace OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 
-public abstract class AddEducationToQualifiedProfileCommand : ICommand
+public abstract class AddEducationToProfileCommand : ICommand
 {
     public int ProfileId { get; set; }
     public string Institution { get; set; }
@@ -15,7 +15,7 @@ public abstract class AddEducationToQualifiedProfileCommand : ICommand
     public abstract CustomResult.IResult<Education, Error> MapTo();
 }
 
-public class AddDegreeEducationToQualifiedProfileCommand : AddEducationToQualifiedProfileCommand
+public class AddDegreeEducationToQualifiedProfileCommand : AddEducationToProfileCommand
 {
 
     public EducationLevel Degree { get; set; }
@@ -41,7 +41,7 @@ public class AddDegreeEducationToQualifiedProfileCommand : AddEducationToQualifi
     }
 }
 
-public class AddResearchEducationToQualifiedProfileCommand : AddEducationToQualifiedProfileCommand
+public class AddResearchEducationToQualifiedProfileCommand : AddEducationToProfileCommand
 {
     public string ProjectTitle { get; set; }
     public string Supervisor { get; set; }

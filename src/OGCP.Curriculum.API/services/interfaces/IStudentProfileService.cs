@@ -6,5 +6,6 @@ namespace OGCP.Curriculum.API.services.interfaces
     public interface IStudentProfileService : IService<StudentProfile, int>
     {
         Task<Result> AddEducation(int id, ResearchEducation request);
+        Task<Result> RemoveEducation(int profileId, int educationId);
     }
 }

@@ -15,8 +15,10 @@ using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.commanding.queries;
 using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile;
+using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromStudentProfile;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.DTOs;
+using OGCP.Curriculum.API.DTOs.requests.Education;
 using OGCP.Curriculum.API.POCOS.requests.Education;
 using OGCP.Curriculum.API.POCOS.requests.Profile;
 using OGCP.Curriculum.API.POCOS.requests.work;
@@ -76,7 +78,16 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     .RegisterSubtype(typeof(UpdateEducationToStudentProfileRequest), EducationRequests.UpdateResearchFromStudent)
     .SerializeDiscriminatorProperty()
     .Build()
-);
+    );
+
+    options.SerializerSettings.Converters.Add(
+        JsonSubtypesConverterBuilder
+        .Of(typeof(DeleteEducationRequest), "EducationType")
+        .RegisterSubtype(typeof(DeleteStudentEducationRequest), EducationRequests.DeleteStudentEducation)
+        .RegisterSubtype(typeof(DeleteQualifiedEducationRequest), EducationRequests.DeleteQualifiedEducation)
+        .SerializeDiscriminatorProperty()
+        .Build()
+        );
 
     options.SerializerSettings.Converters.Add(
         JsonSubtypesConverterBuilder
@@ -112,6 +123,7 @@ builder.Services.AddScoped(typeof(ICommandHandler<AddDegreeEducationToQualifiedP
 builder.Services.AddScoped(typeof(ICommandHandler<AddResearchEducationToQualifiedProfileCommand, Result>),
     typeof(AddEducationToQualifiedProfileCommandHandler<AddResearchEducationToQualifiedProfileCommand,Result>));
 builder.Services.AddScoped<ICommandHandler<RemoveEducationFromQualifiedProfileCommand, Result>, RemoveEducationFromQualifiedProfileCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<RemoveEducationFromStudentProfileCommand, Result>, RemoveEducationFromStudentProfileCommandHandler>();
 
 builder.Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile>>, GetProfilesQueryHandler>();
 builder.Services.AddScoped<DbProfileContext>();

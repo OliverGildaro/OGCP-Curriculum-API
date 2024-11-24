@@ -1,6 +1,5 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
 using ArtForAll.Shared.ErrorHandler;
-using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
 using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile

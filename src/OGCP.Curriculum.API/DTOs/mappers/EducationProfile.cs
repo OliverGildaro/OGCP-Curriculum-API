@@ -2,6 +2,9 @@
 using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
+using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile;
+using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromStudentProfile;
+using OGCP.Curriculum.API.DTOs.requests.Education;
 using OGCP.Curriculum.API.POCOS.requests.Education;
 
 namespace OGCP.Curriculum.API.POCOS.mappers;
@@ -10,8 +13,21 @@ public class EducationProfile : Profile
 {
     public EducationProfile()
     {
-        this.UpdateEducationMapping();
         this.AddEducationMapping();
+        this.UpdateEducationMapping();
+        this.DeleteEducationMapping();
+    }
+
+    private void DeleteEducationMapping()
+    {
+        CreateMap<DeleteEducationRequest, RemoveEducationFromProfileCommand>()
+            .Include<DeleteQualifiedEducationRequest, RemoveEducationFromQualifiedProfileCommand>()
+            .Include<DeleteStudentEducationRequest, RemoveEducationFromStudentProfileCommand>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.EducationId, opt => opt.Ignore());
+
+        CreateMap<DeleteQualifiedEducationRequest, RemoveEducationFromQualifiedProfileCommand>();
+        CreateMap<DeleteStudentEducationRequest, RemoveEducationFromStudentProfileCommand>();
     }
 
     private void UpdateEducationMapping()
@@ -37,7 +53,7 @@ public class EducationProfile : Profile
 
     private void AddEducationMapping()
     {
-        CreateMap<AddEducationRequest, AddEducationToQualifiedProfileCommand>()
+        CreateMap<AddEducationRequest, AddEducationToProfileCommand>()
             .Include<AddDegreeEducationRequest, AddDegreeEducationToQualifiedProfileCommand>()
             .Include<AddResearchEducationRequest, AddResearchEducationToQualifiedProfileCommand>()
             .Include<AddResearchEducationToStudentProfileRequest, AddEducationToStudentProfileCommand>()

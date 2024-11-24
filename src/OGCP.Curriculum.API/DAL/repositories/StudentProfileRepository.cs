@@ -1,4 +1,6 @@
-﻿using OGCP.Curriculum.API.domainmodel;
+﻿using ArtForAll.Shared.ErrorHandler;
+using Microsoft.EntityFrameworkCore;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.interfaces;
 
 namespace OGCP.Curriculum.API.repositories
@@ -9,6 +11,11 @@ namespace OGCP.Curriculum.API.repositories
             :base(context)
         {
             
+        }
+
+        public Task<int> RemoveOrphanEducations(string removeEducation)
+        {
+            return this.context.Database.ExecuteSqlRawAsync(removeEducation);
         }
     }
 }

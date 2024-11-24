@@ -47,6 +47,29 @@ public class StudentProfileService : IStudentProfileService
         return this.repository.Find(id);
     }
 
+    public async Task<Result> RemoveEducation(int profileId, int educationId)
+    {
+        const string removeEducation = "EXEC DeleteOrphanedEducations;";
+        StudentProfile profile = await this.repository.Find(profileId, this.GetQueryExpression());
+
+        Result result = profile.RemoveEducation(educationId);
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
+        await this.repository.SaveChanges();
+
+        var isPersisted = await this.repository.RemoveOrphanEducations(removeEducation);
+
+        if (isPersisted < 1)
+        {
+            return Result.Failure("");
+        }
+
+        return Result.Success();
+    }
+
     private Expression<Func<StudentProfile, object>>[] GetQueryExpression()
     {
         return

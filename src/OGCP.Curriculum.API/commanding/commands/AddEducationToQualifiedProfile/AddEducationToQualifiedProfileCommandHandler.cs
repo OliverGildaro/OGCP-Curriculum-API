@@ -12,7 +12,7 @@ namespace OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 //Covariance and contravariance is supported only for interfaces and delegates
 public class AddEducationToQualifiedProfileCommandHandler<TCommand, TResult>
     : ICommandHandler<TCommand, TResult>
-    where TCommand : AddEducationToQualifiedProfileCommand
+    where TCommand : AddEducationToProfileCommand
     where TResult : Result
 {
     private readonly IQualifiedProfileService qualifiedService;

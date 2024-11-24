@@ -14,4 +14,6 @@ public enum EducationRequests
     UpdateDegree = 4,
     UpdateResearch = 5,
     UpdateResearchFromStudent = 6,
+    DeleteQualifiedEducation = 7,
+    DeleteStudentEducation = 8,
 }
