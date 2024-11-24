@@ -292,6 +292,7 @@ namespace OGCP.Curriculum.API.repositories
                     .HasValue<Education>("BaseEducation")
                     .HasValue<DegreeEducation>("DegreeEducation")
                     .HasValue<ResearchEducation>("ResearchEducation");
+
             });
 
             modelBuilder.Entity<DegreeEducation>(entity =>

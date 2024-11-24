@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OGCP.Curriculum.API.Migrations
 {
     /// <inheritdoc />
-    public partial class abstractMig : Migration
+    public partial class newMig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -75,7 +75,7 @@ namespace OGCP.Curriculum.API.Migrations
                     Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     Visibility = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DetailLevel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DetailLevel = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),

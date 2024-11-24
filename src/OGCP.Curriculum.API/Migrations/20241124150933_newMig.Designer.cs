@@ -12,8 +12,8 @@ using OGCP.Curriculum.API.repositories;
 namespace OGCP.Curriculum.API.Migrations
 {
     [DbContext(typeof(DbProfileContext))]
-    [Migration("20241119193405_abstractMig")]
-    partial class abstractMig
+    [Migration("20241124150933_newMig")]
+    partial class newMig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -196,7 +196,8 @@ namespace OGCP.Curriculum.API.Migrations
 
                     b.Property<string>("DetailLevel")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(18)
+                        .HasColumnType("nvarchar(18)");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
