@@ -1,4 +1,6 @@
-﻿using OGCP.Curriculum.API.domainmodel;
+﻿using ArtForAll.Shared.ErrorHandler;
+using Microsoft.EntityFrameworkCore;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.interfaces;
 using System.Linq.Expressions;
 
@@ -48,6 +50,17 @@ namespace OGCP.Curriculum.API.repositories
             //newContex.Entry(profile.Educations[0]).State = EntityState.Modified
 
             return base.Find(id, includes);
+        }
+
+        public async Task<Result> RemoveOrphanEducations(string removeEducation)
+        {
+            var isSaved = await this.context.Database.ExecuteSqlRawAsync(removeEducation);
+
+            if (isSaved < 0)
+            {
+                return Result.Failure("");
+            }
+            return Result.Success();
         }
     }
 }

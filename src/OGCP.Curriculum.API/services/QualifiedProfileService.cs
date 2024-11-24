@@ -86,6 +86,7 @@ public class QualifiedProfileService : IQualifiedProfileService
 
     public async Task<Result> RemoveEducation(int id, int educationId)
     {
+        const string removeEducation = "EXEC DeleteOrphanedEducations;";
         QualifiedProfile profile = await this.repository.Find(id, this.GetQueryExpression());
 
         Result result = profile.RemoveEducation(educationId);
@@ -95,6 +96,7 @@ public class QualifiedProfileService : IQualifiedProfileService
             return result;
         }
         await this.repository.SaveChanges();
-        return result;
+
+        return await this.repository.RemoveOrphanEducations(removeEducation);
     }
 }

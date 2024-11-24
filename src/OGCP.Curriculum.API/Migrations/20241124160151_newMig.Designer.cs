@@ -12,7 +12,7 @@ using OGCP.Curriculum.API.repositories;
 namespace OGCP.Curriculum.API.Migrations
 {
     [DbContext(typeof(DbProfileContext))]
-    [Migration("20241124150933_newMig")]
+    [Migration("20241124160151_newMig")]
     partial class newMig
     {
         /// <inheritdoc />
