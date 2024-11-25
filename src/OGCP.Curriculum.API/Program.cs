@@ -126,12 +126,21 @@ builder.Services.AddScoped<ICommandHandler<RemoveEducationFromQualifiedProfileCo
 builder.Services.AddScoped<ICommandHandler<RemoveEducationFromStudentProfileCommand, Result>, RemoveEducationFromStudentProfileCommandHandler>();
 
 builder.Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile>>, GetProfilesQueryHandler>();
-builder.Services.AddScoped<DbProfileContext>();
-builder.Services.AddScoped(provider => new DbProfileContextConfig
+
+//builder.Services.AddScoped(provider => new DbProfileContextConfig
+//{
+//    ConnectionString = builder.Configuration.GetConnectionString("conectionDb"),
+//    UseConsoleLogger = true
+//});
+builder.Services.AddScoped<DbProfileContext>(provider =>
 {
-    ConnectionString = builder.Configuration.GetConnectionString("conectionDb"),
-    UseConsoleLogger = true
+    return new DbProfileContext(new DbProfileContextConfig
+    {
+        ConnectionString = builder.Configuration.GetConnectionString("conectionDb"),
+        UseConsoleLogger = true
+    }); // Explicitly use the configuration-based constructor
 });
+
 builder.Services.AddScoped<Message>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();

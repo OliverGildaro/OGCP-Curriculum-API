@@ -66,7 +66,7 @@ public class QualifiedProfile_UT
         var result = qualifiedProf.AddEducation(education);
 
         Assert.False(result.IsSucces);
-        Assert.Equal("This education can not be added twice", result.Message);
+        Assert.Equal("UMSS can not be added twice", result.Message);
     }
 
     [Theory]

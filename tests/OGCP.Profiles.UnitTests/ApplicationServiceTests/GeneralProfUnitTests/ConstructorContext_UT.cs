@@ -20,7 +20,7 @@ public class ConstructorContext_UT : IDisposable
         repository.Setup(x => x.Add(It.IsAny<GeneralProfile>()))
             .Returns(Result.Success);
         repository.Setup(x => x.SaveChanges())
-            .Returns(Result.Success);
+            .ReturnsAsync(() => 1);
 
         service = new GeneralProfileService(repository.Object);
     }
@@ -33,20 +33,13 @@ public class ConstructorContext_UT : IDisposable
     [Theory]
     [InlineData("Oliver", "Castro", "Fillstack dev", "Job here goal")]
     [InlineData("Cristian", "Morato", "Fillstack dev", "Job here goal")]
-    public void Test1(string firstName, string lastName, string summanry, string personalGoal)
+    public async Task Test1(string firstName, string lastName, string summanry, string personalGoal)
     {
-        var request = new CreateGeneralProfileRequest
-        {
-            FirstName = firstName,
-            LastName = lastName,
-            Summary = summanry,
-            PersonalGoals = new string[] { personalGoal }
-        };
-        var result = service.Create(request);
+        var request = GeneralProfile.Create(firstName, lastName, summanry, new string[] { personalGoal });
+        var result = await service.Create(request.Value);
 
-        Assert.True(result.IsSucces);
-        Assert.IsType<Result>(result);
-        Assert.Empty(result.Message);
+        Assert.Equal(1, result);
+        Assert.IsType<int>(result);
         Assert.NotNull(result);
     }
 }

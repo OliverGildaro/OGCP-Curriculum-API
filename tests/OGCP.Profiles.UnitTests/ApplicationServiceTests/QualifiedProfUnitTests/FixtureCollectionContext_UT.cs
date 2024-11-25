@@ -1,4 +1,5 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests;
@@ -15,14 +16,12 @@ public class FixtureCollectionContext_UT : IDisposable
 
     [Theory]
     [ClassData(typeof(CreateQualifiedProfileRequestClassData))]
-    public void test1(CreateQualifiedProfileRequest request)
+    public async Task test1(QualifiedProfile request)
     {
-        var result = context.service.Create(request);
+        var result = await context.service.Create(request);
 
-        Assert.IsType<Result>(result);
-        Assert.NotNull(result);
-        Assert.True(result.IsSucces);
-        Assert.Empty(result.Message);
+        Assert.IsType<int>(result);
+        Assert.Equal(1, result);
     }
 
     public void Dispose()
@@ -36,16 +35,10 @@ public class QualifiedProfileServiceCollectionFixture : ICollectionFixture<Quali
 }
 
 public class CreateQualifiedProfileRequestClassData
-    : TheoryData<CreateQualifiedProfileRequest>
+    : TheoryData<QualifiedProfile>
 {
     public CreateQualifiedProfileRequestClassData()
     {
-        Add(new CreateQualifiedProfileRequest
-        {
-            FirstName = "Oliver",
-            LastName = "Castro",
-            Summary = "I am bla",
-            DesiredJobRole = "Backend"
-        });
+        Add(QualifiedProfile.Create("Oliver", "CAstro", "I am bla", "Backedn").Value);
     }
 }

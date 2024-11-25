@@ -17,43 +17,29 @@ public class FixtureClassContext_UT : IClassFixture<QualifiedProfileServiceFIxtu
         this.context = context;
     }
 
-    public static TheoryData<CreateQualifiedProfileRequest> GetQualifiedProfileData()
+    public static TheoryData<QualifiedProfile> GetQualifiedProfileData()
     {
-        return new TheoryData<CreateQualifiedProfileRequest>
+        return new TheoryData<QualifiedProfile>
         {
-            new CreateQualifiedProfileRequest
-            {
-                FirstName = "Oliver",
-                LastName = "Castro",
-                Summary = "Fullstack",
-                DesiredJobRole ="Backend"
-            },
-            new CreateQualifiedProfileRequest
-            {
-                FirstName = "Alvaro",
-                LastName = "Castro",
-                Summary = "Fullstack",
-                DesiredJobRole ="Backend and architect"
-            }
+            QualifiedProfile.Create("Oliver", "Castro", "Fullstack", "Backend").Value,
+            QualifiedProfile.Create("Alvaro", "Castro", "Fullstack", "Backend and architect").Value,
         };
     }
 
     [Theory]
     [MemberData(nameof(GetQualifiedProfileData))]
-    public void Test2(CreateQualifiedProfileRequest request)
+    public async Task Test2(QualifiedProfile request)
     {
-        var result = context.service.Create(request);
+        var result = await context.service.Create(request);
 
-        Assert.IsType<Result>(result);
-        Assert.NotNull(result);
-        Assert.True(result.IsSucces);
-        Assert.Empty(result.Message);
+        Assert.IsType<int>(result);
+        Assert.Equal(1, result);
     }
 
     [Fact]
-    public void test22()
+    public async Task test22()
     {
-        var result = context.service.Get(1);
+        var result = await context.service.Get(1);
 
         Assert.IsType<QualifiedProfile>(result);
         Assert.Equal("Oliver", result.FirstName);
@@ -76,8 +62,11 @@ public class QualifiedProfileServiceFIxtureClass
         repo.Setup(m => m.Add(It.IsAny<QualifiedProfile>()))
             .Returns(Result.Success);
 
+        repo.Setup(x => x.SaveChanges())
+            .ReturnsAsync(() => 1);
+
         repo.Setup(m => m.Find(It.IsAny<int>()))
-                .Returns(QualifiedProfile
+                .ReturnsAsync(QualifiedProfile
                     .Create("Oliver", "Castro", "I am bla bla", "Fullstack software dev").Value);
 
         service = new QualifiedProfileService(repo.Object);

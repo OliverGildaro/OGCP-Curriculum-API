@@ -2,7 +2,6 @@
 using Moq;
 using Moq.Language.Flow;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services;
 
@@ -20,6 +19,10 @@ namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests
                 .Setup(m => m.Add(It.IsAny<QualifiedProfile>()))
                 .Returns(Result.Success);
 
+            mockRepo
+                .Setup(m => m.SaveChanges())
+                .ReturnsAsync(() => 1);
+
             service = new QualifiedProfileService(mockRepo.Object);
         }
 
@@ -30,21 +33,13 @@ namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests
         [Theory]
         [InlineData("Oliver", "Castro", "I am bla bla", "Fullstack software dev")]
         [InlineData("Carolina", "Castro", "I am bla bla", "Fullstack software dev2")]
-        public void Test1(string firstName, string lastName, string summary, string rolePos)
+        public async Task Test1(string firstName, string lastName, string summary, string rolePos)
         {
-            var qualified = new CreateQualifiedProfileRequest
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Summary = summary,
-                DesiredJobRole = rolePos
-            };
-            var result = service.Create(qualified);
+            var qualified = QualifiedProfile.Create(firstName, lastName, summary, rolePos).Value;
+            var result = await service.Create(qualified);
 
-            Assert.IsType<Result>(result);
-            Assert.NotNull(result);
-            Assert.True(result.IsSucces);
-            Assert.Empty(result.Message);
+            Assert.IsType<int>(result);
+            Assert.Equal(1 , result);
         }
     }
 }

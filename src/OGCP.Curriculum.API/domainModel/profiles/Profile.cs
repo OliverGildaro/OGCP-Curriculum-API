@@ -63,7 +63,7 @@ public abstract class Profile : IProfile
         var currentLanguage = this.LanguagesSpoken.FirstOrDefault(l => l.Name == language.Name);
         if (currentLanguage != null)
         {
-            return Result.Failure($"Invalid operation: two same languages can not be added");
+            return Result.Failure($"{language.Name} can not be added twice");
         }
         
         this._languagesSpoken.Add(language);

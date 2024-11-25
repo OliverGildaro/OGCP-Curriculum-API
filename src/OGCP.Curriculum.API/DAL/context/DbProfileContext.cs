@@ -48,11 +48,11 @@ namespace OGCP.Curriculum.API.repositories
             this.config = config;
         }
 
-        //public DbProfileContext(DbContextOptions<DbProfileContext> dbContext)
-        //    : base(dbContext)
-        //{
+        public DbProfileContext(DbContextOptions<DbProfileContext> dbContext)
+            : base(dbContext)
+        {
 
-        //}
+        }
 
         public DbSet<QualifiedProfile> QualifiedProfiles { get; set; }
         public DbSet<GeneralProfile> GeneralProfiles { get; set; }
@@ -71,23 +71,26 @@ namespace OGCP.Curriculum.API.repositories
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+            if (!optionsBuilder.IsConfigured)
             {
-                builder
-                    .AddFilter((category, level) =>
-                        category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information)
-                    .AddConsole();
-            });
+                ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+                {
+                    builder
+                        .AddFilter((category, level) =>
+                            category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information)
+                        .AddConsole();
+                });
 
-            optionsBuilder
-                .UseSqlServer(this.config.ConnectionString);
+                optionsBuilder
+                    .UseSqlServer(this.config.ConnectionString);
                 //.UseLazyLoadingProxies();//To enable lazy loading (Only writes, never reads)
 
-            if (this.config.UseConsoleLogger)
-            {
-                optionsBuilder
-                    .UseLoggerFactory(loggerFactory)
-                    .EnableSensitiveDataLogging();//Now we can see the sql query on the console for performance purposes
+                if (this.config.UseConsoleLogger)
+                {
+                    optionsBuilder
+                        .UseLoggerFactory(loggerFactory)
+                        .EnableSensitiveDataLogging();//Now we can see the sql query on the console for performance purposes
+                }
             }
         }
 
@@ -260,8 +263,17 @@ namespace OGCP.Curriculum.API.repositories
                 //In a system where you synchronize user profiles between databases, you can compare the checksum values to quickly identify records that need updates.
                 //You can validate the integrity of user data during migrations or imports by ensuring that the checksum matches the recalculated value based on the migrated columns.
                 //Auditing: In scenarios where you need to detect unauthorized or accidental changes to critical fields, the checksum can serve as an additional layer of protection.
-                entity.Property<byte[]>("Checksum")
-                    .HasComputedColumnSql("CONVERT(VARBINARY(1024),CHECKSUM([Name],[Level]))");
+                if (Database.IsSqlServer())
+                {
+                    entity.Property<byte[]>("Checksum")
+                        .HasComputedColumnSql("CONVERT(VARBINARY(1024),CHECKSUM([Name],[Level]))");
+                }
+                else
+                {
+                    // SQLite doesn't support CHECKSUM, use a placeholder or omit the computed column for SQLite
+                    entity.Property<byte[]>("Checksum")
+                        .HasComputedColumnSql(null); // Placeholder for testing; replace as needed
+                }
                 entity.Property(p => p.Name)
                     .HasConversion<string>();
 

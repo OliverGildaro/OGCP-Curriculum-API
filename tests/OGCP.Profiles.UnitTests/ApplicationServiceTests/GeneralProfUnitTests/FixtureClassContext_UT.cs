@@ -19,48 +19,34 @@ public class FixtureClassContext_UT : IClassFixture<GeneralProfileServiceFixture
     }
 
     //***** MEMBER DATA *****//////
-    public static TheoryData<CreateGeneralProfileRequest> Example_WithMethod()//since is static can be shared across diferent test clases
+    public static TheoryData<GeneralProfile> Example_WithMethod()//since is static can be shared across diferent test clases
     {
-        return new TheoryData<CreateGeneralProfileRequest>
+        return new TheoryData<GeneralProfile>
         {
-            new CreateGeneralProfileRequest
-            {
-                FirstName = "Oliver",
-                LastName = "Castro",
-                Summary = "Fullstack sumary",
-                PersonalGoals = new string[] { "Be the best", "Another" }
-            },
-            new CreateGeneralProfileRequest
-            {
-                FirstName = "Cristian",
-                LastName = "Morato",
-                Summary = "Fullstack sumary",
-                PersonalGoals = new string[] { "Be the best", "Another" }
-            },
+            GeneralProfile.Create("Oliver", "Castro", "Fullstack sumary", new string[] { "Be the best", "Another" }).Value,
+            GeneralProfile.Create("Cristian", "Morato", "Fullstack sumary", new string[] { "Be the best", "Another" }).Value,
         };
     }
 
     [Theory]
     [MemberData(nameof(Example_WithMethod))]//this member data can be share across many unit tests
-    public void Test1(CreateGeneralProfileRequest generalProfile)
+    public async Task Test1(GeneralProfile generalProfile)
     {
-        var result = fixture.service.Create(generalProfile);
+        var result = await fixture.service.Create(generalProfile);
 
-        Assert.True(result.IsSucces);
-        Assert.IsType<Result>(result);
-        Assert.Empty(result.Message);
-        Assert.NotNull(result);
+        Assert.Equal(1, result);
+        Assert.IsType<int>(result);
     }
 
     //here I have not been able to use fixture class context
     [Fact]
-    public void Test2()
+    public async Task Test2()
     {
         var mockRepo = new Mock<IGeneralProfileRepository>();
 
         mockRepo
               .Setup(m => m.Find())
-              .Returns(new List<GeneralProfile>()
+              .ReturnsAsync(new List<GeneralProfile>()
               {
                         GeneralProfile.Create("Oliver", "Castro", "Fullstack dev", new string[]{ "goal"}).Value,
                         GeneralProfile.Create("Cristian", "Morato", "Fullstack dev senior", new string[]{ "goal"}).Value
@@ -68,7 +54,7 @@ public class FixtureClassContext_UT : IClassFixture<GeneralProfileServiceFixture
 
         var service = new GeneralProfileService(mockRepo.Object);
 
-        var profiles = service.Get().ToArray();
+        var profiles = await service.Get();
 
         Assert.Equal(2, profiles.Count());
 
@@ -119,11 +105,11 @@ public class GeneralProfileServiceFixtureClass : IDisposable
 
         repository
             .Setup(m => m.SaveChanges())
-            .Returns(Result.Success);
+            .ReturnsAsync(() => 1);
 
         repository
             .Setup(m => m.Find())
-            .Returns(new List<GeneralProfile>()
+            .ReturnsAsync(new List<GeneralProfile>()
             {
                 GeneralProfile.Create("Oliver", "Castro", "Fulsstack dev", new string[]{ "goal"}).Value,
                 GeneralProfile.Create("Cristian", "Morato", "Fulsstack dev senior", new string[]{ "goal"}).Value

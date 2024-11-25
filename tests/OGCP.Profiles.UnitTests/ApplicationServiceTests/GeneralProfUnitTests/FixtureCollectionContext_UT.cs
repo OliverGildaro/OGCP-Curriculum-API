@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using Moq;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.GeneralProfUnitTests;
@@ -20,14 +21,12 @@ public class FixtureCollectionContext_UT
 
     [Theory]
     [ClassData(typeof(CreateGeneralProfileRequestTestData))]
-    public void Test1(CreateGeneralProfileRequest generalProfile)
+    public async Task Test1(GeneralProfile generalProfile)
     {
-        var result = fixture.service.Create(generalProfile);
+        var result = await fixture.service.Create(generalProfile);
 
-        Assert.True(result.IsSucces);
-        Assert.IsType<Result>(result);
-        Assert.Empty(result.Message);
-        Assert.NotNull(result);
+        Assert.Equal(1, result);
+        Assert.IsType<int>(result);
     }
 
 
@@ -43,17 +42,11 @@ public class GeneralProfileServiceCollectionFixture
 }
 
 //***** CLASS DATA *****//////
-public class CreateGeneralProfileRequestTestData : TheoryData<CreateGeneralProfileRequest>
+public class CreateGeneralProfileRequestTestData : TheoryData<GeneralProfile>
 {
     public CreateGeneralProfileRequestTestData()
     {
         Add(
-            new CreateGeneralProfileRequest
-            {
-                FirstName = "Oliver",
-                LastName = "Castro",
-                Summary = "Fullstack sumary",
-                PersonalGoals = new string[] { "Be the best", "Another" }
-            });
+            GeneralProfile.Create("Oliver", "Castro", "Fullstack sumary", new string[] { "Be the best", "Another" }).Value);
     }
 }
