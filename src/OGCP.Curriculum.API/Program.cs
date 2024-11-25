@@ -134,11 +134,13 @@ builder.Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile
 //});
 builder.Services.AddScoped<DbProfileContext>(provider =>
 {
+    //I need to register in this way because there is an abiguity between the two constructors I have
+    //In the DbProfileContext
     return new DbProfileContext(new DbProfileContextConfig
     {
         ConnectionString = builder.Configuration.GetConnectionString("conectionDb"),
         UseConsoleLogger = true
-    }); // Explicitly use the configuration-based constructor
+    });
 });
 
 builder.Services.AddScoped<Message>();

@@ -48,6 +48,7 @@ namespace OGCP.Curriculum.API.repositories
             this.config = config;
         }
 
+        //This constructor is only for testing porpouses
         public DbProfileContext(DbContextOptions<DbProfileContext> dbContext)
             : base(dbContext)
         {
@@ -71,6 +72,8 @@ namespace OGCP.Curriculum.API.repositories
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //This is already tested in unit test scenarios
+            //So just configure for sql server
             if (!optionsBuilder.IsConfigured)
             {
                 ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
@@ -272,7 +275,7 @@ namespace OGCP.Curriculum.API.repositories
                 {
                     // SQLite doesn't support CHECKSUM, use a placeholder or omit the computed column for SQLite
                     entity.Property<byte[]>("Checksum")
-                        .HasComputedColumnSql(null); // Placeholder for testing; replace as needed
+                        .HasComputedColumnSql(null);
                 }
                 entity.Property(p => p.Name)
                     .HasConversion<string>();
