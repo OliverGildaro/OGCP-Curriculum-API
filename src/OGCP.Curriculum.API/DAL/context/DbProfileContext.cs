@@ -85,7 +85,13 @@ namespace OGCP.Curriculum.API.repositories
                 });
 
                 optionsBuilder
-                    .UseSqlServer(this.config.ConnectionString);
+                    .UseSqlServer(this.config.ConnectionString,
+                        sqlOptions => sqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: 3,         // Maximum number of retry attempts
+                            maxRetryDelay: TimeSpan.FromSeconds(15), // Max delay between retries
+                            errorNumbersToAdd: null
+                        )
+                    );
                 //.UseLazyLoadingProxies();//To enable lazy loading (Only writes, never reads)
 
                 if (this.config.UseConsoleLogger)
@@ -255,6 +261,11 @@ namespace OGCP.Curriculum.API.repositories
                     .HasForeignKey("ProfileId") // We need to define fk to avoid adding aditional fk
                     .OnDelete(DeleteBehavior.Cascade);
             });
+
+            //We can include nav properties by default
+            //modelBuilder.Entity<Profile>()
+            //    .Navigation(w => w.LanguagesSpoken)
+            //    .AutoInclude();
         }
 
         private void AddLanguageModel(ModelBuilder modelBuilder)

@@ -15,6 +15,9 @@ public abstract class Education
 
     public int Id => _id;
     public string Institution => _institution;
+
+    //TODO: DateOnly
+    //public DateOnly StartDate { get; set; }
     public DateTime StartDate => _startDate;
     public DateTime? EndDate => _endDate;
 

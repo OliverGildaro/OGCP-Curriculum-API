@@ -23,6 +23,10 @@ public abstract class Profile : IProfile
     private string _visibility;
     private ProfileDetailLevel _detailLevel;
     private DateTime _createdAt;
+
+    //TODO: DateOnly
+    //public DateOnly StartDate { get; set; }
+    //public TimeOnly StartTime { get; set; }
     private DateTime _updatedAt;
     private DetailInfo _personalInfo;//One to one
     private readonly List<Language> _languagesSpoken;//Many to many
