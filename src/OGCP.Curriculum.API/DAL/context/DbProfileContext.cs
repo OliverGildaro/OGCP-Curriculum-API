@@ -263,6 +263,8 @@ namespace OGCP.Curriculum.API.repositories
             });
 
             //We can include nav properties by default
+            //By this can result in a product cartesian explosion
+            //When you AutoInclude more than one relation
             //modelBuilder.Entity<Profile>()
             //    .Navigation(w => w.LanguagesSpoken)
             //    .AutoInclude();

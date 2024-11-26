@@ -8,6 +8,13 @@ namespace OGCP.Curriculum.API.repositories
 {
     public class QualifiedProfileRepository : GenericRepository<QualifiedProfile, int>, IQualifiedProfileRepository
     {
+        //DBSet already implements the repository pattern
+        //DO we need to wrap the DbContext on a new repository class ?
+        //REPOSITORY ARGUMENTS
+        //Abstract away persistence concerns
+        //Handle all databse code
+        //If we have complexity on top dbset then introduce a custom repository
+        //IF we do not have that complexity working with dbset directly may be good enought
         public QualifiedProfileRepository(DbProfileContext context)
             :base(context)
         {

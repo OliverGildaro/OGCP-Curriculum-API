@@ -50,6 +50,8 @@ public class StudentProfileService : IStudentProfileService
     public async Task<Result> RemoveEducation(int profileId, int educationId)
     {
         const string removeEducation = "EXEC DeleteOrphanedEducations;";
+        //TODO: We need to check if this is not resulting in a product cartesian explosion
+        //We may need to use .AsSplitQuery() in the repository
         StudentProfile profile = await this.repository.Find(profileId, this.GetQueryExpression());
 
         Result result = profile.RemoveEducation(educationId);

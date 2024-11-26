@@ -149,6 +149,9 @@ public class QualifiedProfile : Profile, IQualifiedProfile
     public List<Education> Educations => _educations;
     public List<JobExperience> Experiences => _experiences;
 
+    //ENCAPSULATION is about protect data integrity
+    //Avoid classes enter in an invalid state
+    //ENCAPSULATION and ABSTRACTION goes together
     public static Result<QualifiedProfile, Error> Create(
         string firstName,
         string lastName,
@@ -173,6 +176,12 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         return new QualifiedProfile(firstName, lastName, summary, desiredJobRole);
     }
 
+    //ABSTRACTION is about focus on a single application concern
+    //ABSTRACTION is related to the single responsability
+    //ABSTRACTION can be move a set of lines of code to its own method
+    //SO how the code works is irrelevant for the caller method
+    //ABSTRACTION is about code simplification
+    //ABSTRACTION is to Hide implementation details
     public Result AddEducation(Education education)
     {
         if (_educations.Any(educ => educ.IsEquivalent(education)))
