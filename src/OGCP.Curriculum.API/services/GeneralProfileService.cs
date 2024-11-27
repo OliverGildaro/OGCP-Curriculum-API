@@ -1,4 +1,5 @@
-﻿using OGCP.Curriculum.API.domainmodel;
+﻿using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
 using System.Linq.Expressions;
@@ -7,9 +8,9 @@ namespace OGCP.Curriculum.API.services;
 
 public class GeneralProfileService : IGeneralProfileService
 {
-    private readonly IGeneralProfileRepository repository;
+    private readonly IGeneralProfileWriteRepo repository;
 
-    public GeneralProfileService(IGeneralProfileRepository repository)
+    public GeneralProfileService(IGeneralProfileWriteRepo repository)
     {
         this.repository = repository;
     }
@@ -39,11 +40,13 @@ public class GeneralProfileService : IGeneralProfileService
 
     public Task<IReadOnlyList<GeneralProfile>> Get()
     {
-        return this.repository.Find();
+        //return this.repository.Find();
+        return null;
     }
 
     public Task<GeneralProfile> Get(int id)
     {
-        return this.repository.Find(id);
+        return null;
+        //return this.repository.Find(id);
     }
 }

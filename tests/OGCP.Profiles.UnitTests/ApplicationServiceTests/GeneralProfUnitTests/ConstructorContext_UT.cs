@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using Moq;
+using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.repositories.interfaces;
@@ -16,7 +17,7 @@ public class ConstructorContext_UT : IDisposable
     public ConstructorContext_UT()
     {
         //***** CONSTRUCTOR CONTEXT *****//////
-        var repository = new Mock<IGeneralProfileRepository>();
+        var repository = new Mock<IGeneralProfileWriteRepo>();
         repository.Setup(x => x.Add(It.IsAny<GeneralProfile>()))
             .Returns(Result.Success);
         repository.Setup(x => x.SaveChanges())

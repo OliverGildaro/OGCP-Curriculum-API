@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using Moq;
+using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.repositories.interfaces;
@@ -58,7 +59,7 @@ public class QualifiedProfileServiceFIxtureClass
 
     public QualifiedProfileServiceFIxtureClass()
     {
-        var repo = new Mock<IQualifiedProfileRepository>();
+        var repo = new Mock<IQualifiedProfileWriteRepo>();
         repo.Setup(m => m.Add(It.IsAny<QualifiedProfile>()))
             .Returns(Result.Success);
 

@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using Moq;
+using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.repositories.interfaces;
@@ -42,15 +43,15 @@ public class FixtureClassContext_UT : IClassFixture<GeneralProfileServiceFixture
     [Fact]
     public async Task Test2()
     {
-        var mockRepo = new Mock<IGeneralProfileRepository>();
+        var mockRepo = new Mock<IGeneralProfileWriteRepo>();
 
-        mockRepo
-              .Setup(m => m.Find())
-              .ReturnsAsync(new List<GeneralProfile>()
-              {
-                        GeneralProfile.Create("Oliver", "Castro", "Fullstack dev", new string[]{ "goal"}).Value,
-                        GeneralProfile.Create("Cristian", "Morato", "Fullstack dev senior", new string[]{ "goal"}).Value
-              });
+        //mockRepo
+        //      .Setup(m => m.Find())
+        //      .ReturnsAsync(new List<GeneralProfile>()
+        //      {
+        //                GeneralProfile.Create("Oliver", "Castro", "Fullstack dev", new string[]{ "goal"}).Value,
+        //                GeneralProfile.Create("Cristian", "Morato", "Fullstack dev senior", new string[]{ "goal"}).Value
+        //      });
 
         var service = new GeneralProfileService(mockRepo.Object);
 
@@ -86,19 +87,19 @@ public class FixtureClassContext_UT : IClassFixture<GeneralProfileServiceFixture
         Assert.Contains(profiles, p => p.FirstName == "Oliver");
         Assert.DoesNotContain(profiles, p => p.FirstName == "Nonexistent");
 
-        mockRepo.Verify(m => m.Find(), Times.Once);
+        //mockRepo.Verify(m => m.Find(), Times.Once);
     }
 }
 
 //***** FIXTURE CLASS CONTEXT *****//////
 public class GeneralProfileServiceFixtureClass : IDisposable
 {
-    public Mock<IGeneralProfileRepository> repository { get; }
+    public Mock<IGeneralProfileWriteRepo> repository { get; }
     public GeneralProfileService service { get; }
 
     public GeneralProfileServiceFixtureClass()
     {
-        repository = new Mock<IGeneralProfileRepository>();
+        repository = new Mock<IGeneralProfileWriteRepo>();
         repository
             .Setup(m => m.Add(It.IsAny<GeneralProfile>()))
             .Returns(Result.Success);
@@ -107,13 +108,13 @@ public class GeneralProfileServiceFixtureClass : IDisposable
             .Setup(m => m.SaveChanges())
             .ReturnsAsync(() => 1);
 
-        repository
-            .Setup(m => m.Find())
-            .ReturnsAsync(new List<GeneralProfile>()
-            {
-                GeneralProfile.Create("Oliver", "Castro", "Fulsstack dev", new string[]{ "goal"}).Value,
-                GeneralProfile.Create("Cristian", "Morato", "Fulsstack dev senior", new string[]{ "goal"}).Value
-            });
+        //repository
+        //    .Setup(m => m.Find())
+        //    .ReturnsAsync(new List<GeneralProfile>()
+        //    {
+        //        GeneralProfile.Create("Oliver", "Castro", "Fulsstack dev", new string[]{ "goal"}).Value,
+        //        GeneralProfile.Create("Cristian", "Morato", "Fulsstack dev senior", new string[]{ "goal"}).Value
+        //    });
 
         service = new GeneralProfileService(repository.Object);
     }

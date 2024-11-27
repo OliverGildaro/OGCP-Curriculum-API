@@ -1,6 +1,7 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
+using ArtForAll.Shared.ErrorHandler.Maybe;
+using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
 using System.Linq.Expressions;
 
@@ -8,28 +9,28 @@ namespace OGCP.Curriculum.API.services
 {
     public class ProfileService : IProfileService
     {
-        private readonly IProfileRepository repository;
+        private readonly IProfileWriteRepo writeRepo;
 
-        public ProfileService(IProfileRepository repository)
+        public ProfileService(IProfileWriteRepo writeRepo)
         {
-            this.repository = repository;
+            this.writeRepo = writeRepo;
         }
 
         public async Task<Result> AddLangue(int id, Language language)
         {
-            Profile profile = await this.repository.Find(id, this.GetQueryExpression());
+            Maybe<Profile> profile = await this.writeRepo.Find(id);
 
-            if (profile is null)
+            if (profile.HasValue)
             {
 
             }
-            var langAdded = profile.AddLanguage(language);
+            var langAdded = profile.Value.AddLanguage(language);
 
             if (langAdded.IsFailure)
             {
                 return langAdded;
             }
-            await this.repository.SaveChanges();
+            await this.writeRepo.SaveChanges();
             return langAdded;
         }
 
@@ -40,25 +41,26 @@ namespace OGCP.Curriculum.API.services
 
         public async Task<Result> EdiLanguage(int id, Language language)
         {
-            Profile profile = await this.repository.Find(id, this.GetQueryExpression());
+            Maybe<Profile> profile = await this.writeRepo.Find(id);
 
-            if (profile is null)
+            if (profile.HasValue)
             {
                 return Result.Failure($"The profile id: {id}, not found");
             }
-            Result result = profile.EditLanguage(language);
+            Result result = profile.Value.EditLanguage(language);
 
             if (result.IsFailure)
             {
                 return result;
             }
-            await this.repository.SaveChanges();
+            await this.writeRepo.SaveChanges();
             return result;
         }
 
         public Task<IReadOnlyList<Profile>> Get()
         {
-            return this.repository.Find();
+            //return this.writeRepo.Find();
+            return null;
         }
 
         public Task<Profile> Get(int id)
@@ -68,15 +70,15 @@ namespace OGCP.Curriculum.API.services
 
         public async Task<Result> RemoveLanguage(int id, int languageId)
         {
-            Profile profile = await this.repository.Find(id, this.GetQueryExpression());
+            Maybe<Profile> profile = await this.writeRepo.Find(id);
 
-            Result result = profile.RemoveLanguage(languageId);
+            Result result = profile.Value.RemoveLanguage(languageId);
 
             if (result.IsFailure)
             {
                 return result;
             }
-            await this.repository.SaveChanges();
+            await this.writeRepo.SaveChanges();
 
             return result;
         }

@@ -1,6 +1,7 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using Moq;
 using Moq.Language.Flow;
+using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services;
@@ -9,12 +10,12 @@ namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests
 {
     public class ConstructorContext_UT : IDisposable
     {
-        private IReturnsResult<IQualifiedProfileRepository> repository;
+        private IReturnsResult<IQualifiedProfileWriteRepo> repository;
         private QualifiedProfileService service;
 
         public ConstructorContext_UT()
         {
-            var mockRepo = new Mock<IQualifiedProfileRepository>();
+            var mockRepo = new Mock<IQualifiedProfileWriteRepo>();
             mockRepo
                 .Setup(m => m.Add(It.IsAny<QualifiedProfile>()))
                 .Returns(Result.Success);

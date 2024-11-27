@@ -24,6 +24,8 @@ using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.commanding.queries;
 using OGCP.Curriculum.API.repositories.utils;
 using OGCP.Curriculum.API.commanding;
+using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
+using OGCP.Curriculum.API.DAL.Mutations;
 
 namespace OGCP.Curriculum.API.Helpers;
 
@@ -168,10 +170,11 @@ public static class ServiceMounter
     }
     public static void SetupRepositories(this IServiceCollection Services)
     {
-        Services.AddScoped<IGeneralProfileRepository, GeneralProfileRepository>();
-        Services.AddScoped<IStudentProfileRepository, StudentProfileRepository>();
-        Services.AddScoped<IQualifiedProfileRepository, QualifiedProfileRepository>();
-        Services.AddScoped<IProfileRepository, ProfileRepository>();
+        Services.AddScoped<IGeneralProfileWriteRepo, GeneralProfileWriteRepo>();
+        Services.AddScoped<IStudentProfileWriteRepo, StudentProfileWriteRepo>();
+        Services.AddScoped<IQualifiedProfileWriteRepo, QualifiedProfileWriteRepo>();
+        Services.AddScoped<IProfileWriteRepo, ProfileWriteRepo>();
+        //Services.AddScoped<IProfileWriteRepo, ProfileWriteRepo>();
     }
 
     public static void SetupDbContext(this IServiceCollection Services, IConfiguration Configuration)

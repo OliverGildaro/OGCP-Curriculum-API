@@ -1,7 +1,7 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
+using ArtForAll.Shared.ErrorHandler.Maybe;
+using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
 using System.Linq.Expressions;
 
@@ -9,23 +9,23 @@ namespace OGCP.Curriculum.API.services;
 
 public class StudentProfileService : IStudentProfileService
 {
-    private readonly IStudentProfileRepository repository;
+    private readonly IStudentProfileWriteRepo repository;
 
-    public StudentProfileService(IStudentProfileRepository repository)
+    public StudentProfileService(IStudentProfileWriteRepo repository)
     {
         this.repository = repository;
     }
 
     public async Task<Result> AddEducation(int id, ResearchEducation education)
     {
-        StudentProfile profile = await this.repository.Find(id, GetQueryExpression());
-        if (profile is null)
+        Maybe<StudentProfile> profile = await this.repository.Find(id);
+        if (profile.HasNoValue)
         {
             return Result.Failure("");
 
         }
 
-        profile.AddEducation(education);
+        profile.Value.AddEducation(education);
 
         var result = await this.repository.SaveChanges();
         return Result.Success();
@@ -39,12 +39,14 @@ public class StudentProfileService : IStudentProfileService
 
     public Task<IReadOnlyList<StudentProfile>> Get()
     {
-        return this.repository.Find();
+        return null;
     }
+
 
     public Task<StudentProfile> Get(int id)
     {
-        return this.repository.Find(id);
+        return null;
+        //return this.repository.Find(id);
     }
 
     public async Task<Result> RemoveEducation(int profileId, int educationId)
@@ -52,9 +54,9 @@ public class StudentProfileService : IStudentProfileService
         const string removeEducation = "EXEC DeleteOrphanedEducations;";
         //TODO: We need to check if this is not resulting in a product cartesian explosion
         //We may need to use .AsSplitQuery() in the repository
-        StudentProfile profile = await this.repository.Find(profileId, this.GetQueryExpression());
+        Maybe<StudentProfile> profile = await this.repository.Find(profileId);
 
-        Result result = profile.RemoveEducation(educationId);
+        Result result = profile.Value.RemoveEducation(educationId);
 
         if (result.IsFailure)
         {
