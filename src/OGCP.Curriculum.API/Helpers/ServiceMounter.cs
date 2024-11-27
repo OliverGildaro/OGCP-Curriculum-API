@@ -14,9 +14,7 @@ using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 using OGCP.Curriculum.API.commanding.commands.AddEducationResearch;
 using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
-using OGCP.Curriculum.API.commanding.commands.CreateGeneralProfile;
 using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
-using OGCP.Curriculum.API.commanding.commands.CreateStudentProfile;
 using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile;
 using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromStudentProfile;
@@ -139,9 +137,15 @@ public static class ServiceMounter
 
     public static void SetupCommands(this IServiceCollection Services)
     {
-        Services.AddScoped<ICommandHandler<CreateGeneralProfileCommand, Result>, CreateGeneralProfileCommandHandler>();
-        Services.AddScoped<ICommandHandler<CreateQualifiedProfileCommand, Result>, CreateQualifiedProfileCommandHandler>();
-        Services.AddScoped<ICommandHandler<CreateStudentProfileCommand, Result>, CreateStudentProfileCommandHandler>();
+        //Services.AddScoped<ICommandHandler<CreateGeneralProfileCommand, Result>, CreateGeneralProfileCommandHandler>();
+        //Services.AddScoped<ICommandHandler<CreateQualifiedProfileCommand, Result>, CreateQualifiedProfileCommandHandler>();
+        Services.AddScoped(typeof(ICommandHandler<CreateQualifiedProfileCommand, Result>),
+            typeof(CreateQualifiedProfileCommandHandler<CreateQualifiedProfileCommand, Result>));
+        Services.AddScoped(typeof(ICommandHandler<CreateGeneralProfileCommand, Result>),
+            typeof(CreateQualifiedProfileCommandHandler<CreateGeneralProfileCommand, Result>));
+        Services.AddScoped(typeof(ICommandHandler<CreateStudentProfileCommand, Result>),
+            typeof(CreateQualifiedProfileCommandHandler<CreateStudentProfileCommand, Result>));
+        //Services.AddScoped<ICommandHandler<CreateStudentProfileCommand, Result>, CreateStudentProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<UpdateLanguageFromProfileCommand, Result>, UpdateLanguageFromProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveLangueFromProfileCommand, Result>, RemoveLanguageFromProfileCommandHandler>();

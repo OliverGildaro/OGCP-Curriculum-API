@@ -34,9 +34,18 @@ namespace OGCP.Curriculum.API.services
             return langAdded;
         }
 
-        public Task<int> Create(Profile request)
+        public async Task<Result> Create(Profile request)
         {
-            throw new NotImplementedException();
+            var result = this.writeRepo.Add(request);
+
+            if (result.IsFailure)
+            {
+                throw new ArgumentException();
+            }
+
+            var resultSave = await writeRepo.SaveChanges();
+
+            return Result.Success();
         }
 
         public async Task<Result> EdiLanguage(int id, Language language)

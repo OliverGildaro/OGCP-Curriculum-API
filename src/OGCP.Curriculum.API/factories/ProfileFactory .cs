@@ -1,7 +1,5 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
-using OGCP.Curriculum.API.commanding.commands.CreateGeneralProfile;
 using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
-using OGCP.Curriculum.API.commanding.commands.CreateStudentProfile;
 using OGCP.Curriculum.API.POCOS.requests.Profile;
 
 namespace OGCP.Curriculum.API.factories;

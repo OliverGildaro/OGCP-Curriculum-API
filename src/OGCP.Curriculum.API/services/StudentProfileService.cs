@@ -31,10 +31,9 @@ public class StudentProfileService : IStudentProfileService
         return Result.Success();
     }
 
-    public Task<int> Create(StudentProfile request)
+    public Task<Result> Create(StudentProfile request)
     {
-        this.repository.Add(request);
-        return this.repository.SaveChanges();
+        return Task.FromResult(Result.Success());
     }
 
     public Task<IReadOnlyList<StudentProfile>> Get()

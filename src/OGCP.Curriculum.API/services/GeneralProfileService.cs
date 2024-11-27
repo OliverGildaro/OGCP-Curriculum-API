@@ -1,4 +1,5 @@
-﻿using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
+﻿using ArtForAll.Shared.ErrorHandler;
+using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
@@ -25,7 +26,7 @@ public class GeneralProfileService : IGeneralProfileService
         ];
     }
 
-    public Task<int> Create(GeneralProfile request)
+    public async Task<Result> Create(GeneralProfile request)
     {
 
         var result = this.repository.Add(request);
@@ -35,7 +36,9 @@ public class GeneralProfileService : IGeneralProfileService
             throw new ArgumentException();
         }
 
-        return repository.SaveChanges();
+        var resultSave = repository.SaveChanges();
+
+        return Result.Success();
     }
 
     public Task<IReadOnlyList<GeneralProfile>> Get()
