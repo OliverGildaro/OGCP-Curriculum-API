@@ -8,5 +8,6 @@ namespace OGCP.Curriculum.API.services.interfaces
         public Task<Result> AddLangue(int id, Language language);
         Task<Result> EdiLanguage(int id, Language language);
         Task<Result> RemoveLanguage(int id, int languageId);
+        Task<Result> Create(Profile request);
     }
 }

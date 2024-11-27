@@ -10,12 +10,11 @@ namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests
 {
     public class ConstructorContext_UT : IDisposable
     {
-        private IReturnsResult<IQualifiedProfileWriteRepo> repository;
-        private QualifiedProfileService service;
+        private ProfileService service;
 
         public ConstructorContext_UT()
         {
-            var mockRepo = new Mock<IQualifiedProfileWriteRepo>();
+            var mockRepo = new Mock<IProfileWriteRepo>();
             mockRepo
                 .Setup(m => m.Add(It.IsAny<QualifiedProfile>()))
                 .Returns(Result.Success);
@@ -24,7 +23,7 @@ namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests
                 .Setup(m => m.SaveChanges())
                 .ReturnsAsync(() => 1);
 
-            service = new QualifiedProfileService(mockRepo.Object);
+            service = new ProfileService(mockRepo.Object);
         }
 
         public void Dispose()

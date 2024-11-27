@@ -53,19 +53,19 @@ public class QualifiedProfileService : IQualifiedProfileService
         ];
     }
 
-    public async Task<Result> Create(QualifiedProfile request)
-    {
-        var result = this.repository.Add(request);
+    //public async Task<Result> Create(QualifiedProfile request)
+    //{
+    //    var result = this.repository.Add(request);
 
-        if (result.IsFailure)
-        {
-            throw new ArgumentException();
-        }
+    //    if (result.IsFailure)
+    //    {
+    //        throw new ArgumentException();
+    //    }
 
-        var resultSave = repository.SaveChanges();
+    //    var resultSave = repository.SaveChanges();
 
-        return Result.Success();
-    }
+    //    return Result.Success();
+    //}
 
     public Task<IReadOnlyList<QualifiedProfile>> Get()
     {

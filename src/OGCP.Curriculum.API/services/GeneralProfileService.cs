@@ -26,20 +26,20 @@ public class GeneralProfileService : IGeneralProfileService
         ];
     }
 
-    public async Task<Result> Create(GeneralProfile request)
-    {
+    //public async Task<Result> Create(GeneralProfile request)
+    //{
 
-        var result = this.repository.Add(request);
+    //    var result = this.repository.Add(request);
 
-        if (result.IsFailure)
-        {
-            throw new ArgumentException();
-        }
+    //    if (result.IsFailure)
+    //    {
+    //        throw new ArgumentException();
+    //    }
 
-        var resultSave = repository.SaveChanges();
+    //    var resultSave = repository.SaveChanges();
 
-        return Result.Success();
-    }
+    //    return Result.Success();
+    //}
 
     public Task<IReadOnlyList<GeneralProfile>> Get()
     {

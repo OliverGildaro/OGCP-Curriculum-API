@@ -7,6 +7,6 @@ public interface IService<TEntity, TEntityId>
 {
     public Task<IReadOnlyList<TEntity>> Get();
     public Task<TEntity> Get(TEntityId id);
-    public Task<Result> Create(TEntity request);
+    //public Task<Result> Create(TEntity request);
 }
 

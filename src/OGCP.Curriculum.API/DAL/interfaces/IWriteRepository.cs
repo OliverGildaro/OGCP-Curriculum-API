@@ -7,7 +7,7 @@ namespace OGCP.Curriculum.API.repositories.interfaces;
 public interface IWriteRepository<TEntity, TEntityId>
     where TEntity : class
 {
-    Result Add(TEntity entity);
+    //Result Add(TEntity entity);
     Task<int> SaveChanges();
     Task<Maybe<TEntity>> Find(TEntityId id);
 }

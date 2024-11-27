@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.repositories;
-using System.Linq.Expressions;
 
 namespace OGCP.Curriculum.API.DAL.Mutations;
 

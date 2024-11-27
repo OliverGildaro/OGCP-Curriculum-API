@@ -13,17 +13,17 @@ namespace OGCP.Profiles.UnitTests.serviceTests.GeneralProfUnitTests;
 //***** CONSTRUCTOR CONTEXT *****//////
 public class ConstructorContext_UT : IDisposable
 {
-    private IGeneralProfileService service;
+    private IProfileService service;
     public ConstructorContext_UT()
     {
         //***** CONSTRUCTOR CONTEXT *****//////
-        var repository = new Mock<IGeneralProfileWriteRepo>();
+        var repository = new Mock<IProfileWriteRepo>();
         repository.Setup(x => x.Add(It.IsAny<GeneralProfile>()))
             .Returns(Result.Success);
         repository.Setup(x => x.SaveChanges())
             .ReturnsAsync(() => 1);
 
-        service = new GeneralProfileService(repository.Object);
+        service = new ProfileService(repository.Object);
     }
 
     public void Dispose()

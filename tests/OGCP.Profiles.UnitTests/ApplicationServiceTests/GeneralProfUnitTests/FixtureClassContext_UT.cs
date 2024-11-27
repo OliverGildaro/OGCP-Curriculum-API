@@ -94,12 +94,12 @@ public class FixtureClassContext_UT : IClassFixture<GeneralProfileServiceFixture
 //***** FIXTURE CLASS CONTEXT *****//////
 public class GeneralProfileServiceFixtureClass : IDisposable
 {
-    public Mock<IGeneralProfileWriteRepo> repository { get; }
-    public GeneralProfileService service { get; }
+    public Mock<IProfileWriteRepo> repository { get; }
+    public ProfileService service { get; }
 
     public GeneralProfileServiceFixtureClass()
     {
-        repository = new Mock<IGeneralProfileWriteRepo>();
+        repository = new Mock<IProfileWriteRepo>();
         repository
             .Setup(m => m.Add(It.IsAny<GeneralProfile>()))
             .Returns(Result.Success);
@@ -116,7 +116,7 @@ public class GeneralProfileServiceFixtureClass : IDisposable
         //        GeneralProfile.Create("Cristian", "Morato", "Fulsstack dev senior", new string[]{ "goal"}).Value
         //    });
 
-        service = new GeneralProfileService(repository.Object);
+        service = new ProfileService(repository.Object);
     }
 
     public void Dispose()

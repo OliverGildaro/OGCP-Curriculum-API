@@ -55,11 +55,11 @@ public class FixtureClassContext_UT : IClassFixture<QualifiedProfileServiceFIxtu
 
 public class QualifiedProfileServiceFIxtureClass
 {
-    public QualifiedProfileService service { get; }
+    public ProfileService service { get; }
 
     public QualifiedProfileServiceFIxtureClass()
     {
-        var repo = new Mock<IQualifiedProfileWriteRepo>();
+        var repo = new Mock<IProfileWriteRepo>();
         repo.Setup(m => m.Add(It.IsAny<QualifiedProfile>()))
             .Returns(Result.Success);
 
@@ -70,6 +70,6 @@ public class QualifiedProfileServiceFIxtureClass
                 .ReturnsAsync(QualifiedProfile
                     .Create("Oliver", "Castro", "I am bla bla", "Fullstack software dev").Value);
 
-        service = new QualifiedProfileService(repo.Object);
+        service = new ProfileService(repo.Object);
     }
 }
