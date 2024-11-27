@@ -7,7 +7,6 @@ using OGCP.Curriculum.API.POCOS.requests.Profile;
 using OGCP.Curriculum.API.POCOS.requests.work;
 using OGCP.Curriculum.API.services.interfaces;
 using OGCP.Curriculum.API.services;
-using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.repositories;
 using ArtForAll.Shared.Contracts.CQRS;
 using ArtForAll.Shared.ErrorHandler;
@@ -25,6 +24,7 @@ using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.DAL.Mutations;
 using OGCP.Curriculum.API.Commanding.commands.UpdateEducationFromStudentProfile;
+using OGCP.Curriculum.API.DTOs.requests.Profile;
 
 namespace OGCP.Curriculum.API.Helpers;
 
@@ -52,7 +52,6 @@ public static class HostingExtensions
         app.UseAuthorization();
 
         app.MapControllers();
-
 
         return app;
     }
@@ -84,6 +83,16 @@ public static class ServiceMounter
 
             options.SerializerSettings.Converters.Add(
                 JsonSubtypesConverterBuilder
+                .Of(typeof(UpdateProfileRequest), "RequestType")
+                .RegisterSubtype(typeof(UpdateGeneralProfileRequest), ProfileRequests.UpdateGeneral)
+                .RegisterSubtype(typeof(UpdateQualifiedProfileRequest), ProfileRequests.UpdateQualified)
+                .RegisterSubtype(typeof(UpdateStudentProfileRequest), ProfileRequests.UpdateStudent)
+                .SerializeDiscriminatorProperty()
+                .Build()
+            );
+
+            options.SerializerSettings.Converters.Add(
+                JsonSubtypesConverterBuilder
                 .Of(typeof(AddEducationRequest), "EducationType")
                 .RegisterSubtype(typeof(AddResearchEducationRequest), EducationRequests.AddResearch)
                 .RegisterSubtype(typeof(AddDegreeEducationRequest), EducationRequests.AddDegree)
@@ -93,13 +102,13 @@ public static class ServiceMounter
             );
 
             options.SerializerSettings.Converters.Add(
-            JsonSubtypesConverterBuilder
-            .Of(typeof(UpdateEducationRequest), "EducationType")
-            .RegisterSubtype(typeof(UpdateDegreeEducationRequest), EducationRequests.UpdateDegree)
-            .RegisterSubtype(typeof(UpdateResearchEducationRequest), EducationRequests.UpdateResearch)
-            .RegisterSubtype(typeof(UpdateEducationToStudentProfileRequest), EducationRequests.UpdateResearchFromStudent)
-            .SerializeDiscriminatorProperty()
-            .Build()
+                JsonSubtypesConverterBuilder
+                .Of(typeof(UpdateEducationRequest), "EducationType")
+                .RegisterSubtype(typeof(UpdateDegreeEducationRequest), EducationRequests.UpdateDegree)
+                .RegisterSubtype(typeof(UpdateResearchEducationRequest), EducationRequests.UpdateResearch)
+                .RegisterSubtype(typeof(UpdateEducationToStudentProfileRequest), EducationRequests.UpdateResearchFromStudent)
+                .SerializeDiscriminatorProperty()
+                .Build()
             );
 
             options.SerializerSettings.Converters.Add(
@@ -109,7 +118,7 @@ public static class ServiceMounter
                 .RegisterSubtype(typeof(DeleteQualifiedEducationRequest), EducationRequests.DeleteQualifiedEducation)
                 .SerializeDiscriminatorProperty()
                 .Build()
-                );
+            );
 
             options.SerializerSettings.Converters.Add(
                 JsonSubtypesConverterBuilder

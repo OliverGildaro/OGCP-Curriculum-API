@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
+using ArtForAll.Shared.ErrorHandler.Results;
 
 namespace OGCP.Curriculum.API.domainmodel;
 
@@ -15,21 +16,21 @@ public interface IProfile : IEntity<int>
 
 public abstract class Profile : IProfile
 {
-    private int _id;
-    private string _firstName;
-    private string _lastName;
-    private string _summary;
-    private bool _isPublic;
-    private string _visibility;
-    private ProfileDetailLevel _detailLevel;
-    private DateTime _createdAt;
+    protected int _id;
+    protected string _firstName;
+    protected string _lastName;
+    protected string _summary;
+    protected bool _isPublic;
+    protected string _visibility;
+    protected ProfileDetailLevel _detailLevel;
+    protected DateTime _createdAt;
 
     //TODO: DateOnly
     //public DateOnly StartDate { get; set; }
     //public TimeOnly StartTime { get; set; }
-    private DateTime _updatedAt;
-    private DetailInfo _personalInfo;//One to one
-    private readonly List<Language> _languagesSpoken;//Many to many
+    protected DateTime _updatedAt;
+    protected DetailInfo _personalInfo;//One to one
+    protected readonly List<Language> _languagesSpoken;//Many to many
 
     protected Profile() {}
 
@@ -117,6 +118,8 @@ public abstract class Profile : IProfile
         return Result.Failure($"The profile id: {languageId}, not found");
 
     }
+
+    public abstract Result UpdateProfile(Profile profile);
 }
 
 public interface IQualifiedProfile
@@ -230,6 +233,21 @@ public class QualifiedProfile : Profile, IQualifiedProfile
 
         return Result.Failure($"The profile id: {educationId}, not found");
     }
+
+    public override Result UpdateProfile(Profile profile)
+    {
+        QualifiedProfile studentProfile = (QualifiedProfile)profile;
+        base._firstName = studentProfile.FirstName;
+        base._lastName = studentProfile.LastName;
+        base._summary = studentProfile.Summary;
+        this._desiredJobRole = studentProfile.DesiredJobRole;
+        return Result.Success();
+    }
+
+    internal static IResult<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string desiredJobRole)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public interface IGeneralProfile
@@ -289,6 +307,21 @@ public class GeneralProfile : Profile, IGeneralProfile
         }
 
         this._experiences.Add(experience);
+    }
+
+    public override Result UpdateProfile(Profile profile)
+    {
+        GeneralProfile studentProfile = (GeneralProfile)profile;
+        base._firstName = studentProfile.FirstName;
+        base._lastName = studentProfile.LastName;
+        base._summary = studentProfile.Summary;
+        this._personalGoals = studentProfile.PersonalGoals;
+        return Result.Success();
+    }
+
+    internal static IResult<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string[] personalGoals)
+    {
+        throw new NotImplementedException();
     }
 }
 
@@ -389,5 +422,21 @@ public class StudentProfile : Profile, IStudentProfile
         var currentLanguage = this._educations.FirstOrDefault(currentEduc => currentEduc.Id == education.Id);
         //UpdateTimestamp();
         return currentLanguage.Update(education);
+    }
+
+    public override Result UpdateProfile(Profile profile)
+    {
+        StudentProfile studentProfile = (StudentProfile)profile;
+        base._firstName = studentProfile.FirstName;
+        base._lastName = studentProfile.LastName;
+        base._summary = studentProfile.Summary;
+        this._major = studentProfile.Major;
+        this._careerGoals = studentProfile.CareerGoals;
+        return Result.Success();
+    }
+
+    internal static IResult<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string major, string careerGoals)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using ArtForAll.Shared.ErrorHandler;
+using customMapper = AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
+using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
 using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.commanding.queries;
+using OGCP.Curriculum.API.Commanding.commands.UpdateProfile;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
+using OGCP.Curriculum.API.DTOs.requests.Profile;
 using OGCP.Curriculum.API.factories;
 using OGCP.Curriculum.API.POCOS.requests.Language;
 using OGCP.Curriculum.API.POCOS.requests.Profile;
@@ -22,11 +27,13 @@ public class ProfilesController : Controller
 {
     private readonly IQualifiedProfileService service;
     private readonly Message message;
+    private readonly customMapper.IMapper mapper;
 
-    public ProfilesController(IQualifiedProfileService service, Message message)
+    public ProfilesController(IQualifiedProfileService service, Message message, customMapper.IMapper mapper)
     {
         this.service = service;
         this.message = message;
+        this.mapper = mapper;
     }
 
     [HttpGet]
@@ -126,6 +133,24 @@ public class ProfilesController : Controller
                 LanguageId = languageId,
             };
 
+            await this.message.DispatchCommand(command);
+
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest();
+        }
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(203)]
+    public async Task<IActionResult> UpdateProfileAsync(int id, UpdateProfileRequest profile)
+    {
+        try
+        {
+            var command = this.mapper.Map<UpdateProfileCommand>(profile);
+            command.Id = id;
             await this.message.DispatchCommand(command);
 
             return NoContent();

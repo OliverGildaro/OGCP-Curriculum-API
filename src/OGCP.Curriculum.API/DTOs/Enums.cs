@@ -3,7 +3,10 @@ public enum ProfileRequests
 {
     CreateGeneral = 1,
     CreateQualified,
-    CreateStudent
+    CreateStudent,
+    UpdateGeneral,
+    UpdateQualified,
+    UpdateStudent,
 }
 
 public enum EducationRequests

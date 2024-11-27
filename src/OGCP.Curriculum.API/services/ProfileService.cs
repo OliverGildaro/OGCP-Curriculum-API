@@ -92,6 +92,14 @@ namespace OGCP.Curriculum.API.services
             return result;
         }
 
+        public async Task<Result> UpdateAsync(Profile profile)
+        {
+            Maybe<Profile> profileFound = await this.writeRepo.FindAsync(profile.Id);
+            Result isSuccess = profileFound.Value.UpdateProfile(profile);
+            await this.writeRepo.SaveChangesAsync();
+            return isSuccess;
+        }
+
         private Expression<Func<Profile, object>>[] GetQueryExpression()
         {
             return new Expression<Func<Profile, object>>[]
