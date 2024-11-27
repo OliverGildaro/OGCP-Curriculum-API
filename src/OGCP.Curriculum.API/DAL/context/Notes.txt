@@ -1,0 +1,46 @@
+﻿//FLUENT API
+//Can be complex to setup
+//Keeps code clean
+//Support a large feature sets
+//Works when you can not nodify entity classes
+//DATA ANOTATIONS
+//Easy to setup
+//May clutter entity classes
+//smaller feature set
+//Only works when you have direct control on your classes
+
+//TPH table per herarchy
+//Can lead to empty columns
+//sql server sparce columns can be used to optimize space for empty columns
+//Sibiling entities can be mapped to shared columns
+
+//1. The DbContext affects how EF infers the db schema
+//2. First EF create the sql query, then open a connection to database, executed the query
+//Receives tabular objects, materialize results as objects and add tracking details to dbcontext
+//3. Queries are composable
+//4. Find method is an ef method not a linq method and executes inmediately from dbcontext cache
+//5. OrderBy().ThenBy()
+//6. Take().Skip()
+//MEthods
+// 7. LinQ to entities agregate execution methods
+//Estos métodos calculan un valor único basado en los datos de la consulta.
+//First() return the first element and throw and exception if not found it
+//FirstOrdefault() reeturn the first match or null
+//Count(), Sum(), min(), max(), average()
+//Last and LastOrDefault will only work if you use OrderBy()
+// 8. No aggregation methods
+//ToList()
+//9. DbSet.AsTracking() or DbSet.AsNoTracking()
+//We can setup also in the DBContext what kind of tracking we want to do onCOnfiguring
+//The dbcontext session begins add the moment we execute a query or save data
+//The EntityEntry object tracks the state of an object, the dbcontext contains this ENtityEntry
+//Entity is an in-memory object that the dbcontext tracker is aware
+//TRACKING AND SAVIND DATA FLOW
+//1. EF core create tracking object for each entity
+//2. DBContext maintain entityEntries
+//3. OnSaveChanges
+//The dbcontext reads the current and original values from the EntityEntry and with a help of the provider
+//determined the sql command
+//4. Return # affected and keys
+//5 updates dbcontext entities with pk and fk
+//6. Reset entity state info
