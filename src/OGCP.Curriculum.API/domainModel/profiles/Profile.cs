@@ -378,4 +378,16 @@ public class StudentProfile : Profile, IStudentProfile
 
         return Result.Failure($"The profile id: {educationId}, not found");
     }
+
+    internal Result UpdateEducation(ResearchEducation education)
+    {
+        if (_educations.Any(educ => educ.IsEquivalent(education)))
+        {
+            return Result.Success("Education already updated");
+        }
+
+        var currentLanguage = this._educations.FirstOrDefault(currentEduc => currentEduc.Id == education.Id);
+        //UpdateTimestamp();
+        return currentLanguage.Update(education);
+    }
 }

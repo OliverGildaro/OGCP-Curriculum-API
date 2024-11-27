@@ -73,6 +73,20 @@ public class StudentProfileService : IStudentProfileService
         return Result.Success();
     }
 
+    public async Task<Result> UpdateEducationAsync(int profileId, ResearchEducation education)
+    {
+        Maybe<StudentProfile> profile = await this.repository.FindAsync(profileId);
+        if (profile.HasNoValue)
+        {
+            return Result.Failure("");
+        }
+
+        profile.Value.UpdateEducation(education);
+
+        await this.repository.SaveChangesAsync();
+        return Result.Success();
+    }
+
     private Expression<Func<StudentProfile, object>>[] GetQueryExpression()
     {
         return

@@ -24,6 +24,7 @@ using OGCP.Curriculum.API.repositories.utils;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.DAL.Mutations;
+using OGCP.Curriculum.API.Commanding.commands.UpdateEducationFromStudentProfile;
 
 namespace OGCP.Curriculum.API.Helpers;
 
@@ -137,27 +138,25 @@ public static class ServiceMounter
 
     public static void SetupCommands(this IServiceCollection Services)
     {
-        //Services.AddScoped<ICommandHandler<CreateGeneralProfileCommand, Result>, CreateGeneralProfileCommandHandler>();
-        //Services.AddScoped<ICommandHandler<CreateQualifiedProfileCommand, Result>, CreateQualifiedProfileCommandHandler>();
         Services.AddScoped(typeof(ICommandHandler<CreateProfileCommand, Result>),
             typeof(CreateProfileCommandHandler<CreateProfileCommand, Result>));
         Services.AddScoped(typeof(ICommandHandler<CreateGeneralProfileCommand, Result>),
             typeof(CreateProfileCommandHandler<CreateGeneralProfileCommand, Result>));
         Services.AddScoped(typeof(ICommandHandler<CreateStudentProfileCommand, Result>),
             typeof(CreateProfileCommandHandler<CreateStudentProfileCommand, Result>));
-        //Services.AddScoped<ICommandHandler<CreateStudentProfileCommand, Result>, CreateStudentProfileCommandHandler>();
-        Services.AddScoped<ICommandHandler<UpdateLanguageFromProfileCommand, Result>, UpdateLanguageFromProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
+        Services.AddScoped<ICommandHandler<UpdateLanguageFromProfileCommand, Result>, UpdateLanguageFromProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveLangueFromProfileCommand, Result>, RemoveLanguageFromProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<AddEducationToStudentProfileCommand, Result>, AddEducationToStudentProfileCommandHandler>();
-        Services.AddScoped(typeof(ICommandHandler<UpdateDegreeEducationFromQualifiedProfileCommand, Result>),
-            typeof(UpdateEducationFromQualifiedProfileCommandHandler<UpdateDegreeEducationFromQualifiedProfileCommand, Result>));
-        Services.AddScoped(typeof(ICommandHandler<UpdateResearchEducationFromQualifiedProfileCommand, Result>),
-            typeof(UpdateEducationFromQualifiedProfileCommandHandler<UpdateResearchEducationFromQualifiedProfileCommand, Result>));
         Services.AddScoped(typeof(ICommandHandler<AddDegreeEducationToQualifiedProfileCommand, Result>),
             typeof(AddEducationToQualifiedProfileCommandHandler<AddDegreeEducationToQualifiedProfileCommand, Result>));
         Services.AddScoped(typeof(ICommandHandler<AddResearchEducationToQualifiedProfileCommand, Result>),
             typeof(AddEducationToQualifiedProfileCommandHandler<AddResearchEducationToQualifiedProfileCommand, Result>));
+        Services.AddScoped(typeof(ICommandHandler<UpdateDegreeEducationFromQualifiedProfileCommand, Result>),
+            typeof(UpdateEducationFromQualifiedProfileCommandHandler<UpdateDegreeEducationFromQualifiedProfileCommand, Result>));
+        Services.AddScoped(typeof(ICommandHandler<UpdateResearchEducationFromQualifiedProfileCommand, Result>),
+            typeof(UpdateEducationFromQualifiedProfileCommandHandler<UpdateResearchEducationFromQualifiedProfileCommand, Result>));
+        Services.AddScoped<ICommandHandler<UpdateEducationFromStudentProfileCommand, Result>, UpdateEducationFromStudentProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveEducationFromQualifiedProfileCommand, Result>, RemoveEducationFromQualifiedProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveEducationFromStudentProfileCommand, Result>, RemoveEducationFromStudentProfileCommandHandler>();
         

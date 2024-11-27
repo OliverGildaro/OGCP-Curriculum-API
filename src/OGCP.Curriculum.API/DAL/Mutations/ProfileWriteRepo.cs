@@ -34,9 +34,11 @@ public class ProfileWriteRepo : IProfileWriteRepo
         }
     }
 
-    public Task<Maybe<Profile>> FindAsync(int id)
+    public async Task<Maybe<Profile>> FindAsync(int id)
     {
-        throw new NotImplementedException();
+        return await this.context.Set<Profile>()
+            .Include(p => p.LanguagesSpoken)
+            .FirstOrDefaultAsync(p => p.Id.Equals(id));
     }
 
     public Task<int> SaveChangesAsync()

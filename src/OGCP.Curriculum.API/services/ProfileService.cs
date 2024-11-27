@@ -52,7 +52,7 @@ namespace OGCP.Curriculum.API.services
         {
             Maybe<Profile> profile = await this.writeRepo.FindAsync(id);
 
-            if (profile.HasValue)
+            if (profile.HasNoValue)
             {
                 return Result.Failure($"The profile id: {id}, not found");
             }
