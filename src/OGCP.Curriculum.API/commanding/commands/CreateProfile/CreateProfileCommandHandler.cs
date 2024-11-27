@@ -8,13 +8,13 @@ using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile
 {
-    public class CreateQualifiedProfileCommandHandler<TCommand, TResult> : ICommandHandler<TCommand, TResult>
+    public class CreateProfileCommandHandler<TCommand, TResult> : ICommandHandler<TCommand, TResult>
         where TCommand : CreateProfileCommand
         where TResult : Result
     {
         private readonly IProfileService profileService;
 
-        public CreateQualifiedProfileCommandHandler(IProfileService profileService)
+        public CreateProfileCommandHandler(IProfileService profileService)
         {
             this.profileService = profileService;
         }

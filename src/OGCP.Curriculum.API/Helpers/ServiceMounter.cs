@@ -139,12 +139,12 @@ public static class ServiceMounter
     {
         //Services.AddScoped<ICommandHandler<CreateGeneralProfileCommand, Result>, CreateGeneralProfileCommandHandler>();
         //Services.AddScoped<ICommandHandler<CreateQualifiedProfileCommand, Result>, CreateQualifiedProfileCommandHandler>();
-        Services.AddScoped(typeof(ICommandHandler<CreateQualifiedProfileCommand, Result>),
-            typeof(CreateQualifiedProfileCommandHandler<CreateQualifiedProfileCommand, Result>));
+        Services.AddScoped(typeof(ICommandHandler<CreateProfileCommand, Result>),
+            typeof(CreateProfileCommandHandler<CreateProfileCommand, Result>));
         Services.AddScoped(typeof(ICommandHandler<CreateGeneralProfileCommand, Result>),
-            typeof(CreateQualifiedProfileCommandHandler<CreateGeneralProfileCommand, Result>));
+            typeof(CreateProfileCommandHandler<CreateGeneralProfileCommand, Result>));
         Services.AddScoped(typeof(ICommandHandler<CreateStudentProfileCommand, Result>),
-            typeof(CreateQualifiedProfileCommandHandler<CreateStudentProfileCommand, Result>));
+            typeof(CreateProfileCommandHandler<CreateStudentProfileCommand, Result>));
         //Services.AddScoped<ICommandHandler<CreateStudentProfileCommand, Result>, CreateStudentProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<UpdateLanguageFromProfileCommand, Result>, UpdateLanguageFromProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
