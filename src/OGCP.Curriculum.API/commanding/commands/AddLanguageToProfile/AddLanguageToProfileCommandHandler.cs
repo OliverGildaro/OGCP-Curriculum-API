@@ -17,6 +17,6 @@ public class AddLanguageToProfileCommandHandler : ICommandHandler<AddLangueToPro
     public Task<Result> HandleAsync(AddLangueToProfileCommand command)
     {
         var language = Language.Create(command.Name, command.Level);
-        return profileService.AddLangue(command.Id, language);
+        return profileService.AddLangueAsync(command.Id, language);
     }
 }

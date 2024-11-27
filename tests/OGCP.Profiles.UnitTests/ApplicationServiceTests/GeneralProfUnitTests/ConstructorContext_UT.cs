@@ -20,7 +20,7 @@ public class ConstructorContext_UT : IDisposable
         var repository = new Mock<IProfileWriteRepo>();
         repository.Setup(x => x.Add(It.IsAny<GeneralProfile>()))
             .Returns(Result.Success);
-        repository.Setup(x => x.SaveChanges())
+        repository.Setup(x => x.SaveChangesAsync())
             .ReturnsAsync(() => 1);
 
         service = new ProfileService(repository.Object);
@@ -37,7 +37,7 @@ public class ConstructorContext_UT : IDisposable
     public async Task Test1(string firstName, string lastName, string summanry, string personalGoal)
     {
         var request = GeneralProfile.Create(firstName, lastName, summanry, new string[] { personalGoal });
-        var result = await service.Create(request.Value);
+        var result = await service.CreateAsync(request.Value);
 
         //Assert.Equal(1, result);
         Assert.IsType<int>(result);

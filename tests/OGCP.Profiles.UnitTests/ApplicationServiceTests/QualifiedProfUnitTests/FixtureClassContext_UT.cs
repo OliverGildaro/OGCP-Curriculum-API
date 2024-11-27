@@ -31,7 +31,7 @@ public class FixtureClassContext_UT : IClassFixture<QualifiedProfileServiceFIxtu
     [MemberData(nameof(GetQualifiedProfileData))]
     public async Task Test2(QualifiedProfile request)
     {
-        var result = await context.service.Create(request);
+        var result = await context.service.CreateAsync(request);
 
         Assert.IsType<int>(result);
         //Assert.Equal(1, result);
@@ -40,7 +40,7 @@ public class FixtureClassContext_UT : IClassFixture<QualifiedProfileServiceFIxtu
     [Fact]
     public async Task test22()
     {
-        var result = await context.service.Get(1);
+        var result = await context.service.GetAsync(1);
 
         Assert.IsType<QualifiedProfile>(result);
         Assert.Equal("Oliver", result.FirstName);
@@ -63,10 +63,10 @@ public class QualifiedProfileServiceFIxtureClass
         repo.Setup(m => m.Add(It.IsAny<QualifiedProfile>()))
             .Returns(Result.Success);
 
-        repo.Setup(x => x.SaveChanges())
+        repo.Setup(x => x.SaveChangesAsync())
             .ReturnsAsync(() => 1);
 
-        repo.Setup(m => m.Find(It.IsAny<int>()))
+        repo.Setup(m => m.FindAsync(It.IsAny<int>()))
                 .ReturnsAsync(QualifiedProfile
                     .Create("Oliver", "Castro", "I am bla bla", "Fullstack software dev").Value);
 

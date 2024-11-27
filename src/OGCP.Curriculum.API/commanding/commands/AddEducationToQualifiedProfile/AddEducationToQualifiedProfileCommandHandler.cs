@@ -27,7 +27,7 @@ public class AddEducationToQualifiedProfileCommandHandler<TCommand, TResult>
         IResult<Education, Error> educationResult = command.MapTo();
         var education = educationResult.Value;
 
-        Result addEducationResult = await this.qualifiedService.AddEducation(command.ProfileId, education);
+        Result addEducationResult = await this.qualifiedService.AddEducationAsync(command.ProfileId, education);
 
         return (TResult)addEducationResult;
     }

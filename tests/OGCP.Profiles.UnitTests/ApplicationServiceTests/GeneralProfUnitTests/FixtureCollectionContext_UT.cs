@@ -23,7 +23,7 @@ public class FixtureCollectionContext_UT
     [ClassData(typeof(CreateGeneralProfileRequestTestData))]
     public async Task Test1(GeneralProfile generalProfile)
     {
-        var result = await fixture.service.Create(generalProfile);
+        var result = await fixture.service.CreateAsync(generalProfile);
 
         //Assert.Equal(1, result);
         Assert.IsType<int>(result);

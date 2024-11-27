@@ -1,11 +1,10 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculum.API.domainmodel;
 
-namespace OGCP.Curriculum.API.services.interfaces
+namespace OGCP.Curriculum.API.services.interfaces;
+
+public interface IStudentProfileService : IService<StudentProfile, int>
 {
-    public interface IStudentProfileService : IService<StudentProfile, int>
-    {
-        Task<Result> AddEducation(int id, ResearchEducation request);
-        Task<Result> RemoveEducation(int profileId, int educationId);
-    }
+    Task<Result> AddEducationAsync(int id, ResearchEducation request);
+    Task<Result> RemoveEducationAsync(int profileId, int educationId);
 }

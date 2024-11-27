@@ -41,13 +41,13 @@ public class GeneralProfileService : IGeneralProfileService
     //    return Result.Success();
     //}
 
-    public Task<IReadOnlyList<GeneralProfile>> Get()
+    public Task<IReadOnlyList<GeneralProfile>> GetAsync()
     {
         //return this.repository.Find();
         return null;
     }
 
-    public Task<GeneralProfile> Get(int id)
+    public Task<GeneralProfile> GetAsync(int id)
     {
         return null;
         //return this.repository.Find(id);

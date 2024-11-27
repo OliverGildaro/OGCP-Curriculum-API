@@ -16,9 +16,9 @@ public class QualifiedProfileService : IQualifiedProfileService
         this.repository = repository;
     }
 
-    public async Task<Result> AddEducation(int id, Education education)
+    public async Task<Result> AddEducationAsync(int id, Education education)
     {
-        Maybe<QualifiedProfile> profile = await this.repository.Find(id);
+        Maybe<QualifiedProfile> profile = await this.repository.FindAsync(id);
         if (profile.HasValue)
         {
             return Result.Failure("");
@@ -26,18 +26,18 @@ public class QualifiedProfileService : IQualifiedProfileService
 
         profile.Value.AddEducation(education);
 
-        await this.repository.SaveChanges();
+        await this.repository.SaveChangesAsync();
         return Result.Success();
 
     }
 
     public async Task<Result> AddJobExperience<T>(int id, T request)
     {
-        Maybe<QualifiedProfile> profile = await this.repository.Find(id);
+        Maybe<QualifiedProfile> profile = await this.repository.FindAsync(id);
         JobExperience jobExperince = FactoryJob.Get(request);
         profile.Value.AddJobExperience(jobExperince);
 
-        await this.repository.SaveChanges();
+        await this.repository.SaveChangesAsync();
         return Result.Success();
 
     }
@@ -67,21 +67,21 @@ public class QualifiedProfileService : IQualifiedProfileService
     //    return Result.Success();
     //}
 
-    public Task<IReadOnlyList<QualifiedProfile>> Get()
+    public Task<IReadOnlyList<QualifiedProfile>> GetAsync()
     {
         //return this.repository.Find();
         return null;
     }
 
-    public Task<QualifiedProfile> Get(int id)
+    public Task<QualifiedProfile> GetAsync(int id)
     {
         //return this.repository.Find(id);
         return null;
     }
 
-    public async Task<Result> UpdateEducation(int profileId, Education education)
+    public async Task<Result> UpdateEducationAsync(int profileId, Education education)
     {
-        Maybe<QualifiedProfile> profile = await this.repository.Find(profileId);
+        Maybe<QualifiedProfile> profile = await this.repository.FindAsync(profileId);
         if (profile.HasNoValue)
         {
             return Result.Failure("");
@@ -89,14 +89,14 @@ public class QualifiedProfileService : IQualifiedProfileService
 
         profile.Value.UpdateEducation(education);
 
-        await this.repository.SaveChanges();
+        await this.repository.SaveChangesAsync();
         return Result.Success();
     }
 
-    public async Task<Result> RemoveEducation(int id, int educationId)
+    public async Task<Result> RemoveEducationAsync(int id, int educationId)
     {
         const string removeEducation = "EXEC DeleteOrphanedEducations;";
-        Maybe<QualifiedProfile> profile = await this.repository.Find(id);
+        Maybe<QualifiedProfile> profile = await this.repository.FindAsync(id);
 
         Result result = profile.Value.RemoveEducation(educationId);
 
@@ -104,8 +104,8 @@ public class QualifiedProfileService : IQualifiedProfileService
         {
             return result;
         }
-        await this.repository.SaveChanges();
+        await this.repository.SaveChangesAsync();
 
-        return await this.repository.RemoveOrphanEducations(removeEducation);
+        return await this.repository.RemoveOrphanEducationsAsync(removeEducation);
     }
 }

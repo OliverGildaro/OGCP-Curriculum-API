@@ -29,7 +29,7 @@ namespace OGCP.Curriculum.API.Controllers
 
         [HttpPut("{profileId}/educations")]
         [ProducesResponseType(203)]
-        public async Task<IActionResult> AddEducationToProfile(int profileId, [FromBody] AddEducationRequest request)
+        public async Task<IActionResult> AddEducationToProfileAsync(int profileId, [FromBody] AddEducationRequest request)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace OGCP.Curriculum.API.Controllers
 
         [HttpPut("{profileId}/educations/{educationId}")]
         [ProducesResponseType(203)]
-        public async Task<IActionResult> UpdateEducationFromProfile(int profileId, int educationId, [FromBody] UpdateEducationRequest request)
+        public async Task<IActionResult> UpdateEducationFromProfileAsync(int profileId, int educationId, [FromBody] UpdateEducationRequest request)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace OGCP.Curriculum.API.Controllers
 
         [HttpDelete("{profileId}/educations/{educationId}")]
         [ProducesResponseType(203)]
-        public async Task<IActionResult> RemoveEducationFromProfile(int profileId, int educationId, [FromBody] DeleteEducationRequest request)
+        public async Task<IActionResult> RemoveEducationFromProfileAsync(int profileId, int educationId, [FromBody] DeleteEducationRequest request)
         {
             try
             {

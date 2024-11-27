@@ -21,17 +21,17 @@ public class StudentProfileWriteRepo : IStudentProfileWriteRepo
         throw new NotImplementedException();
     }
 
-    public Task<Maybe<StudentProfile>> Find(int id)
+    public Task<Maybe<StudentProfile>> FindAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<int> RemoveOrphanEducations(string removeEducation)
+    public Task<int> RemoveOrphanEducationsAsync(string removeEducation)
     {
         return this.context.Database.ExecuteSqlRawAsync(removeEducation);
     }
 
-    public Task<int> SaveChanges()
+    public Task<int> SaveChangesAsync()
     {
         throw new NotImplementedException();
     }

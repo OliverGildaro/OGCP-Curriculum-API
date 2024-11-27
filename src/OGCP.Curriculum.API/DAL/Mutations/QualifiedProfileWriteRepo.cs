@@ -17,7 +17,7 @@ public class QualifiedProfileWriteRepo : ProfileWriteRepo, IQualifiedProfileWrit
         this.context = context;
     }
 
-    public async Task<Result> RemoveOrphanEducations(string removeEducation)
+    public async Task<Result> RemoveOrphanEducationsAsync(string removeEducation)
     {
         var isSaved = await this.context.Database.ExecuteSqlRawAsync(removeEducation);
 
@@ -28,7 +28,7 @@ public class QualifiedProfileWriteRepo : ProfileWriteRepo, IQualifiedProfileWrit
         return Result.Success();
     }
 
-    public async Task<Maybe<QualifiedProfile>> Find(int id)
+    public async Task<Maybe<QualifiedProfile>> FindAsync(int id)
     {
         return await this.context.QualifiedProfiles
             .Include(p => p.LanguagesSpoken)
@@ -36,9 +36,9 @@ public class QualifiedProfileWriteRepo : ProfileWriteRepo, IQualifiedProfileWrit
             .FirstOrDefaultAsync(p => p.Id.Equals(id));
     }
 
-    public Task<int> SaveChanges()
+    public Task<int> SaveChangesAsync()
     {
-        return base.SaveChanges();
+        return base.SaveChangesAsync();
     }
 
     public Result Add(QualifiedProfile entity)

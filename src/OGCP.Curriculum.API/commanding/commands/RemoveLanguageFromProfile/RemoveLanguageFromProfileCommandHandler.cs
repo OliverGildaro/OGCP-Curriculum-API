@@ -16,6 +16,6 @@ public class RemoveLanguageFromProfileCommandHandler : ICommandHandler<RemoveLan
 
     public Task<Result> HandleAsync(RemoveLangueFromProfileCommand command)
     {
-        return profileService.RemoveLanguage(command.Id, command.LanguageId);
+        return profileService.RemoveLanguageAsync(command.Id, command.LanguageId);
     }
 }

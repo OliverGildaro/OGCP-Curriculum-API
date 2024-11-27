@@ -16,9 +16,9 @@ public class StudentProfileService : IStudentProfileService
         this.repository = repository;
     }
 
-    public async Task<Result> AddEducation(int id, ResearchEducation education)
+    public async Task<Result> AddEducationAsync(int id, ResearchEducation education)
     {
-        Maybe<StudentProfile> profile = await this.repository.Find(id);
+        Maybe<StudentProfile> profile = await this.repository.FindAsync(id);
         if (profile.HasNoValue)
         {
             return Result.Failure("");
@@ -27,7 +27,7 @@ public class StudentProfileService : IStudentProfileService
 
         profile.Value.AddEducation(education);
 
-        var result = await this.repository.SaveChanges();
+        var result = await this.repository.SaveChangesAsync();
         return Result.Success();
     }
 
@@ -36,24 +36,24 @@ public class StudentProfileService : IStudentProfileService
         return Task.FromResult(Result.Success());
     }
 
-    public Task<IReadOnlyList<StudentProfile>> Get()
+    public Task<IReadOnlyList<StudentProfile>> GetAsync()
     {
         return null;
     }
 
 
-    public Task<StudentProfile> Get(int id)
+    public Task<StudentProfile> GetAsync(int id)
     {
         return null;
         //return this.repository.Find(id);
     }
 
-    public async Task<Result> RemoveEducation(int profileId, int educationId)
+    public async Task<Result> RemoveEducationAsync(int profileId, int educationId)
     {
         const string removeEducation = "EXEC DeleteOrphanedEducations;";
         //TODO: We need to check if this is not resulting in a product cartesian explosion
         //We may need to use .AsSplitQuery() in the repository
-        Maybe<StudentProfile> profile = await this.repository.Find(profileId);
+        Maybe<StudentProfile> profile = await this.repository.FindAsync(profileId);
 
         Result result = profile.Value.RemoveEducation(educationId);
 
@@ -61,9 +61,9 @@ public class StudentProfileService : IStudentProfileService
         {
             return result;
         }
-        await this.repository.SaveChanges();
+        await this.repository.SaveChangesAsync();
 
-        var isPersisted = await this.repository.RemoveOrphanEducations(removeEducation);
+        var isPersisted = await this.repository.RemoveOrphanEducationsAsync(removeEducation);
 
         if (isPersisted < 1)
         {

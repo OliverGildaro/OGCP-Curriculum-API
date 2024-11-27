@@ -30,7 +30,7 @@ public class ProfilesController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProfiles()
+    public async Task<IActionResult> GetProfilesAsync()
     {
         var query = new GetProfilesQuery();
         IReadOnlyList<Profile> profiles = await this.message.DispatchQuery(query);
@@ -51,15 +51,15 @@ public class ProfilesController : Controller
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetProfile(int id)
+    public IActionResult GetProfileAsync(int id)
     {
-        var profile = this.service.Get(id);
+        var profile = this.service.GetAsync(id);
         return Ok(profile);
     }
 
     [HttpPost]
     [Consumes("application/json")]
-    public async Task<IActionResult> CreateProfile([FromBody] ProfileRequest profileRequest)
+    public async Task<IActionResult> CreateProfileAsync([FromBody] ProfileRequest profileRequest)
     {
         var command = ProfileFactory.Get(profileRequest);
         await this.message.DispatchCommand(command);
@@ -68,7 +68,7 @@ public class ProfilesController : Controller
 
     [HttpPut("{id}/languages")]
     [ProducesResponseType(203)]
-    public async Task<IActionResult> AddLanguageToProfile(int id, [FromBody] AddLanguageRequest request)
+    public async Task<IActionResult> AddLanguageToProfileAsync(int id, [FromBody] AddLanguageRequest request)
     {
         try
         {
@@ -91,7 +91,7 @@ public class ProfilesController : Controller
 
     [HttpPut("{id}/languages/{languageId}")]
     [ProducesResponseType(203)]
-    public async Task<IActionResult> EditLanguageFromProfile(int id, int languageId, [FromBody] UpdateLanguageRequest request)
+    public async Task<IActionResult> EditLanguageFromProfileAsync(int id, int languageId, [FromBody] UpdateLanguageRequest request)
     {
         try
         {
@@ -116,7 +116,7 @@ public class ProfilesController : Controller
 
     [HttpDelete("{id}/languages/{languageId}")]
     [ProducesResponseType(203)]
-    public async Task<IActionResult> RemoveLanguageFromProfile(int id, int languageId)
+    public async Task<IActionResult> RemoveLanguageFromProfileAsync(int id, int languageId)
     {
         try
         {
@@ -138,7 +138,7 @@ public class ProfilesController : Controller
 
     [HttpPut("{id}/WorkExperienceTypes")]
     [ProducesResponseType(203)]
-    public IActionResult AddJobExperienceToProfile(int id, [FromBody] CreateJobExperienceRequest request)
+    public IActionResult AddJobExperienceToProfileAsync(int id, [FromBody] CreateJobExperienceRequest request)
     {
         try
         {

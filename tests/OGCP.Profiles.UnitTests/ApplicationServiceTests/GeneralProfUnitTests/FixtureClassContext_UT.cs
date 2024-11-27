@@ -33,7 +33,7 @@ public class FixtureClassContext_UT : IClassFixture<GeneralProfileServiceFixture
     [MemberData(nameof(Example_WithMethod))]//this member data can be share across many unit tests
     public async Task Test1(GeneralProfile generalProfile)
     {
-        var result = await fixture.service.Create(generalProfile);
+        var result = await fixture.service.CreateAsync(generalProfile);
 
         //Assert.Equal(1, result);
         Assert.IsType<int>(result);
@@ -55,7 +55,7 @@ public class FixtureClassContext_UT : IClassFixture<GeneralProfileServiceFixture
 
         var service = new GeneralProfileService(mockRepo.Object);
 
-        var profiles = await service.Get();
+        var profiles = await service.GetAsync();
 
         Assert.Equal(2, profiles.Count());
 
@@ -105,7 +105,7 @@ public class GeneralProfileServiceFixtureClass : IDisposable
             .Returns(Result.Success);
 
         repository
-            .Setup(m => m.SaveChanges())
+            .Setup(m => m.SaveChangesAsync())
             .ReturnsAsync(() => 1);
 
         //repository

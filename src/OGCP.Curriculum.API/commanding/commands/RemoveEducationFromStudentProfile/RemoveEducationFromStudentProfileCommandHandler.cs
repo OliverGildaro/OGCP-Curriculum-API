@@ -14,6 +14,6 @@ public class RemoveEducationFromStudentProfileCommandHandler : ICommandHandler<R
     }
     public Task<Result> HandleAsync(RemoveEducationFromStudentProfileCommand command)
     {
-        return this.studentProfileService.RemoveEducation(command.Id, command.EducationId);
+        return this.studentProfileService.RemoveEducationAsync(command.Id, command.EducationId);
     }
 }

@@ -16,9 +16,9 @@ namespace OGCP.Curriculum.API.services
             this.writeRepo = writeRepo;
         }
 
-        public async Task<Result> AddLangue(int id, Language language)
+        public async Task<Result> AddLangueAsync(int id, Language language)
         {
-            Maybe<Profile> profile = await this.writeRepo.Find(id);
+            Maybe<Profile> profile = await this.writeRepo.FindAsync(id);
 
             if (profile.HasValue)
             {
@@ -30,11 +30,11 @@ namespace OGCP.Curriculum.API.services
             {
                 return langAdded;
             }
-            await this.writeRepo.SaveChanges();
+            await this.writeRepo.SaveChangesAsync();
             return langAdded;
         }
 
-        public async Task<Result> Create(Profile request)
+        public async Task<Result> CreateAsync(Profile request)
         {
             var result = this.writeRepo.Add(request);
 
@@ -43,14 +43,14 @@ namespace OGCP.Curriculum.API.services
                 throw new ArgumentException();
             }
 
-            var resultSave = await writeRepo.SaveChanges();
+            var resultSave = await writeRepo.SaveChangesAsync();
 
             return Result.Success();
         }
 
-        public async Task<Result> EdiLanguage(int id, Language language)
+        public async Task<Result> EdiLanguageAsync(int id, Language language)
         {
-            Maybe<Profile> profile = await this.writeRepo.Find(id);
+            Maybe<Profile> profile = await this.writeRepo.FindAsync(id);
 
             if (profile.HasValue)
             {
@@ -62,24 +62,24 @@ namespace OGCP.Curriculum.API.services
             {
                 return result;
             }
-            await this.writeRepo.SaveChanges();
+            await this.writeRepo.SaveChangesAsync();
             return result;
         }
 
-        public Task<IReadOnlyList<Profile>> Get()
+        public Task<IReadOnlyList<Profile>> GetAsync()
         {
             //return this.writeRepo.Find();
             return null;
         }
 
-        public Task<Profile> Get(int id)
+        public Task<Profile> GetAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Result> RemoveLanguage(int id, int languageId)
+        public async Task<Result> RemoveLanguageAsync(int id, int languageId)
         {
-            Maybe<Profile> profile = await this.writeRepo.Find(id);
+            Maybe<Profile> profile = await this.writeRepo.FindAsync(id);
 
             Result result = profile.Value.RemoveLanguage(languageId);
 
@@ -87,7 +87,7 @@ namespace OGCP.Curriculum.API.services
             {
                 return result;
             }
-            await this.writeRepo.SaveChanges();
+            await this.writeRepo.SaveChangesAsync();
 
             return result;
         }

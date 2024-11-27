@@ -6,6 +6,6 @@ namespace OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 
 public interface IQualifiedProfileWriteRepo : IWriteRepository<QualifiedProfile, int>
 {
-    Task<Result> RemoveOrphanEducations(string removeEducation);
+    Task<Result> RemoveOrphanEducationsAsync(string removeEducation);
 
 }

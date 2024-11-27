@@ -20,7 +20,7 @@ namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests
                 .Returns(Result.Success);
 
             mockRepo
-                .Setup(m => m.SaveChanges())
+                .Setup(m => m.SaveChangesAsync())
                 .ReturnsAsync(() => 1);
 
             service = new ProfileService(mockRepo.Object);
@@ -36,7 +36,7 @@ namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests
         public async Task Test1(string firstName, string lastName, string summary, string rolePos)
         {
             var qualified = QualifiedProfile.Create(firstName, lastName, summary, rolePos).Value;
-            var result = await service.Create(qualified);
+            var result = await service.CreateAsync(qualified);
 
             Assert.IsType<int>(result);
             //Assert.Equal(1 , result);

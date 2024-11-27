@@ -15,7 +15,7 @@ namespace OGCP.Curriculum.API.commanding.queries
 
         public Task<IReadOnlyList<Profile>> Handle(GetProfilesQuery query)
         {
-            return this.profileService.Get();
+            return this.profileService.GetAsync();
         }
     }
 }

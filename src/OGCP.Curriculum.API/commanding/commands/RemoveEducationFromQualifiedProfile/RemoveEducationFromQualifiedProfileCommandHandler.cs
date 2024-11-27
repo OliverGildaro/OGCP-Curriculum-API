@@ -15,7 +15,7 @@ namespace OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedPr
 
         public Task<Result> HandleAsync(RemoveEducationFromQualifiedProfileCommand command)
         {
-            return profileService.RemoveEducation(command.Id, command.EducationId);
+            return profileService.RemoveEducationAsync(command.Id, command.EducationId);
         }
     }
 }

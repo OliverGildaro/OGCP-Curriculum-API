@@ -5,9 +5,9 @@ namespace OGCP.Curriculum.API.services.interfaces
 {
     public interface IQualifiedProfileService : IService<QualifiedProfile, int>
     {
-        Task<Result> AddEducation(int id, Education education);
-        Task<Result> RemoveEducation(int id, int languageId);
-        Task<Result> UpdateEducation(int profileId, Education education);
+        Task<Result> AddEducationAsync(int id, Education education);
+        Task<Result> RemoveEducationAsync(int id, int languageId);
+        Task<Result> UpdateEducationAsync(int profileId, Education education);
         //Task<Result> AddJobExperience<T>(int id, T request);
     }
 }

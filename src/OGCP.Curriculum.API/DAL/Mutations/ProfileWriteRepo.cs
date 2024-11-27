@@ -34,12 +34,12 @@ public class ProfileWriteRepo : IProfileWriteRepo
         }
     }
 
-    public Task<Maybe<Profile>> Find(int id)
+    public Task<Maybe<Profile>> FindAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<int> SaveChanges()
+    public Task<int> SaveChangesAsync()
     {
         try
         {

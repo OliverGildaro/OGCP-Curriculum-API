@@ -21,7 +21,7 @@ public class GeneralProfileWriteRepo : IGeneralProfileWriteRepo
         throw new NotImplementedException();
     }
 
-    public async Task<Maybe<GeneralProfile>> Find(int id)
+    public async Task<Maybe<GeneralProfile>> FindAsync(int id)
     {
         var profile = await this.context.GeneralProfiles
             .Include(p => p.LanguagesSpoken)
@@ -31,7 +31,7 @@ public class GeneralProfileWriteRepo : IGeneralProfileWriteRepo
         return profile;
     }
 
-    public Task<int> SaveChanges()
+    public Task<int> SaveChangesAsync()
     {
         throw new NotImplementedException();
     }

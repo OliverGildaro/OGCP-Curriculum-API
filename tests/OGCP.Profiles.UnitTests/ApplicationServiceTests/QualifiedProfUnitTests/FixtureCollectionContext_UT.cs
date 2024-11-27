@@ -18,7 +18,7 @@ public class FixtureCollectionContext_UT : IDisposable
     [ClassData(typeof(CreateQualifiedProfileRequestClassData))]
     public async Task test1(QualifiedProfile request)
     {
-        var result = await context.service.Create(request);
+        var result = await context.service.CreateAsync(request);
 
         Assert.IsType<int>(result);
         //Assert.Equal(1, result);

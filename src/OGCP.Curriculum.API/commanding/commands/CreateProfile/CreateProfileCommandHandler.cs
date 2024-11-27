@@ -24,7 +24,7 @@ namespace OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile
             IResult<Profile, Error> profileResult = command.MapTo();
             var profile = profileResult.Value;
 
-            Result addEducationResult = await this.profileService.Create(profile);
+            Result addEducationResult = await this.profileService.CreateAsync(profile);
 
             return (TResult)addEducationResult;
         }

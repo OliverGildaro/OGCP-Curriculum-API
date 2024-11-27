@@ -21,6 +21,6 @@ public class AddEducationToStudentProfileCommandHandler : ICommandHandler<AddEdu
         ResearchEducation education = ResearchEducation
             .Create(institution, startDate, endDate, projectTitle, supervisor, summary).Value;
 
-        return this.profileService.AddEducation(id, education);
+        return this.profileService.AddEducationAsync(id, education);
     }
 }
