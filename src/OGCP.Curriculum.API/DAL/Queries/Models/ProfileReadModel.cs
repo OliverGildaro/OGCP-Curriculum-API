@@ -10,6 +10,7 @@ public class ProfileReadModel
     public string[]? PersonalGoals { get; set; } = new string[] { };
     public string? Major { get; set; }
     public string? CareerGoals { get; set; }
+    public string? Discriminator { get; set; }
     public IReadOnlyList<LanguageReadModel> Languages { get; set; }
     public IReadOnlyList<EducationReadModel> Educations { get; set; }
     public IReadOnlyList<WorkExpReadModel> WorkExp { get; set; }

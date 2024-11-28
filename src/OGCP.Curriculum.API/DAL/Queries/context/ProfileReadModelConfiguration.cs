@@ -28,6 +28,9 @@ public class ProfileReadModelConfiguration : IEntityTypeConfiguration<ProfileRea
         builder.Property(p => p.Major)
             .IsRequired(false);
 
+        builder.Property(p => p.Discriminator)
+            .IsRequired(true);
+
         builder.HasMany(p => p.Educations)
             .WithMany()
             .UsingEntity<Dictionary<string, object>>(

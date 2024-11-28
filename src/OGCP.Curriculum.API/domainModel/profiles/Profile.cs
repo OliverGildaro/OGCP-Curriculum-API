@@ -1,6 +1,5 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
-using ArtForAll.Shared.ErrorHandler.Results;
 
 namespace OGCP.Curriculum.API.domainmodel;
 

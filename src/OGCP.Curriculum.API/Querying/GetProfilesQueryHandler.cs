@@ -18,6 +18,6 @@ public class GetProfilesQueryHandler
 
     public Task<IReadOnlyList<ProfileReadModel>> Handle(GetProfilesQuery query)
     {
-        return this.repository.Find();
+        return this.repository.Find(query.Parameters);
     }
 }

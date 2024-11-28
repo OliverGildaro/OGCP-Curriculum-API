@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using OGCP.Curriculum.API.DAL.Queries.context;
 using OGCP.Curriculum.API.DAL.Queries.interfaces;
 using OGCP.Curriculum.API.DAL.Queries.Models;
+using OGCP.Curriculum.API.Helpers;
+using OGCP.Curriculum.API.Helpers.pagination;
 
 namespace OGCP.Curriculum.API.DAL.Queries;
 
@@ -14,11 +16,24 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
     {
         this.context = profileContext;
     }
-    public async Task<IReadOnlyList<ProfileReadModel>> Find()
+    public async Task<IReadOnlyList<ProfileReadModel>> Find(QueryParameters parameters)
     {
         try
         {
-            return await this.context.Profiles.ToListAsync();
+            var collection = context.Profiles as IQueryable<ProfileReadModel>;
+            if (!string.IsNullOrEmpty(parameters.Filter))
+            {
+                collection = collection.Where(c => c.Discriminator == parameters.Filter.Trim());
+            }
+
+            if (!string.IsNullOrEmpty(parameters.Filter))
+            {
+                collection = collection.Where(c => c.FirstName.Contains(parameters.SearchBy.Trim())
+                    || c.LastName.Contains(parameters.SearchBy.Trim()));
+            }
+
+            return await PagedList<ProfileReadModel>.CreateAsync(collection,
+                parameters.Page, parameters.Size);
         }
         catch (Exception ex)
         {

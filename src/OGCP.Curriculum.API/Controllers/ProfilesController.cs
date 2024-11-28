@@ -5,7 +5,6 @@ using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
 using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.Commanding.commands.UpdateProfile;
-using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.DTOs.requests.Profile;
 using OGCP.Curriculum.API.factories;
 using OGCP.Curriculum.API.POCOS.requests.Language;
@@ -15,6 +14,7 @@ using OGCP.Curriculum.API.POCOS.responses;
 using OGCP.Curriculum.API.services.interfaces;
 using OGCP.Curriculum.API.Querying;
 using OGCP.Curriculum.API.DAL.Queries.Models;
+using OGCP.Curriculum.API.Helpers;
 
 namespace OGCP.Curriculum.API.Controllers;
 
@@ -35,9 +35,13 @@ public class ProfilesController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetProfilesAsync()
+    public async Task<IActionResult> GetProfilesAsync([FromQuery] QueryParameters parameters)
     {
-        var query = new GetProfilesQuery();
+        var query = new GetProfilesQuery()
+        {
+            Parameters = parameters
+        };
+
         IReadOnlyList<ProfileReadModel> profiles = await this.message.DispatchQuery(query);
         IReadOnlyList<ProfileResponse> response = profiles.Select(p => GetProfileDto(p)).ToArray();
         

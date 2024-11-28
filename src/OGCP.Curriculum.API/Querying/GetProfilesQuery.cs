@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
 using OGCP.Curriculum.API.DAL.Queries.Models;
+using OGCP.Curriculum.API.Helpers;
 
 namespace OGCP.Curriculum.API.Querying;
 
@@ -9,4 +10,5 @@ namespace OGCP.Curriculum.API.Querying;
 //Not domain model entities
 public class GetProfilesQuery : IQuery<IReadOnlyList<ProfileReadModel>>
 {
+    public QueryParameters Parameters { get; internal set; }
 }
