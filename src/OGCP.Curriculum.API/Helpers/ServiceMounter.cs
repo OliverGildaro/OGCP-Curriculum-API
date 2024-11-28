@@ -25,6 +25,7 @@ using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.DAL.Mutations;
 using OGCP.Curriculum.API.Commanding.commands.UpdateEducationFromStudentProfile;
 using OGCP.Curriculum.API.DTOs.requests.Profile;
+using OGCP.Curriculum.API.Commanding.commands.UpdateProfile;
 
 namespace OGCP.Curriculum.API.Helpers;
 
@@ -32,12 +33,20 @@ public static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.SetupControllers();
-        builder.Services.SetupCommands();
-        builder.Services.SetupServices();
-        builder.Services.SetupRepositories();
-        builder.Services.SetupDbContext(builder.Configuration);
-        return builder.Build();
+        try
+        {
+            builder.Services.SetupControllers();
+            builder.Services.SetupCommands();
+            builder.Services.SetupServices();
+            builder.Services.SetupRepositories();
+            builder.Services.SetupDbContext(builder.Configuration);
+            return builder.Build();
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
     }
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
@@ -147,15 +156,27 @@ public static class ServiceMounter
 
     public static void SetupCommands(this IServiceCollection Services)
     {
+        //PROFILES
         Services.AddScoped(typeof(ICommandHandler<CreateProfileCommand, Result>),
             typeof(CreateProfileCommandHandler<CreateProfileCommand, Result>));
         Services.AddScoped(typeof(ICommandHandler<CreateGeneralProfileCommand, Result>),
             typeof(CreateProfileCommandHandler<CreateGeneralProfileCommand, Result>));
         Services.AddScoped(typeof(ICommandHandler<CreateStudentProfileCommand, Result>),
             typeof(CreateProfileCommandHandler<CreateStudentProfileCommand, Result>));
+
+        Services.AddScoped(typeof(ICommandHandler<UpdateGeneralProfileCommand, Result>),
+            typeof(UpdateProfileCommandHandler<UpdateGeneralProfileCommand, Result>));
+        Services.AddScoped(typeof(ICommandHandler<UpdateQualifiedProfileCommand, Result>),
+            typeof(UpdateProfileCommandHandler<UpdateQualifiedProfileCommand, Result>));
+        Services.AddScoped(typeof(ICommandHandler<UpdateStudentProfileCommand, Result>),
+            typeof(UpdateProfileCommandHandler<UpdateStudentProfileCommand, Result>));
+
+        //LAMGUAGES
         Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<UpdateLanguageFromProfileCommand, Result>, UpdateLanguageFromProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveLangueFromProfileCommand, Result>, RemoveLanguageFromProfileCommandHandler>();
+        
+        //EDUCATIONS
         Services.AddScoped<ICommandHandler<AddEducationToStudentProfileCommand, Result>, AddEducationToStudentProfileCommandHandler>();
         Services.AddScoped(typeof(ICommandHandler<AddDegreeEducationToQualifiedProfileCommand, Result>),
             typeof(AddEducationToQualifiedProfileCommandHandler<AddDegreeEducationToQualifiedProfileCommand, Result>));
@@ -170,7 +191,6 @@ public static class ServiceMounter
         Services.AddScoped<ICommandHandler<RemoveEducationFromStudentProfileCommand, Result>, RemoveEducationFromStudentProfileCommandHandler>();
         
         Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile>>, GetProfilesQueryHandler>();
-
     }
 
     public static void SetupServices(this IServiceCollection Services)

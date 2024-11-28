@@ -146,6 +146,12 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         _experiences = new List<JobExperience>();
     }
 
+    public QualifiedProfile(int id, string firstName, string lastName, string summary, string desiredJobRole)
+        :this(firstName, lastName, summary, desiredJobRole)
+    {
+        this._id = id;
+    }
+
     public string DesiredJobRole => _desiredJobRole;
 
     //public EducationList Educations => _educations;
@@ -244,9 +250,9 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         return Result.Success();
     }
 
-    internal static IResult<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string desiredJobRole)
+    internal static Result<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string desiredJobRole)
     {
-        throw new NotImplementedException();
+        return new QualifiedProfile(id, firstName, lastName, summary, desiredJobRole);
     }
 }
 
@@ -265,6 +271,12 @@ public class GeneralProfile : Profile, IGeneralProfile
     {
         _personalGoals = personalGoals ?? Array.Empty<string>();
         this._experiences = new List<WorkExperience>();
+    }
+
+    private GeneralProfile(int id, string firstName, string lastName, string summary, string[] personalGoals)
+        :this(firstName, lastName, summary, personalGoals)
+    {
+        this._id = id;
     }
 
     public string[] PersonalGoals => _personalGoals;
@@ -319,9 +331,9 @@ public class GeneralProfile : Profile, IGeneralProfile
         return Result.Success();
     }
 
-    internal static IResult<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string[] personalGoals)
+    internal static Result<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string[] personalGoals)
     {
-        throw new NotImplementedException();
+        return new GeneralProfile(id, firstName, lastName, summary, personalGoals);
     }
 }
 
@@ -354,6 +366,12 @@ public class StudentProfile : Profile, IStudentProfile
     {
         _major = major;
         _careerGoals = careerGoals;
+    }
+
+    public StudentProfile(int id, string firstName, string lastName, string summary, string major, string careerGoals)
+        : this(firstName, lastName, summary, major, careerGoals)
+    {
+        this._id = id;
     }
 
     // Public properties
@@ -435,8 +453,8 @@ public class StudentProfile : Profile, IStudentProfile
         return Result.Success();
     }
 
-    internal static IResult<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string major, string careerGoals)
+    internal static Result<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string major, string careerGoals)
     {
-        throw new NotImplementedException();
+        return new StudentProfile(id, firstName, lastName, summary, major,  careerGoals);
     }
 }

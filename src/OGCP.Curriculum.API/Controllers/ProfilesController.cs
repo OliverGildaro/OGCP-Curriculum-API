@@ -73,6 +73,26 @@ public class ProfilesController : Controller
         return Ok();
     }
 
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(203)]
+    public async Task<IActionResult> UpdateProfileAsync(int id, [FromBody] UpdateProfileRequest profile)
+    {
+        try
+        {
+            var command = this.mapper.Map<UpdateProfileCommand>(profile);
+            command.Id = id;
+            await this.message.DispatchCommand(command);
+
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest();
+        }
+    }
+
+
     [HttpPut("{id}/languages")]
     [ProducesResponseType(203)]
     public async Task<IActionResult> AddLanguageToProfileAsync(int id, [FromBody] AddLanguageRequest request)
@@ -133,24 +153,6 @@ public class ProfilesController : Controller
                 LanguageId = languageId,
             };
 
-            await this.message.DispatchCommand(command);
-
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest();
-        }
-    }
-
-    [HttpPut("{id}")]
-    [ProducesResponseType(203)]
-    public async Task<IActionResult> UpdateProfileAsync(int id, UpdateProfileRequest profile)
-    {
-        try
-        {
-            var command = this.mapper.Map<UpdateProfileCommand>(profile);
-            command.Id = id;
             await this.message.DispatchCommand(command);
 
             return NoContent();
