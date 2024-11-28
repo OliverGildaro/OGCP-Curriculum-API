@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+﻿using ArtForAll.Shared.ErrorHandler.Maybe;
 
 namespace OGCP.Curriculum.API.repositories.interfaces;
 
@@ -6,7 +6,5 @@ public interface IReadRepository<TEntity, TEntityId>
     where TEntity : class
 {
     public Task<IReadOnlyList<TEntity>> Find();
-    //public Task<TEntity> Find(TEntityId id, params Expression<Func<TEntity, object>>[] includes);
-    public Task<TEntity> Find(TEntityId id);
-
+    public Task<Maybe<TEntity>> Find(TEntityId id);
 }

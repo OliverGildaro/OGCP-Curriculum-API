@@ -7,7 +7,6 @@ using OGCP.Curriculum.API.POCOS.requests.Profile;
 using OGCP.Curriculum.API.POCOS.requests.work;
 using OGCP.Curriculum.API.services.interfaces;
 using OGCP.Curriculum.API.services;
-using OGCP.Curriculum.API.repositories;
 using ArtForAll.Shared.Contracts.CQRS;
 using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
@@ -18,7 +17,6 @@ using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile;
 using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromStudentProfile;
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
-using OGCP.Curriculum.API.commanding.queries;
 using OGCP.Curriculum.API.repositories.utils;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
@@ -26,6 +24,12 @@ using OGCP.Curriculum.API.DAL.Mutations;
 using OGCP.Curriculum.API.Commanding.commands.UpdateEducationFromStudentProfile;
 using OGCP.Curriculum.API.DTOs.requests.Profile;
 using OGCP.Curriculum.API.Commanding.commands.UpdateProfile;
+using OGCP.Curriculum.API.DAL.Queries.context;
+using OGCP.Curriculum.API.DAL.Mutations.context;
+using OGCP.Curriculum.API.Querying;
+using OGCP.Curriculum.API.DAL.Queries.Models;
+using OGCP.Curriculum.API.DAL.Queries;
+using OGCP.Curriculum.API.DAL.Queries.interfaces;
 
 namespace OGCP.Curriculum.API.Helpers;
 
@@ -190,7 +194,8 @@ public static class ServiceMounter
         Services.AddScoped<ICommandHandler<RemoveEducationFromQualifiedProfileCommand, Result>, RemoveEducationFromQualifiedProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveEducationFromStudentProfileCommand, Result>, RemoveEducationFromStudentProfileCommandHandler>();
         
-        Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<Profile>>, GetProfilesQueryHandler>();
+        //QUERYING
+        Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<ProfileReadModel>>, GetProfilesQueryHandler>();
     }
 
     public static void SetupServices(this IServiceCollection Services)
@@ -206,7 +211,7 @@ public static class ServiceMounter
         Services.AddScoped<IStudentProfileWriteRepo, StudentProfileWriteRepo>();
         Services.AddScoped<IQualifiedProfileWriteRepo, QualifiedProfileWriteRepo>();
         Services.AddScoped<IProfileWriteRepo, ProfileWriteRepo>();
-        //Services.AddScoped<IProfileWriteRepo, ProfileWriteRepo>();
+        Services.AddScoped<IProfileReadModelRepository, ProfileReadModelRepository>();
     }
 
     public static void SetupDbContext(this IServiceCollection Services, IConfiguration Configuration)
@@ -219,11 +224,22 @@ public static class ServiceMounter
         //    ConnectionString = builder.Configuration.GetConnectionString("conectionDb"),
         //    UseConsoleLogger = true
         //});
-        Services.AddScoped<DbProfileContext>(provider =>
+        Services.AddScoped<DbWriteProfileContext>(provider =>
         {
             //I need to register in this way because there is an abiguity between the two constructors I have
             //In the DbProfileContext
-            return new DbProfileContext(new DbProfileContextConfig
+            return new DbWriteProfileContext(new DbProfileContextConfig
+            {
+                ConnectionString = Configuration.GetConnectionString("conectionDb"),
+                UseConsoleLogger = true
+            });
+        });
+
+        Services.AddScoped<DbReadProfileContext>(provider =>
+        {
+            //I need to register in this way because there is an abiguity between the two constructors I have
+            //In the DbProfileContext
+            return new DbReadProfileContext(new DbProfileContextConfig
             {
                 ConnectionString = Configuration.GetConnectionString("conectionDb"),
                 UseConsoleLogger = true

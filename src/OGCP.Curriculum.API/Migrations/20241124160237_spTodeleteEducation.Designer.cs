@@ -5,13 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using OGCP.Curriculum.API.repositories;
+using OGCP.Curriculum.API.DAL.Mutations.context;
+
 
 #nullable disable
 
 namespace OGCP.Curriculum.API.Migrations
 {
-    [DbContext(typeof(DbProfileContext))]
+    [DbContext(typeof(DbWriteProfileContext))]
     [Migration("20241124160237_spTodeleteEducation")]
     partial class spTodeleteEducation
     {

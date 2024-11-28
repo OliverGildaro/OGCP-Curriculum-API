@@ -1,17 +1,17 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using ArtForAll.Shared.ErrorHandler.Maybe;
 using Microsoft.EntityFrameworkCore;
+using OGCP.Curriculum.API.DAL.Mutations.context;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.repositories;
 
 namespace OGCP.Curriculum.API.DAL.Mutations;
 
 public class ProfileWriteRepo : IProfileWriteRepo
 {
-    protected readonly DbProfileContext context;
+    protected readonly DbWriteProfileContext context;
 
-    public ProfileWriteRepo(DbProfileContext context)
+    public ProfileWriteRepo(DbWriteProfileContext context)
     {
         this.context = context;
     }

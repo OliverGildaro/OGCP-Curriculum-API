@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using OGCP.Curriculum.API.repositories;
+using OGCP.Curriculum.API.DAL.Mutations.context;
+
 
 #nullable disable
 
 namespace OGCP.Curriculum.API.Migrations
 {
-    [DbContext(typeof(DbProfileContext))]
+    [DbContext(typeof(DbWriteProfileContext))]
     partial class DbProfileContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

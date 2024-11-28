@@ -1,15 +1,11 @@
-﻿using ArtForAll.Shared.ErrorHandler;
-using customMapper = AutoMapper;
+﻿using customMapper = AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
-using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
 using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
-using OGCP.Curriculum.API.commanding.queries;
 using OGCP.Curriculum.API.Commanding.commands.UpdateProfile;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.DTOs.requests.Profile;
 using OGCP.Curriculum.API.factories;
 using OGCP.Curriculum.API.POCOS.requests.Language;
@@ -17,6 +13,8 @@ using OGCP.Curriculum.API.POCOS.requests.Profile;
 using OGCP.Curriculum.API.POCOS.requests.work;
 using OGCP.Curriculum.API.POCOS.responses;
 using OGCP.Curriculum.API.services.interfaces;
+using OGCP.Curriculum.API.Querying;
+using OGCP.Curriculum.API.DAL.Queries.Models;
 
 namespace OGCP.Curriculum.API.Controllers;
 
@@ -40,13 +38,13 @@ public class ProfilesController : Controller
     public async Task<IActionResult> GetProfilesAsync()
     {
         var query = new GetProfilesQuery();
-        IReadOnlyList<Profile> profiles = await this.message.DispatchQuery(query);
+        IReadOnlyList<ProfileReadModel> profiles = await this.message.DispatchQuery(query);
         IReadOnlyList<ProfileResponse> response = profiles.Select(p => GetProfileDto(p)).ToArray();
         
         return Ok(profiles);
     }
 
-    private ProfileResponse GetProfileDto(Profile p)
+    private ProfileResponse GetProfileDto(ProfileReadModel p)
     {
         return new ProfileResponse
         {

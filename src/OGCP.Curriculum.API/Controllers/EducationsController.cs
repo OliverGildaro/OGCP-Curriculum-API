@@ -1,5 +1,4 @@
-﻿using ArtForAll.Shared.Contracts.CQRS;
-using ArtForAll.Shared.ErrorHandler;
+﻿using ArtForAll.Shared.ErrorHandler;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,6 @@ using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile;
-using OGCP.Curriculum.API.DTOs;
 using OGCP.Curriculum.API.DTOs.requests.Education;
 using OGCP.Curriculum.API.POCOS.requests.Education;
 
