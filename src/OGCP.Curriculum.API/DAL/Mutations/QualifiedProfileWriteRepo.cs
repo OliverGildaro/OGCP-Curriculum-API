@@ -28,8 +28,13 @@ public class QualifiedProfileWriteRepo : ProfileWriteRepo, IQualifiedProfileWrit
         return Result.Success();
     }
 
+    //To have some other methods to retrieve different shapes of qualified profiles
+    //Is not a good idea, them we will have a conbinatory explosion of methods
+    //And will be difficult to know which one to use and when
     public async Task<Maybe<QualifiedProfile>> FindAsync(int id)
     {
+        //In order to protect the invariants of an agreggate we need to always load the full aggregate
+        //Partial loading is not a good idea
         return await this.context.QualifiedProfiles
             .Include(p => p.LanguagesSpoken)
             .Include(p => p.Educations)

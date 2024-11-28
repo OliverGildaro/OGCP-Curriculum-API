@@ -14,6 +14,10 @@ public interface IProfile : IEntity<int>
     public Result AddLanguage(Language language);
 }
 
+//Always make non leaf clases in the herarchy abstract
+//If we makes this one abstract we do not have any other choice than instantiate a leaf class
+//It helps to see the full picture
+//Ad an specific profile help us to see what kind of profiles we can create
 public abstract class Profile : IProfile
 {
     protected int _id;

@@ -64,6 +64,7 @@ namespace OGCP.Curriculum.API.repositories
                             errorNumbersToAdd: null
                         )
                     );
+
                 //.UseLazyLoadingProxies();//To enable lazy loading (Only writes, never reads)
 
                 if (this.config.UseConsoleLogger)

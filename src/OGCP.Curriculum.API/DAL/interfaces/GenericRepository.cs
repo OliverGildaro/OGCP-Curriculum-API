@@ -6,6 +6,10 @@
 
 //namespace OGCP.Curriculum.API.DAL.Mutations;
 
+//BAD IDEA
+//Not all entities should have a repository DDD agregates
+//In whiuch repository exist the requred functionality (generix, concrete)??
+//Always make non leaf clases in the herarchy abstract
 //public abstract class GenericRepository<TEntity, TEntityId> : IWriteRepository<TEntity, TEntityId>
 //    , IReadRepository<TEntity, TEntityId>
 //    where TEntity : class, IEntity<TEntityId>
