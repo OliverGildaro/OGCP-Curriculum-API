@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace OGCP.Curriculum.API.Helpers.pagination;
+namespace OGCP.Curriculum.API.DAL.Queries.utils.pagination;
 public class PagedList<T> : List<T>
     where T : class
 {

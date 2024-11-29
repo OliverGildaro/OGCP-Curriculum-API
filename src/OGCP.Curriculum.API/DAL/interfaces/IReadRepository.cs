@@ -1,5 +1,5 @@
 ﻿using ArtForAll.Shared.ErrorHandler.Maybe;
-using OGCP.Curriculum.API.Helpers;
+using OGCP.Curriculum.API.DAL.Queries.utils;
 
 namespace OGCP.Curriculum.API.repositories.interfaces;
 

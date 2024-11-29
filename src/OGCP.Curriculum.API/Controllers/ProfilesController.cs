@@ -14,7 +14,7 @@ using OGCP.Curriculum.API.POCOS.responses;
 using OGCP.Curriculum.API.services.interfaces;
 using OGCP.Curriculum.API.Querying;
 using OGCP.Curriculum.API.DAL.Queries.Models;
-using OGCP.Curriculum.API.Helpers;
+using OGCP.Curriculum.API.DAL.Queries.utils;
 
 namespace OGCP.Curriculum.API.Controllers;
 

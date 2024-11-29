@@ -1,6 +1,6 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
 using OGCP.Curriculum.API.DAL.Queries.Models;
-using OGCP.Curriculum.API.Helpers;
+using OGCP.Curriculum.API.DAL.Queries.utils;
 
 namespace OGCP.Curriculum.API.Querying;
 
