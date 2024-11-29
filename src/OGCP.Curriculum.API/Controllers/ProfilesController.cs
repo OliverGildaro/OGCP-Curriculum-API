@@ -15,6 +15,8 @@ using OGCP.Curriculum.API.services.interfaces;
 using OGCP.Curriculum.API.Querying;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils;
+using OGCP.Curriculum.API.Querying.GetProfiles;
+using OGCP.Curriculum.API.Querying.GetProfileById;
 
 namespace OGCP.Curriculum.API.Controllers;
 
@@ -43,26 +45,22 @@ public class ProfilesController : Controller
         };
 
         IReadOnlyList<ProfileReadModel> profiles = await this.message.DispatchQuery(query);
-        IReadOnlyList<ProfileResponse> response = profiles.Select(p => GetProfileDto(p)).ToArray();
+        //IReadOnlyList<ProfileResponse> response = profiles.Select(p => GetProfileDto(p)).ToArray();
         
         return Ok(profiles);
     }
 
-    private ProfileResponse GetProfileDto(ProfileReadModel p)
-    {
-        return new ProfileResponse
-        {
-            FirstName = p.FirstName,
-            LastName = p.LastName,
-            Summary = p.Summary,
-            Id = p.Id
-        };
-    }
+
 
     [HttpGet("{id}")]
-    public IActionResult GetProfileAsync(int id)
+    public async Task<IActionResult> GetProfileByIdAsync(int id)
     {
-        var profile = this.service.GetAsync(id);
+        var query = new GetProfileByIdQuery
+        {
+            Id = id
+        };
+
+        var profile = await this.message.DispatchQuery(query);
         return Ok(profile);
     }
 
@@ -188,5 +186,16 @@ public class ProfilesController : Controller
         {
             return BadRequest();
         }
+    }
+
+    private ProfileResponse GetProfileDto(ProfileReadModel p)
+    {
+        return new ProfileResponse
+        {
+            FirstName = p.FirstName,
+            LastName = p.LastName,
+            Summary = p.Summary,
+            Id = p.Id
+        };
     }
 }

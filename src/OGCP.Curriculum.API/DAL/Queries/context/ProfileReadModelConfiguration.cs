@@ -53,8 +53,8 @@ public class ProfileReadModelConfiguration : IEntityTypeConfiguration<ProfileRea
                     .WithMany()
                     .HasForeignKey("ProfileId"));
 
-        builder.HasMany(p => p.WorkExp)
-            .WithOne()
-            .HasForeignKey("ProfileId");
+        //builder.HasMany(p => p.WorkExp)
+        //    .WithOne()
+        //    .HasForeignKey("ProfileId");
     }
 }

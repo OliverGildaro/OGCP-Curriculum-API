@@ -2,7 +2,7 @@
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils;
 
-namespace OGCP.Curriculum.API.Querying;
+namespace OGCP.Curriculum.API.Querying.GetProfiles;
 
 //We do not need to load a Profile from the domain model
 //The domain model is only for commands

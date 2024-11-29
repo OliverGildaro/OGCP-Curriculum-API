@@ -5,7 +5,7 @@
         const int maxPageSize = 20;
         private int pageSize = 10;
 
-        public string Filter { get; set; }
+        public string FilterBy { get; set; }
         public string SearchBy { get; set; }
         public int PageNumber { get; set; } = 1;
 

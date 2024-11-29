@@ -13,5 +13,5 @@ public class ProfileReadModel
     public string? Discriminator { get; set; }
     public IReadOnlyList<LanguageReadModel> Languages { get; set; }
     public IReadOnlyList<EducationReadModel> Educations { get; set; }
-    public IReadOnlyList<WorkExpReadModel> WorkExp { get; set; }
+    //public IReadOnlyList<WorkExpReadModel> WorkExp { get; set; }
 }

@@ -3,7 +3,7 @@
 public class EducationReadModel
 {
     public int Id { get; set; }
-    public int ProfileId { get; set; }
+    //public int ProfileId { get; set; }
     public string Institution { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }

@@ -26,10 +26,12 @@ using OGCP.Curriculum.API.DTOs.requests.Profile;
 using OGCP.Curriculum.API.Commanding.commands.UpdateProfile;
 using OGCP.Curriculum.API.DAL.Queries.context;
 using OGCP.Curriculum.API.DAL.Mutations.context;
-using OGCP.Curriculum.API.Querying;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries;
 using OGCP.Curriculum.API.DAL.Queries.interfaces;
+using OGCP.Curriculum.API.Querying.GetProfiles;
+using OGCP.Curriculum.API.Querying.GetProfileById;
+using ArtForAll.Shared.ErrorHandler.Maybe;
 
 namespace OGCP.Curriculum.API.Helpers;
 
@@ -41,6 +43,7 @@ public static class HostingExtensions
         {
             builder.Services.SetupControllers();
             builder.Services.SetupCommands();
+            builder.Services.SetupQueries();
             builder.Services.SetupServices();
             builder.Services.SetupRepositories();
             builder.Services.SetupDbContext(builder.Configuration);
@@ -193,9 +196,12 @@ public static class ServiceMounter
         Services.AddScoped<ICommandHandler<UpdateEducationFromStudentProfileCommand, Result>, UpdateEducationFromStudentProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveEducationFromQualifiedProfileCommand, Result>, RemoveEducationFromQualifiedProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveEducationFromStudentProfileCommand, Result>, RemoveEducationFromStudentProfileCommandHandler>();
-        
-        //QUERYING
+    }
+
+    public static void SetupQueries(this IServiceCollection Services)
+    {
         Services.AddScoped<IQueryHandler<GetProfilesQuery, IReadOnlyList<ProfileReadModel>>, GetProfilesQueryHandler>();
+        Services.AddScoped<IQueryHandler<GetProfileByIdQuery, Maybe<ProfileReadModel>>, GetProfileByIdQueryHandler>();
     }
 
     public static void SetupServices(this IServiceCollection Services)

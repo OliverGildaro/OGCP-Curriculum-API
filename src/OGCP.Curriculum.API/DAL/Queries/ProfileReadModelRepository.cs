@@ -5,7 +5,6 @@ using OGCP.Curriculum.API.DAL.Queries.interfaces;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.DAL.Queries.utils.pagination;
-using System.Linq;
 
 namespace OGCP.Curriculum.API.DAL.Queries;
 
@@ -28,22 +27,26 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
     {
         this.context = profileContext;
     }
+
     public async Task<IReadOnlyList<ProfileReadModel>> Find(QueryParameters parameters)
     {
         try
         {
             var collection = context.Profiles as IQueryable<ProfileReadModel>;
-            if (!string.IsNullOrEmpty(parameters.Filter))
+            //Filtering
+            if (!string.IsNullOrEmpty(parameters.FilterBy))
             {
-                collection = collection.Where(c => c.Discriminator == parameters.Filter.Trim());
+                collection = collection.Where(c => c.Discriminator == parameters.FilterBy.Trim());
             }
 
-            if (!string.IsNullOrEmpty(parameters.Filter))
+            //Searching
+            if (!string.IsNullOrEmpty(parameters.SearchBy))
             {
                 collection = collection.Where(c => c.FirstName.Contains(parameters.SearchBy.Trim())
                     || c.LastName.Contains(parameters.SearchBy.Trim()));
             }
 
+            //Ordering
             if (!string.IsNullOrWhiteSpace(parameters.OrderBy)
                 && OrderFunctions.ContainsKey(parameters.OrderBy))
             {
@@ -52,6 +55,7 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
 	                : collection.OrderBy(OrderFunctions[parameters.OrderBy]);
             }
 
+            //Paging
             return await PagedList<ProfileReadModel>.CreateAsync(collection,
                 parameters.PageNumber, parameters.PageSize);
         }
@@ -64,7 +68,20 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
 
     public async Task<Maybe<ProfileReadModel>> Find(int id)
     {
-        return await this.context.Profiles
-            .FindAsync(id);
+        try
+        {
+            var result = await this.context.Profiles
+                .Include(p => p.Educations)
+                //.Include(p => p.WorkExp)
+                .Include(p => p.Languages)
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(p => p.Id.Equals(id));
+            return result;
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
     }
 }

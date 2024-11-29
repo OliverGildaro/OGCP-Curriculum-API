@@ -4,7 +4,7 @@ using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
 
-namespace OGCP.Curriculum.API.Querying;
+namespace OGCP.Curriculum.API.Querying.GetProfiles;
 
 public class GetProfilesQueryHandler
     : IQueryHandler<GetProfilesQuery, IReadOnlyList<ProfileReadModel>>
@@ -18,6 +18,6 @@ public class GetProfilesQueryHandler
 
     public Task<IReadOnlyList<ProfileReadModel>> Handle(GetProfilesQuery query)
     {
-        return this.repository.Find(query.Parameters);
+        return repository.Find(query.Parameters);
     }
 }
