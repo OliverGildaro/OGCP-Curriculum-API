@@ -1,8 +1,10 @@
-﻿namespace OGCP.Curriculum.API.DAL.Queries.utils
+﻿using Newtonsoft.Json;
+
+namespace OGCP.Curriculum.API.DAL.Queries.utils
 {
     public class QueryParameters
     {
-        const int maxPageSize = 20;
+        private const int maxPageSize = 20;
         private int pageSize = 10;
 
         public string FilterBy { get; set; }
@@ -16,5 +18,14 @@
         }
         public string OrderBy { get; set; }
         public bool Desc { get; set; }
+
+        public string[] SelectFields 
+        { 
+            get => string.IsNullOrWhiteSpace(this.Fields)
+                ?
+                Array.Empty<string>() 
+                : this.Fields.Split(',').Select(f => f.Trim()).ToArray();
+        }
+        public string Fields { get; set; }
     }
 }

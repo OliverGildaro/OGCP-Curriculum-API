@@ -4,7 +4,9 @@ using OGCP.Curriculum.API.DAL.Queries.context;
 using OGCP.Curriculum.API.DAL.Queries.interfaces;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils;
+using OGCP.Curriculum.API.DAL.Queries.utils.expand;
 using OGCP.Curriculum.API.DAL.Queries.utils.pagination;
+using System.Linq.Expressions;
 
 namespace OGCP.Curriculum.API.DAL.Queries;
 
@@ -53,6 +55,13 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
                 collection = parameters.Desc
                     ? collection.OrderByDescending(OrderFunctions[parameters.OrderBy])
 	                : collection.OrderBy(OrderFunctions[parameters.OrderBy]);
+            }
+
+            if (parameters.Fields != null && parameters.Fields.Length != 0)
+            {
+                var projection = Expand.BuildProjection(parameters.SelectFields);
+
+                collection.Select(projection);
             }
 
             //Paging
