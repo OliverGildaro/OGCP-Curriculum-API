@@ -17,7 +17,7 @@ public interface IProfile : IEntity<int>
 //If we makes this one abstract we do not have any other choice than instantiate a leaf class
 //It helps to see the full picture
 //Ad an specific profile help us to see what kind of profiles we can create
-public abstract class Profile : IProfile
+public abstract class Profile : IEntity<int>
 {
     protected int _id;
     protected string _firstName;
