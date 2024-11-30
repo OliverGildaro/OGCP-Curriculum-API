@@ -13,7 +13,7 @@ public interface IOrderBy
 //You can use the same expression tree to navigate trougth
 //The expression tree is universal
 //Using lambda function we are building expression trees
-//But the functionality is difined in compile time
+//But the functionality is defined in compile time
 //Using expression trees the user application can decide what kind of code wants to build
 public class OrderBy<T> : IOrderBy
 {
