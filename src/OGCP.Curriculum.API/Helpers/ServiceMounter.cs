@@ -32,6 +32,7 @@ using OGCP.Curriculum.API.DAL.Queries.interfaces;
 using OGCP.Curriculum.API.Querying.GetProfiles;
 using OGCP.Curriculum.API.Querying.GetProfileById;
 using ArtForAll.Shared.ErrorHandler.Maybe;
+using OGCP.Curriculum.API.Commanding.commands.DeleteProfile;
 
 namespace OGCP.Curriculum.API.Helpers;
 
@@ -178,7 +179,8 @@ public static class ServiceMounter
         Services.AddScoped(typeof(ICommandHandler<UpdateStudentProfileCommand, Result>),
             typeof(UpdateProfileCommandHandler<UpdateStudentProfileCommand, Result>));
 
-        //LAMGUAGES
+        Services.AddScoped<ICommandHandler<DeleteProfileCommand, Result>, DeleteProfileCommandHandler>();
+        //LANGUAGES
         Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<UpdateLanguageFromProfileCommand, Result>, UpdateLanguageFromProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveLangueFromProfileCommand, Result>, RemoveLanguageFromProfileCommandHandler>();

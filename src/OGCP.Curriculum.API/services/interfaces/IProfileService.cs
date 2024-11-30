@@ -10,5 +10,6 @@ namespace OGCP.Curriculum.API.services.interfaces
         Task<Result> RemoveLanguageAsync(int id, int languageId);
         Task<Result> CreateAsync(Profile request);
         Task<Result> UpdateAsync(Profile profile);
+        Task<Result> DeleteProfile(int id);
     }
 }

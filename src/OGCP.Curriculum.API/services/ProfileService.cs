@@ -48,6 +48,24 @@ namespace OGCP.Curriculum.API.services
             return Result.Success();
         }
 
+        public async Task<Result> DeleteProfile(int id)
+        {
+            if (!await this.writeRepo.ExistProfileAsync(id))
+            {
+                return Result.Failure("");
+            }
+            Maybe<Profile> profile = await this.writeRepo.FindAsync(id);
+
+            if (profile.HasNoValue)
+            {
+                return Result.Failure("");
+            }
+            var result = this.writeRepo.DeleteProfileAsync(profile.Value);
+            await this.writeRepo.SaveChangesAsync();
+            
+            return result;
+        }
+
         public async Task<Result> EdiLanguageAsync(int id, Language language)
         {
             Maybe<Profile> profile = await this.writeRepo.FindAsync(id);

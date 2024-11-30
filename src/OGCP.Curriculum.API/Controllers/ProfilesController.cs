@@ -17,6 +17,7 @@ using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.Querying.GetProfiles;
 using OGCP.Curriculum.API.Querying.GetProfileById;
+using OGCP.Curriculum.API.Commanding.commands.DeleteProfile;
 
 namespace OGCP.Curriculum.API.Controllers;
 
@@ -90,6 +91,17 @@ public class ProfilesController : Controller
         {
             return BadRequest();
         }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProfileAsync(int id)
+    {
+        var result = await this.message.DispatchCommand(new DeleteProfileCommand
+        {
+            Id = id
+        });
+
+        return NoContent();
     }
 
 
