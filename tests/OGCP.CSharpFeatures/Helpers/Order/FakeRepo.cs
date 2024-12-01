@@ -2,10 +2,6 @@
 using OGCP.Curriculum.API.domainmodel;
 using System.Dynamic;
 using System.Linq.Expressions;
-using System.Reflection.Emit;
-using System.Reflection;
-using System.Reflection.Metadata;
-using System.Data.Common;
 
 namespace OGCP.CSharpFeatures.Helpers.Order;
 

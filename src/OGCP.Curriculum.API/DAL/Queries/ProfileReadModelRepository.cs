@@ -67,14 +67,15 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
 
             if (parameters.Fields != null && parameters.Fields.Length != 0)
             {
-                var projection = Expand.BuildProjection(parameters.SelectFields);
-
-                collection.Select(projection);
+                var projection = Expand.BuildProjection3(parameters.SelectFields);
+                collection = collection.Select(projection);
             }
 
             //Paging
-            return await PagedList<ProfileReadModel>.CreateAsync(collection,
+            var profiles = await PagedList<ProfileReadModel>.CreateAsync(collection,
                 parameters.PageNumber, parameters.PageSize);
+
+            return profiles;
         }
         catch (Exception ex)
         {
