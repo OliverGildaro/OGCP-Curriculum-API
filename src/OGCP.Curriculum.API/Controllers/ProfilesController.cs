@@ -18,6 +18,9 @@ using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.Querying.GetProfiles;
 using OGCP.Curriculum.API.Querying.GetProfileById;
 using OGCP.Curriculum.API.Commanding.commands.DeleteProfile;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Dynamic;
+using OGCP.Curriculum.API.DAL.Queries.utils.expand;
 
 namespace OGCP.Curriculum.API.Controllers;
 
@@ -46,9 +49,10 @@ public class ProfilesController : Controller
         };
 
         IReadOnlyList<ProfileReadModel> profiles = await this.message.DispatchQuery(query);
-        //IReadOnlyList<ProfileResponse> response = profiles.Select(p => GetProfileDto(p)).ToArray();
         
-        return Ok(profiles);
+        IEnumerable<ExpandoObject> eventEntitiesDto =
+                profiles.ShapeData(parameters.Fields);
+        return Ok(eventEntitiesDto);
     }
 
 
