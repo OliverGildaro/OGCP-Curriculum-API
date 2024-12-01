@@ -34,7 +34,15 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
     {
         try
         {
+            //IQUERYABLE
+            //IQueryable works with expression trees
+            //The LINQ expressin will be translated to sql expressions
+            //We can builde the expressions trees dynamically in runtime
+            //IENUMERABLE
+            //IEnumerable works with delegates
+            //That is compiled code
             var collection = context.Profiles as IQueryable<ProfileReadModel>;
+
             //Filtering
             if (!string.IsNullOrEmpty(parameters.FilterBy))
             {

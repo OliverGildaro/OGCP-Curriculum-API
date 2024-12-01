@@ -1,19 +1,13 @@
 using OGCP.Curriculum.API.domainmodel;
 using System.Linq.Expressions;
 
-namespace OGCP.CSharpFeatures;
+namespace OGCP.CSharpFeatures.Expressions;
 
 public class ExpressionTrees_specs
 {
     [Fact]
     public void Test1()
     {
-        IEnumerable<Profile> profileList = new List<Profile>
-        {
-            QualifiedProfile.Create("Oliver", "CAstro", "I am bla", "Backedn").Value,
-            QualifiedProfile.Create("Ivan", "CAstro", "I am bla", "Frontend").Value,
-            QualifiedProfile.Create("Alvaro", "CAstro", "I am bla", "Architect").Value
-        };
         //lets build the x > 1 expression
         var xExpression = Expression.Parameter(typeof(int), "x");
         var constantExpression = Expression.Constant(12);
@@ -51,14 +45,14 @@ public class ExpressionTrees_specs
         //var constant = Expression.Constant(firstName);
         //var firstNameProp = Expression.Property(parameter, "FirstName");
         //var expression = Expression.Equal(firstNameProp, constant);
-        currentExpression = CreateExpression<string>(firstName, currentExpression, "FirstName", parameter);
+        currentExpression = CreateExpression(firstName, currentExpression, "FirstName", parameter);
 
 
         //var constant2 = Expression.Constant(desiredJobRole);
         //var dsirJobRoleProp= Expression.Property(parameter, "DesiredJobRole");
         //var expression2 = Expression.Equal(dsirJobRoleProp, constant2);
         //var newExpre = Expression.And(expression, expression2);
-        currentExpression = CreateExpression<string>(desiredJobRole, currentExpression, "DesiredJobRole", parameter);
+        currentExpression = CreateExpression(desiredJobRole, currentExpression, "DesiredJobRole", parameter);
 
         var funcExpr = Expression
             .Lambda<Func<QualifiedProfile, bool>>(currentExpression, false, new List<ParameterExpression> { parameter });
