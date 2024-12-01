@@ -1,4 +1,4 @@
-﻿namespace OGCP.CSharpFeatures.Helpers;
+﻿namespace OGCP.CSharpFeatures.Helpers.Order;
 
 public static class OrderByExtensions
 {

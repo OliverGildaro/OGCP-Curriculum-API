@@ -1,7 +1,7 @@
 ﻿using OGCP.Curriculum.API.domainmodel;
 using System.Linq.Expressions;
 
-namespace OGCP.CSharpFeatures.Helpers;
+namespace OGCP.CSharpFeatures.Helpers.Order;
 
 public class OrderBy<T> : IOrderBy
 {

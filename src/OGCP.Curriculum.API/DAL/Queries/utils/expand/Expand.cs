@@ -52,9 +52,6 @@ namespace OGCP.Curriculum.API.DAL.Queries.utils.expand
 
                 throw;
             }
-
-
         }
-
     }
 }
