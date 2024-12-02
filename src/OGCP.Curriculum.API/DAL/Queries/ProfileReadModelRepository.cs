@@ -41,7 +41,9 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
             //IENUMERABLE
             //IEnumerable works with delegates
             //That is compiled code
-            var collection = context.Profiles as IQueryable<ProfileReadModel>;
+            var collection = context.Profiles
+                .Include(p => p.Educations)
+                .Include(p => p.Languages) as IQueryable<ProfileReadModel>;
 
             //Filtering
             if (!string.IsNullOrEmpty(parameters.FilterBy))

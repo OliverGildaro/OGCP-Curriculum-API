@@ -6,7 +6,7 @@ namespace OGCP.CSharpFeatures.Expressions;
 public class ExpressionTrees_specs
 {
     [Fact]
-    public void Test1()
+    public void CreateAFunctionDelegate()
     {
         //lets build the x > 1 expression
         var xExpression = Expression.Parameter(typeof(int), "x");
@@ -24,7 +24,7 @@ public class ExpressionTrees_specs
         Func<int, bool> func = funcExpr.Compile();
 
         Assert.True(func(0));
-        Assert.True(func(9));
+        Assert.False(func(9));
     }
 
     [Fact]
@@ -42,16 +42,8 @@ public class ExpressionTrees_specs
         Expression? currentExpression = null;
 
         var parameter = Expression.Parameter(typeof(QualifiedProfile));
-        //var constant = Expression.Constant(firstName);
-        //var firstNameProp = Expression.Property(parameter, "FirstName");
-        //var expression = Expression.Equal(firstNameProp, constant);
+
         currentExpression = CreateExpression(firstName, currentExpression, "FirstName", parameter);
-
-
-        //var constant2 = Expression.Constant(desiredJobRole);
-        //var dsirJobRoleProp= Expression.Property(parameter, "DesiredJobRole");
-        //var expression2 = Expression.Equal(dsirJobRoleProp, constant2);
-        //var newExpre = Expression.And(expression, expression2);
         currentExpression = CreateExpression(desiredJobRole, currentExpression, "DesiredJobRole", parameter);
 
         var funcExpr = Expression
@@ -59,7 +51,9 @@ public class ExpressionTrees_specs
         var func = funcExpr.Compile();
 
         var profilesFOund = profileList.Where(func);
-
+        var profile = profilesFOund.FirstOrDefault();
+        Assert.Equal("Oliver", profile.FirstName);
+        Assert.Equal("Castro", profile.LastName);
         Assert.True(profilesFOund.Any());
         Assert.Equal("Param_0 => ((Param_0.FirstName == \"Oliver\") And (Param_0.DesiredJobRole == \"Backedn\"))", funcExpr.ToString());
     }
@@ -185,5 +179,6 @@ public class ExpressionTrees_specs
         var func = lambda.Compile();
 
         Assert.Equal(6, func(3));
+        Assert.Equal(24, func(4));
     }
 }
