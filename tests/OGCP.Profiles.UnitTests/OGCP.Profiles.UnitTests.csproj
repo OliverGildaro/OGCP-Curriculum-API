@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OGCP.Curriculum.API\OGCP.Curriculum.API.csproj" />
+    <ProjectReference Include="..\..\src\Presentation\OGCP.Curriculum.API\OGCP.Curriculum.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

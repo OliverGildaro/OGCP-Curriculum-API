@@ -17,15 +17,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OGCP.Curriculum.API\OGCP.Curriculum.API.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Helpers\Expand\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Presentation\OGCP.Curriculum.API\OGCP.Curriculum.API.csproj" />
   </ItemGroup>
 
 </Project>
