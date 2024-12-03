@@ -1,7 +1,6 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services.interfaces;
 using System.Linq.Expressions;
 

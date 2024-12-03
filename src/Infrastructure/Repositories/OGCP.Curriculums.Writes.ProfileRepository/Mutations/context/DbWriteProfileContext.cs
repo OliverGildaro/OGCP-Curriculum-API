@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.repositories.utils;
 namespace OGCP.Curriculum.API.DAL.Mutations.context;
 public class DbWriteProfileContext : DbContext
 {
@@ -11,9 +11,9 @@ public class DbWriteProfileContext : DbContext
         (c1, c2) => c1.SequenceEqual(c2),                // Compare two arrays for equality
         c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),  // Generate a hash code for the array
         c => c.ToArray());                               // Create a snapshot of the array
-    private DbProfileContextConfig config;
+    private DbProfileWritesContextConfig config;
 
-    public DbWriteProfileContext(DbProfileContextConfig config)
+    public DbWriteProfileContext(DbProfileWritesContextConfig config)
     {
         this.config = config;
     }

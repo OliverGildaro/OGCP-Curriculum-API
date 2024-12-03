@@ -1,7 +1,7 @@
 ﻿using ArtForAll.Shared.ErrorHandler.Maybe;
 using OGCP.Curriculum.API.DAL.Queries.utils;
 
-namespace OGCP.Curriculum.API.repositories.interfaces;
+namespace OGCP.Curriculum.API.DAL.Queries;
 
 public interface IReadRepository<TEntity, TEntityId>
     where TEntity : class

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OGCP.Curriculum.API.domainmodel;
 
-namespace OGCP.Curriculum.API.repositories.utils;
+namespace OGCP.Curriculum.API.DAL.Mutations.context;
 public class EducationLevelConverter : ValueConverter<EducationLevel, string>
 {
     public EducationLevelConverter()

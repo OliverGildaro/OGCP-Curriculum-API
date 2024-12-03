@@ -17,7 +17,6 @@ using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile;
 using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromStudentProfile;
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
-using OGCP.Curriculum.API.repositories.utils;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.DAL.Mutations;
@@ -236,7 +235,7 @@ public static class ServiceMounter
         {
             //I need to register in this way because there is an abiguity between the two constructors I have
             //In the DbProfileContext
-            return new DbWriteProfileContext(new DbProfileContextConfig
+            return new DbWriteProfileContext(new DbProfileWritesContextConfig
             {
                 ConnectionString = Configuration.GetConnectionString("conectionDb"),
                 UseConsoleLogger = true
@@ -247,7 +246,7 @@ public static class ServiceMounter
         {
             //I need to register in this way because there is an abiguity between the two constructors I have
             //In the DbProfileContext
-            return new DbReadProfileContext(new DbProfileContextConfig
+            return new DbReadProfileContext(new DbProfileReadsContextConfig
             {
                 ConnectionString = Configuration.GetConnectionString("conectionDb"),
                 UseConsoleLogger = true

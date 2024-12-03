@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.repositories.utils;
 namespace OGCP.Curriculum.API.DAL.Queries.context;
 public class DbReadProfileContext : DbContext
 {
-    private DbProfileContextConfig config;
+    private DbProfileReadsContextConfig config;
 
-    public DbReadProfileContext(DbProfileContextConfig config)
+    public DbReadProfileContext(DbProfileReadsContextConfig config)
     {
         this.config = config;
     }

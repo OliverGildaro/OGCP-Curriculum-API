@@ -3,7 +3,6 @@ using Moq;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
-using OGCP.Curriculum.API.repositories.interfaces;
 using OGCP.Curriculum.API.services;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.GeneralProfUnitTests;
