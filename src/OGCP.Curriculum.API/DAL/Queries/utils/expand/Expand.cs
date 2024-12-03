@@ -12,41 +12,38 @@ public class Expand
         { "FirstName", x => x.FirstName },
         { "LastName", x => x.LastName },
         { "Summary", x => x.Summary },
+        { "Id", x => x.Id },
         { "CareerGoals", x => x.CareerGoals }
         };
 
     public static Expression<Func<ProfileReadModel, ProfileReadModel>> BuildProjection3(IEnumerable<string> fields)
     {
-        // Paso 1: Crear un parámetro de entrada para la expresión lambda
+        // Code generated: x
         var parameter = Expression.Parameter(typeof(ProfileReadModel), "x");
 
         try
         {
-            // Paso 2: Crear una lista para inicializar las propiedades seleccionadas
             var bindings = fields
                 .Where(SelectFields.ContainsKey)
                 .Select(field =>
                 {
-                    // Obtener expresión para el campo
+                    //code generated: ??
                     var propertyExpression = Expression.Property(parameter, field);
 
-                    // Obtener propiedad del modelo
                     var propertyInfo = typeof(ProfileReadModel).GetProperty(field);
                     if (propertyInfo == null)
                     {
                         throw new InvalidOperationException($"La propiedad '{field}' no se encontró en el modelo.");
                     }
 
-                    // Generar el binding para la propiedad
                     return Expression.Bind(propertyInfo, propertyExpression);
                 })
                 .ToList();
 
-            // Paso 3: Crear expresión para instanciar `ProfileReadModel`
+            //Code generated: new ProfileReadmodel ??
             var newExpression = Expression.New(typeof(ProfileReadModel));
             var memberInit = Expression.MemberInit(newExpression, bindings);
 
-            // Paso 4: Crear lambda que devuelve una instancia de `ProfileReadModel`
             var lambda = Expression.Lambda<Func<ProfileReadModel, ProfileReadModel>>(memberInit, parameter);
             return lambda;
         }

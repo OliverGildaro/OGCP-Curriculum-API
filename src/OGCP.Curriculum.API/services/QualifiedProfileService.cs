@@ -19,7 +19,7 @@ public class QualifiedProfileService : IQualifiedProfileService
     public async Task<Result> AddEducationAsync(int id, Education education)
     {
         Maybe<QualifiedProfile> profile = await this.repository.FindAsync(id);
-        if (profile.HasValue)
+        if (profile.HasNoValue)
         {
             return Result.Failure("");
         }

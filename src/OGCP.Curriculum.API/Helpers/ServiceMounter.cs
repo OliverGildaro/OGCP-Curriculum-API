@@ -165,8 +165,8 @@ public static class ServiceMounter
     public static void SetupCommands(this IServiceCollection Services)
     {
         //PROFILES
-        Services.AddScoped(typeof(ICommandHandler<CreateProfileCommand, Result>),
-            typeof(CreateProfileCommandHandler<CreateProfileCommand, Result>));
+        Services.AddScoped(typeof(ICommandHandler<CreateQualifiedProfileCommand, Result>),
+            typeof(CreateProfileCommandHandler<CreateQualifiedProfileCommand, Result>));
         Services.AddScoped(typeof(ICommandHandler<CreateGeneralProfileCommand, Result>),
             typeof(CreateProfileCommandHandler<CreateGeneralProfileCommand, Result>));
         Services.AddScoped(typeof(ICommandHandler<CreateStudentProfileCommand, Result>),
