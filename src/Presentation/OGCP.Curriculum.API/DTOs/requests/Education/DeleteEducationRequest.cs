@@ -1,5 +1,4 @@
-﻿using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.POCOS.requests.Education;
+﻿using OGCP.Curriculum.API.POCOS.requests.Education;
 
 namespace OGCP.Curriculum.API.DTOs.requests.Education
 {

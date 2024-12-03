@@ -1,8 +1,6 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
 using OGCP.Curriculum.API.DAL.Queries.interfaces;
 using OGCP.Curriculum.API.DAL.Queries.Models;
-using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.services.interfaces;
 
 namespace OGCP.Curriculum.API.Querying.GetProfiles;
 

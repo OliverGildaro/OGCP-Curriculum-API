@@ -34,7 +34,7 @@ public class QualifiedProfileService : IQualifiedProfileService
     public async Task<Result> AddJobExperience<T>(int id, T request)
     {
         Maybe<QualifiedProfile> profile = await this.repository.FindAsync(id);
-        JobExperience jobExperince = FactoryJob.Get(request);
+        JobExperience jobExperince = null;
         profile.Value.AddJobExperience(jobExperince);
 
         await this.repository.SaveChangesAsync();

@@ -1,6 +1,4 @@
-﻿using ArtForAll.Shared.ErrorHandler;
-using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.dtos;
+﻿using OGCP.Curriculum.API.domainmodel;
 
 namespace OGCP.Curriculum.API.services.interfaces
 {
