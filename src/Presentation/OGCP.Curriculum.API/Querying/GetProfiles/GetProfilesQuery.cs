@@ -10,5 +10,5 @@ namespace OGCP.Curriculum.API.Querying.GetProfiles;
 //Not domain model entities
 public class GetProfilesQuery : IQuery<IReadOnlyList<ProfileReadModel>>
 {
-    public QueryParameters Parameters { get; internal set; }
+    public QueryParameters Parameters { get; set; }
 }

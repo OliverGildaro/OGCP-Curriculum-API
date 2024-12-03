@@ -3,9 +3,9 @@ using OGCP.Curriculum.API.POCOS.requests.work;
 
 namespace OGCP.Curriculum.API.services
 {
-    internal class FactoryJob
+    public class FactoryJob
     {
-        internal static JobExperience Get<T>(T request)
+        public static JobExperience Get<T>(T request)
         {
             if (request is CreateWorkExperienceRequest workExp)
             {

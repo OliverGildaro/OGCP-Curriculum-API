@@ -87,7 +87,7 @@ public class DegreeEducation : Education
         return false;
     }
 
-    internal static Result<DegreeEducation, Error> Hidrate(int educationId, string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
+    public static Result<DegreeEducation, Error> Hidrate(int educationId, string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
     {
         return new DegreeEducation(educationId, institution, degree, startDate, endDate);
 
@@ -157,7 +157,7 @@ public class ResearchEducation : Education
         return new ResearchEducation(institution, startDate, endDate, projectTitle, supervisor, summary);
     }
 
-    internal static Result<ResearchEducation, Error> Hidrate(
+    public static Result<ResearchEducation, Error> Hidrate(
         int educationId,
         string institution,
         DateTime startDate,

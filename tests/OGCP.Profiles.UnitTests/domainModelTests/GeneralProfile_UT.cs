@@ -1,5 +1,5 @@
 ﻿namespace OGCP.Profiles.UnitTests.domainModelTests;
 
-internal class GeneralProfile_UT
+public class GeneralProfile_UT
 {
 }

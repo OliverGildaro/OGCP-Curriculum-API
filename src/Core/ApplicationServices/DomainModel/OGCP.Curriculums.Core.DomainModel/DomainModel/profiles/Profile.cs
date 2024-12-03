@@ -85,7 +85,7 @@ public abstract class Profile : IEntity<int>
         _updatedAt = DateTime.UtcNow;
     }
 
-    internal Result EditLanguage(Language language)
+    public Result EditLanguage(Language language)
     {
         if (this.LanguagesSpoken.Any(lang => lang.Id != language.Id && lang.Name == language.Name))
         {
@@ -109,7 +109,7 @@ public abstract class Profile : IEntity<int>
         return this._languagesSpoken.Any(lang => lang.Id == languageId);
     }
 
-    internal Result RemoveLanguage(int languageId)
+    public Result RemoveLanguage(int languageId)
     {
         if(this.IsValidToRemoveLanguage(languageId))
         {
@@ -219,7 +219,7 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         return Result.Success();
     }
 
-    internal Result UpdateEducation(Education education)
+    public Result UpdateEducation(Education education)
     {
         if (_educations.Any(educ => educ.IsEquivalent(education)))
         {
@@ -231,7 +231,7 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         return currentLanguage.Update(education);
     }
 
-    internal Result RemoveEducation(int educationId)
+    public Result RemoveEducation(int educationId)
     {
         if (this.Educations.Any(edu => edu.Id == educationId))
         {
@@ -253,7 +253,7 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         return Result.Success();
     }
 
-    internal static Result<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string desiredJobRole)
+    public static Result<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string desiredJobRole)
     {
         return new QualifiedProfile(id, firstName, lastName, summary, desiredJobRole);
     }
@@ -334,7 +334,7 @@ public class GeneralProfile : Profile, IGeneralProfile
         return Result.Success();
     }
 
-    internal static Result<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string[] personalGoals)
+    public static Result<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string[] personalGoals)
     {
         return new GeneralProfile(id, firstName, lastName, summary, personalGoals);
     }
@@ -421,7 +421,7 @@ public class StudentProfile : Profile, IStudentProfile
         this._experience.Add(experience);
     }
 
-    internal Result RemoveEducation(int educationId)
+    public Result RemoveEducation(int educationId)
     {
         if (this.Educations.Any(edu => edu.Id == educationId))
         {
@@ -433,7 +433,7 @@ public class StudentProfile : Profile, IStudentProfile
         return Result.Failure($"The profile id: {educationId}, not found");
     }
 
-    internal Result UpdateEducation(ResearchEducation education)
+    public Result UpdateEducation(ResearchEducation education)
     {
         if (_educations.Any(educ => educ.IsEquivalent(education)))
         {
@@ -456,7 +456,7 @@ public class StudentProfile : Profile, IStudentProfile
         return Result.Success();
     }
 
-    internal static Result<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string major, string careerGoals)
+    public static Result<Profile, Error> Hidrate(int id, string firstName, string lastName, string summary, string major, string careerGoals)
     {
         return new StudentProfile(id, firstName, lastName, summary, major,  careerGoals);
     }

@@ -47,7 +47,7 @@ public class Language
             && this.Level.Equals(language.Level);
     }
 
-    internal void Update(Language language)
+    public void Update(Language language)
     {
         this.Name = language.Name;
         this.Level = language.Level;

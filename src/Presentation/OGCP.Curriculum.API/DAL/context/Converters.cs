@@ -2,7 +2,7 @@
 using OGCP.Curriculum.API.domainmodel;
 
 namespace OGCP.Curriculum.API.repositories.utils;
-internal class EducationLevelConverter : ValueConverter<EducationLevel, string>
+public class EducationLevelConverter : ValueConverter<EducationLevel, string>
 {
     public EducationLevelConverter()
         : base(
@@ -13,7 +13,7 @@ internal class EducationLevelConverter : ValueConverter<EducationLevel, string>
     { }
 }
 
-internal class ShortStringConverter : ValueConverter<string, string>
+public class ShortStringConverter : ValueConverter<string, string>
 {
     public ShortStringConverter()
         : base(

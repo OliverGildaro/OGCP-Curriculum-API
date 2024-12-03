@@ -7,7 +7,7 @@ using OGCP.Curriculum.API.DAL.Queries.utils.expand;
 
 namespace OGCP.CSharpFeatures.Expressions;
 
-internal class FakeRepo : IProfileReadModelRepository
+public class FakeRepo : IProfileReadModelRepository
 {
     IQueryable<ProfileReadModel> profileReadList = new List<ProfileReadModel>
         {

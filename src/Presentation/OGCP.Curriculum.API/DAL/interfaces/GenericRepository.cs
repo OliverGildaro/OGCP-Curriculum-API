@@ -71,7 +71,7 @@
 //    {
 //        try
 //        {
-//            //SaveChanges() method calls tge DetectChanges internally
+//            //SaveChanges() method calls tge DetectChanges publicly
 //            //So only after DetectChanges() is called the entities has state updated
 //            //this.context.ChangeTracker.DetectChanges();
 //            return context.SaveChangesAsync();

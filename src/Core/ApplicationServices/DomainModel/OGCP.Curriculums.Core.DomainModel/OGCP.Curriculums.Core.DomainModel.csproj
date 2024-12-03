@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="ArtForAll.Shared.DDD" Version="1.0.2" />
+		<PackageReference Include="ArtForAll.Shared.ErrorHandler" Version="1.0.2" />
+	</ItemGroup>
+
 </Project>
