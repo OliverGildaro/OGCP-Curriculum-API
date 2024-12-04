@@ -219,16 +219,26 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         return Result.Success();
     }
 
-    public Result UpdateEducation(Education education)
+    public Result UpdateEducation(int educationId, Education education)
     {
-        if (_educations.Any(educ => educ.IsEquivalent(education)))
+        var currentEducation = this.Educations.FirstOrDefault(e => e.Id.Equals(educationId));
+        if (currentEducation != null) 
+        {
+            return Result.Failure("");
+        }
+
+        if (currentEducation == education)
         {
             return Result.Success("Education already updated");
         }
 
-        var currentLanguage = this._educations.FirstOrDefault(currentEduc => currentEduc.Id == education.Id);
+        if (_educations.Any(educ => educ.IsEquivalent(education)))
+        {
+            return Result.Failure("Not possible to do this update, conflict with an existing degree");
+        }
+
         //UpdateTimestamp();
-        return currentLanguage.Update(education);
+        return currentEducation.Update(education);
     }
 
     public Result RemoveEducation(int educationId)

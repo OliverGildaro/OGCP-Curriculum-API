@@ -28,7 +28,6 @@ public class QualifiedProfileService : IQualifiedProfileService
 
         await this.repository.SaveChangesAsync();
         return Result.Success();
-
     }
 
     public async Task<Result> AddJobExperience<T>(int id, T request)
@@ -79,7 +78,7 @@ public class QualifiedProfileService : IQualifiedProfileService
         return null;
     }
 
-    public async Task<Result> UpdateEducationAsync(int profileId, Education education)
+    public async Task<Result> UpdateEducationAsync(int profileId, int educationId, Education education)
     {
         Maybe<QualifiedProfile> profile = await this.repository.FindAsync(profileId);
         if (profile.HasNoValue)
@@ -87,7 +86,7 @@ public class QualifiedProfileService : IQualifiedProfileService
             return Result.Failure("");
         }
 
-        profile.Value.UpdateEducation(education);
+        profile.Value.UpdateEducation(educationId, education);
 
         await this.repository.SaveChangesAsync();
         return Result.Success();
@@ -107,5 +106,15 @@ public class QualifiedProfileService : IQualifiedProfileService
         await this.repository.SaveChangesAsync();
 
         return await this.repository.RemoveOrphanEducationsAsync(removeEducation);
+    }
+
+    public Task<Maybe<DegreeEducation>> FindDegreeEducation(string institution, EducationLevel degree)
+    {
+        return this.repository.FindDegreeEducation(institution, degree);
+    }
+
+    public Task<Maybe<ResearchEducation>> FindResearchEducation(string institution, string projectTitle)
+    {
+        return this.repository.FindResearchEducation(institution, projectTitle);
     }
 }

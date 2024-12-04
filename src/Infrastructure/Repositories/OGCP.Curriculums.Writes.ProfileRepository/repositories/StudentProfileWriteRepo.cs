@@ -21,9 +21,9 @@ public class StudentProfileWriteRepo : IStudentProfileWriteRepo
         throw new NotImplementedException();
     }
 
-    public Task<Maybe<StudentProfile>> FindAsync(int id)
+    public async Task<Maybe<StudentProfile>> FindAsync(int id)
     {
-        throw new NotImplementedException();
+        return await this.context.StudentProfiles.FindAsync(id);
     }
 
     public Task<int> RemoveOrphanEducationsAsync(string removeEducation)
@@ -33,6 +33,13 @@ public class StudentProfileWriteRepo : IStudentProfileWriteRepo
 
     public Task<int> SaveChangesAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            return this.context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            return Task.FromResult(-1);
+        }
     }
 }

@@ -29,6 +29,8 @@ public class DbWriteProfileContext : DbContext
     public DbSet<GeneralProfile> GeneralProfiles { get; set; }
     public DbSet<StudentProfile> StudentProfiles { get; set; }
     public DbSet<Language> Languages { get; set; }
+    public DbSet<DegreeEducation> DegreeEducations { get; set; }
+    public DbSet<ResearchEducation> ResearchEducations { get; set; }
     public virtual DbSet<Dictionary<string, object>> Certifications =>
             Set<Dictionary<string, object>>("Certification");
 

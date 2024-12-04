@@ -50,5 +50,17 @@ public class QualifiedProfileWriteRepo : ProfileWriteRepo, IQualifiedProfileWrit
     {
         return base.Add(entity);
     }
+
+    public async Task<Maybe<DegreeEducation>> FindDegreeEducation(string institution, EducationLevel degree)
+    {
+        return await this.context.DegreeEducations
+            .FirstOrDefaultAsync(p => p.Institution.Equals(institution) && p.Degree.Equals(degree));
+    }
+
+    public async Task<Maybe<ResearchEducation>> FindResearchEducation(string institution, string projectTitle)
+    {
+        return await this.context.ResearchEducations
+            .FirstOrDefaultAsync(p => p.Institution.Equals(institution) && p.ProjectTitle.Equals(projectTitle));
+    }
 }
 

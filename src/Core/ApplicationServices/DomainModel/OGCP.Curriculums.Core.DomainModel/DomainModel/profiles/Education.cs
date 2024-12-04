@@ -68,6 +68,7 @@ public class DegreeEducation : Education
     public override Result Update(Education other)
     {
         var degreeEduc = (DegreeEducation)other;
+        _id =degreeEduc.Id;
         _degree = degreeEduc.Degree;
         _institution = degreeEduc.Institution;
         _startDate = degreeEduc.StartDate;

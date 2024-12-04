@@ -32,9 +32,4 @@ public class AddEducationToStudentProfileCommand : AddEducationToProfileCommand
         supervisor = this.Supervisor;
         summary = this.Summary;
     }
-
-    public override IResult<Education, Error> MapTo()
-    {
-        throw new NotImplementedException();
-    }
 }

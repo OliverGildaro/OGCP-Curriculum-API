@@ -186,15 +186,11 @@ public static class ServiceMounter
         
         //EDUCATIONS
         Services.AddScoped<ICommandHandler<AddEducationToStudentProfileCommand, Result>, AddEducationToStudentProfileCommandHandler>();
-        Services.AddScoped(typeof(ICommandHandler<AddDegreeEducationToQualifiedProfileCommand, Result>),
-            typeof(AddEducationToQualifiedProfileCommandHandler<AddDegreeEducationToQualifiedProfileCommand, Result>));
-        Services.AddScoped(typeof(ICommandHandler<AddResearchEducationToQualifiedProfileCommand, Result>),
-            typeof(AddEducationToQualifiedProfileCommandHandler<AddResearchEducationToQualifiedProfileCommand, Result>));
-        Services.AddScoped(typeof(ICommandHandler<UpdateDegreeEducationFromQualifiedProfileCommand, Result>),
-            typeof(UpdateEducationFromQualifiedProfileCommandHandler<UpdateDegreeEducationFromQualifiedProfileCommand, Result>));
-        Services.AddScoped(typeof(ICommandHandler<UpdateResearchEducationFromQualifiedProfileCommand, Result>),
-            typeof(UpdateEducationFromQualifiedProfileCommandHandler<UpdateResearchEducationFromQualifiedProfileCommand, Result>));
+        Services.AddScoped<ICommandHandler<AddResearchEducationToQualifiedProfileCommand, Result>, AddResearchEducationToQualifiedProfileCommandHandler>();
+        Services.AddScoped<ICommandHandler<AddDegreeEducationToQualifiedProfileCommand, Result>, AddDegreeEducationToQualifiedProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<UpdateEducationFromStudentProfileCommand, Result>, UpdateEducationFromStudentProfileCommandHandler>();
+        Services.AddScoped<ICommandHandler<UpdateDegreeEducationFromQualifiedProfileCommand, Result>, UpdateDegreeEducationFromQualifiedProfileCommandHandler>();
+        //Services.AddScoped<ICommandHandler<UpdateResearchEducationFromQualifiedProfileCommand, Result>, UpdateResearchEducationFromQualifiedProfileCommand>();
         Services.AddScoped<ICommandHandler<RemoveEducationFromQualifiedProfileCommand, Result>, RemoveEducationFromQualifiedProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveEducationFromStudentProfileCommand, Result>, RemoveEducationFromStudentProfileCommandHandler>();
     }
