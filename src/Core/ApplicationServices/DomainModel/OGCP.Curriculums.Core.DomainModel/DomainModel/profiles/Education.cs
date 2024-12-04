@@ -198,4 +198,9 @@ public class ResearchEducation : Education
 
         return Result.Success();
     }
+
+    public void UpdateId(int id)
+    {
+        this._id = id;
+    }
 }

@@ -12,7 +12,6 @@ public abstract class UpdateEducationFromQualifiedProfileCommand : ICommand
     public string Institution { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
-    public abstract CustomResult.IResult<Education, Error> MapTo();
 }
 
 public class UpdateDegreeEducationFromQualifiedProfileCommand : UpdateEducationFromQualifiedProfileCommand
@@ -32,12 +31,6 @@ public class UpdateDegreeEducationFromQualifiedProfileCommand : UpdateEducationF
         degree = this.Degree;
         startDate = base.StartDate;
         endDate = base.EndDate;
-    }
-
-    //Here we are using covariance on an interface
-    public override CustomResult.IResult<Education, Error> MapTo()
-    {
-        return DegreeEducation.Hidrate(EducationId, Institution, Degree, StartDate, EndDate);
     }
 }
 
@@ -63,13 +56,5 @@ public class UpdateResearchEducationFromQualifiedProfileCommand : UpdateEducatio
         projectTitle = this.ProjectTitle;
         supervisor = this.Supervisor;
         summary = this.Summary;
-    }
-
-    //Generics are invariant by default
-    //Covariance and contravariance is supported only for interfaces and delegates
-    public override CustomResult.IResult<ResearchEducation, Error> MapTo()
-    {
-        return ResearchEducation.Hidrate(EducationId, Institution, StartDate, EndDate, ProjectTitle, Supervisor, Summary);
-
     }
 }

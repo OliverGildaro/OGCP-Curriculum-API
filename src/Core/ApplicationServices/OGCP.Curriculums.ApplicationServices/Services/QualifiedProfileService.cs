@@ -10,6 +10,7 @@ namespace OGCP.Curriculum.API.services;
 public class QualifiedProfileService : IQualifiedProfileService
 {
     private readonly IQualifiedProfileWriteRepo repository;
+    const string removeOrphanEducation = "EXEC DeleteOrphanedEducations;";
 
     public QualifiedProfileService(IQualifiedProfileWriteRepo repository)
     {
@@ -86,16 +87,14 @@ public class QualifiedProfileService : IQualifiedProfileService
             return Result.Failure("");
         }
 
-
         profile.Value.UpdateEducation(educationId, education);
 
         await this.repository.SaveChangesAsync();
-        return Result.Success();
+        return await this.repository.RemoveOrphanEducationsAsync(removeOrphanEducation);
     }
 
     public async Task<Result> RemoveEducationAsync(int id, int educationId)
     {
-        const string removeEducation = "EXEC DeleteOrphanedEducations;";
         Maybe<QualifiedProfile> profile = await this.repository.FindAsync(id);
 
         Result result = profile.Value.RemoveEducation(educationId);
@@ -106,7 +105,7 @@ public class QualifiedProfileService : IQualifiedProfileService
         }
         await this.repository.SaveChangesAsync();
 
-        return await this.repository.RemoveOrphanEducationsAsync(removeEducation);
+        return await this.repository.RemoveOrphanEducationsAsync(removeOrphanEducation);
     }
 
     public Task<Maybe<DegreeEducation>> FindDegreeEducation(string institution, EducationLevel degree)

@@ -190,7 +190,7 @@ public static class ServiceMounter
         Services.AddScoped<ICommandHandler<AddDegreeEducationToQualifiedProfileCommand, Result>, AddDegreeEducationToQualifiedProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<UpdateEducationFromStudentProfileCommand, Result>, UpdateEducationFromStudentProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<UpdateDegreeEducationFromQualifiedProfileCommand, Result>, UpdateDegreeEducationFromQualifiedProfileCommandHandler>();
-        //Services.AddScoped<ICommandHandler<UpdateResearchEducationFromQualifiedProfileCommand, Result>, UpdateResearchEducationFromQualifiedProfileCommand>();
+        Services.AddScoped<ICommandHandler<UpdateResearchEducationFromQualifiedProfileCommand, Result>, UpdateResearchEducationFromQualifiedProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveEducationFromQualifiedProfileCommand, Result>, RemoveEducationFromQualifiedProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveEducationFromStudentProfileCommand, Result>, RemoveEducationFromStudentProfileCommandHandler>();
     }
