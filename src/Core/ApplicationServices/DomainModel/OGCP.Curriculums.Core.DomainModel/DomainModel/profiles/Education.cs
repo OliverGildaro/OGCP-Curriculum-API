@@ -93,6 +93,11 @@ public class DegreeEducation : Education
         return new DegreeEducation(educationId, institution, degree, startDate, endDate);
 
     }
+
+    public void UpdateId(int id)
+    {
+        this._id = id;
+    }
 }
 
 public class ResearchEducation : Education

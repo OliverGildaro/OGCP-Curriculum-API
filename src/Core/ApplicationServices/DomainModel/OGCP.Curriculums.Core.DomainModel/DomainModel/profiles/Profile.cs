@@ -222,7 +222,7 @@ public class QualifiedProfile : Profile, IQualifiedProfile
     public Result UpdateEducation(int educationId, Education education)
     {
         var currentEducation = this.Educations.FirstOrDefault(e => e.Id.Equals(educationId));
-        if (currentEducation != null) 
+        if (currentEducation == null) 
         {
             return Result.Failure("");
         }
@@ -237,8 +237,15 @@ public class QualifiedProfile : Profile, IQualifiedProfile
             return Result.Failure("Not possible to do this update, conflict with an existing degree");
         }
 
-        //UpdateTimestamp();
-        return currentEducation.Update(education);
+        //if (education.Id != 0 && (currentEducation.Id != education.Id))
+        //{
+        //    _educations.Add(education);
+        //    return Result.Success();
+        //}
+
+        _educations.Remove(currentEducation);
+        _educations.Add(education);
+        return Result.Success();
     }
 
     public Result RemoveEducation(int educationId)

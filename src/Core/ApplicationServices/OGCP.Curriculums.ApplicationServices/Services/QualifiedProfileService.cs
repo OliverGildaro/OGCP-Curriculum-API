@@ -86,6 +86,7 @@ public class QualifiedProfileService : IQualifiedProfileService
             return Result.Failure("");
         }
 
+
         profile.Value.UpdateEducation(educationId, education);
 
         await this.repository.SaveChangesAsync();

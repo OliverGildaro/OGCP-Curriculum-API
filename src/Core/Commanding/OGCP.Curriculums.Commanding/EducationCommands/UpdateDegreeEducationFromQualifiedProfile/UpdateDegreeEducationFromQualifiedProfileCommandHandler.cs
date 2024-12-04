@@ -20,25 +20,21 @@ public class UpdateDegreeEducationFromQualifiedProfileCommandHandler
 
     public async Task<Result> HandleAsync(UpdateDegreeEducationFromQualifiedProfileCommand command)
     {
-        Maybe<DegreeEducation> maybeDegree = await this.qualifiedService
-                    .FindDegreeEducation(command.Institution, command.Degree);
-
         (int id, string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
             = command;
         var degreeResult = DegreeEducation.Create(institution, degree, startDate, endDate);
 
-        if (maybeDegree.HasValue
-            && degreeResult.IsSucces
-            && maybeDegree.Value.IsEquivalent(degreeResult.Value))
-        {
-            return await this.qualifiedService.UpdateEducationAsync(command.ProfileId, command.EducationId, maybeDegree.Value);
-        }
-
-
-
         if (degreeResult.IsFailure)
         {
             return Result.Failure("");
+        }
+        var degreeToUpdate = degreeResult.Value;
+
+        Maybe<DegreeEducation> maybeDegree = await this.qualifiedService.FindDegreeEducation(institution, degree);
+
+        if (maybeDegree.HasValue && (maybeDegree.Value.IsEquivalent(degreeToUpdate)))
+        {
+            degreeToUpdate.UpdateId(maybeDegree.Value.Id);
         }
 
         return await this.qualifiedService

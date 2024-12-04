@@ -177,8 +177,8 @@ public static class ServiceMounter
             typeof(UpdateProfileCommandHandler<UpdateQualifiedProfileCommand, Result>));
         Services.AddScoped(typeof(ICommandHandler<UpdateStudentProfileCommand, Result>),
             typeof(UpdateProfileCommandHandler<UpdateStudentProfileCommand, Result>));
-
         Services.AddScoped<ICommandHandler<DeleteProfileCommand, Result>, DeleteProfileCommandHandler>();
+        
         //LANGUAGES
         Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<UpdateLanguageFromProfileCommand, Result>, UpdateLanguageFromProfileCommandHandler>();
