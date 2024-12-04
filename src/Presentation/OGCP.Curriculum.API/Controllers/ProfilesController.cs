@@ -6,7 +6,6 @@ using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
 using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.Commanding.commands.UpdateProfile;
 using OGCP.Curriculum.API.DTOs.requests.Profile;
-using OGCP.Curriculum.API.factories;
 using OGCP.Curriculum.API.POCOS.requests.Language;
 using OGCP.Curriculum.API.POCOS.requests.Profile;
 using OGCP.Curriculum.API.POCOS.requests.work;
@@ -19,6 +18,7 @@ using System.Dynamic;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils.expand;
 using OGCP.Curriculum.API.DAL.Queries.utils;
+using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
 
 namespace OGCP.Curriculum.API.Controllers;
 
@@ -71,7 +71,7 @@ public class ProfilesController : Controller
     [Consumes("application/json")]
     public async Task<IActionResult> CreateProfileAsync([FromBody] ProfileRequest profileRequest)
     {
-        var command = ProfileFactory.Get(profileRequest);
+        var command = this.mapper.Map<CreateProfileCommand>(profileRequest);
         await this.message.DispatchCommand(command);
         return Ok();
     }

@@ -1,0 +1,21 @@
+        --protected override void Up(MigrationBuilder migrationBuilder)
+        --{
+        --    // Step 1: Create the stored procedure
+        --    migrationBuilder.Sql(@"
+        --        CREATE PROCEDURE DeleteOrphanedEducations
+        --            AS
+        --            BEGIN
+        --                -- Delete orphaned Educations from the Educations table
+        --                DELETE FROM Educations
+        --                WHERE Id NOT IN (
+        --                    SELECT EducationId FROM ProfileEducations
+        --                );
+        --            END;
+        --        ");
+        --}
+
+        --protected override void Down(MigrationBuilder migrationBuilder)
+        --{
+        --    // Step 2: Drop the stored procedure if rolling back the migration
+        --    migrationBuilder.Sql("DROP PROCEDURE DeleteOrphanedEducations;");
+        --}
