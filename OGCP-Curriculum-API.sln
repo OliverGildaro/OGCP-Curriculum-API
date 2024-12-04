@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "POCOS", "POCOS", "{0D9258FC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OGCP.Curriculums.Infrastructure.POCOS", "src\Infrastructure\POCOS\OGCP.Curriculums.Infrastructure.POCOS\OGCP.Curriculums.Infrastructure.POCOS.csproj", "{62D5F5E6-C27A-4B72-8888-EF7BCD149BBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OGCP.Curriculums.Querying", "src\Core\Commanding\OGCP.Curriculums.Querying\OGCP.Curriculums.Querying.csproj", "{ADF6D88E-1F32-4292-B763-0389E495527E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{62D5F5E6-C27A-4B72-8888-EF7BCD149BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62D5F5E6-C27A-4B72-8888-EF7BCD149BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62D5F5E6-C27A-4B72-8888-EF7BCD149BBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADF6D88E-1F32-4292-B763-0389E495527E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF6D88E-1F32-4292-B763-0389E495527E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADF6D88E-1F32-4292-B763-0389E495527E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADF6D88E-1F32-4292-B763-0389E495527E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,6 +121,7 @@ Global
 		{4A6E7169-989F-49E3-A1BD-99397205E478} = {C8584B31-7F7B-4877-8125-B34740633C41}
 		{0D9258FC-C316-4202-A260-B357C1D8A077} = {BD4D7566-346E-41DC-B462-DF998B981AE7}
 		{62D5F5E6-C27A-4B72-8888-EF7BCD149BBB} = {0D9258FC-C316-4202-A260-B357C1D8A077}
+		{ADF6D88E-1F32-4292-B763-0389E495527E} = {3720DC28-6EAA-4B34-9F6F-91876D95A14C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {033F9C8E-4BC3-4F8E-9BCF-B79B2BE3ECF7}

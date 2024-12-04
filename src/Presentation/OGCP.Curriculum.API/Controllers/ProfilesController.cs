@@ -11,14 +11,14 @@ using OGCP.Curriculum.API.POCOS.requests.Profile;
 using OGCP.Curriculum.API.POCOS.requests.work;
 using OGCP.Curriculum.API.POCOS.responses;
 using OGCP.Curriculum.API.services.interfaces;
-using OGCP.Curriculum.API.Querying.GetProfiles;
-using OGCP.Curriculum.API.Querying.GetProfileById;
 using OGCP.Curriculum.API.Commanding.commands.DeleteProfile;
 using System.Dynamic;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils.expand;
 using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
+using OGCP.Curriculum.API.Querying.GetProfileById;
+using OGCP.Curriculum.API.Querying.GetProfiles;
 
 namespace OGCP.Curriculum.API.Controllers;
 

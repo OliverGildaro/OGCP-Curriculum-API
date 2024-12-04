@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Commanding\OGCP.Curriculums.Commanding\OGCP.Curriculums.Commanding.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Repositories\OGCP.Curriculums.Reads.ProfileRepository\OGCP.Curriculums.Reads.ProfileRepository.csproj" />
+    <ProjectReference Include="..\..\Core\Commanding\OGCP.Curriculums.Querying\OGCP.Curriculums.Querying.csproj" />
   </ItemGroup>
 
 </Project>
