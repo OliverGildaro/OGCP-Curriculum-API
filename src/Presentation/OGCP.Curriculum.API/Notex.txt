@@ -1,0 +1,22 @@
+﻿****** FILTERS ******
+Filters are available only trought the MVC portion of the pipeline, focus on mvc request
+Midlewares are available trouth the entyre asp pipeline
+
+BENEFITS
+reduce the ammount of duplication code
+
+TYPES
+Authorixation
+Resource (caching, modify the model binding, add or remove http headers)
+Action (allow us to manipulate the executing and executed methods)
+Endpoint (To alter input parameters)
+Exception (Filter added before the response is generated)
+Result (called only if the method call was succesfull, we can alter the response)
+
+USES
+Caching
+Error handling
+Configuration
+Authorization
+Logging
+Analitics

@@ -32,6 +32,7 @@ using OGCP.Curriculum.API.Querying.GetProfiles;
 using OGCP.Curriculum.API.Querying.GetProfileById;
 using ArtForAll.Shared.ErrorHandler.Maybe;
 using OGCP.Curriculum.API.Commanding.commands.DeleteProfile;
+using OGCP.Curriculum.API.Filters;
 
 namespace OGCP.Curriculum.API.Helpers;
 
@@ -41,6 +42,7 @@ public static class HostingExtensions
     {
         try
         {
+            builder.Services.SetupFilters();
             builder.Services.SetupControllers();
             builder.Services.SetupCommands();
             builder.Services.SetupQueries();
@@ -80,9 +82,18 @@ public static class ServiceMounter
 
     }
 
+    public static void SetupFilters(this IServiceCollection Services)
+    {
+        Services.AddScoped<ExceptionHandlerFilter>();
+    }
+
     public static void SetupControllers(this IServiceCollection Services)
     {
-        Services.AddControllers().AddNewtonsoftJson(options =>
+        Services.AddControllers(options =>
+        {
+            options.Filters.Add<ExceptionHandlerFilter>();
+        })
+        .AddNewtonsoftJson(options =>
         {
             //System.Text.Json does not support polimorphic deserialization, but it support limited serialization
             //Polimorphic deserialization can be achieved only using Newtonsoft.json

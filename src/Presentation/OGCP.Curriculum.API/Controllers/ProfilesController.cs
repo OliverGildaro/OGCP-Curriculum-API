@@ -19,12 +19,14 @@ using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
 using OGCP.Curriculum.API.Querying.GetProfileById;
 using OGCP.Curriculum.API.Querying.GetProfiles;
+using OGCP.Curriculum.API.Filters;
 
 namespace OGCP.Curriculum.API.Controllers;
 
 [Route("api/v1/profiles")]
 [EnableCors("AllowSpecificOrigins")]
 [Produces("application/json")]
+[ServiceFilter(typeof(ExceptionHandlerFilter))]
 public class ProfilesController : Controller
 {
     private readonly IQualifiedProfileService service;
@@ -36,6 +38,11 @@ public class ProfilesController : Controller
         this.service = service;
         this.message = message;
         this.mapper = mapper;
+    }
+    [HttpGet("error")]
+    public IActionResult GetError()
+    {
+        throw new Exception("This is a test exception.");
     }
 
     [HttpGet]
