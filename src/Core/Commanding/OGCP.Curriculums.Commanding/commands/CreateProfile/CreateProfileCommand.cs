@@ -3,7 +3,6 @@ using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
 using ArtForAll.Shared.ErrorHandler.Results;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.DTOs;
 using CustomResult = ArtForAll.Shared.ErrorHandler.Results;
 namespace OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
 
@@ -17,8 +16,6 @@ public abstract class CreateProfileCommand : ICommand
 
 public class CreateQualifiedProfileCommand : CreateProfileCommand
 {
-
-    public ProfileRequests RequestType { get; set; } // Discriminator field
     public string DesiredJobRole { get; set; }
 
     public void Deconstruct(out string firstName, out string lastName, out string summary, out string desiredJobRole)
@@ -37,7 +34,6 @@ public class CreateQualifiedProfileCommand : CreateProfileCommand
 
 public class CreateGeneralProfileCommand : CreateProfileCommand
 {
-    public ProfileRequests RequestType { get; set; } // Discriminator field
     public string[] PersonalGoals { get; set; }
 
     public void Deconstruct(out string firstName, out string lastName, out string summary, out string[] personalGoals)
