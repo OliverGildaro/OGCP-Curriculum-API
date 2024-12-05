@@ -87,7 +87,12 @@ public class QualifiedProfileService : IQualifiedProfileService
             return Result.Failure("");
         }
 
-        profile.Value.UpdateEducation(educationId, education);
+        var result = profile.Value.UpdateEducation(educationId, education);
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
 
         await this.repository.SaveChangesAsync();
         return await this.repository.RemoveOrphanEducationsAsync(removeOrphanEducation);
@@ -116,5 +121,10 @@ public class QualifiedProfileService : IQualifiedProfileService
     public Task<Maybe<ResearchEducation>> FindResearchEducation(string institution, string projectTitle)
     {
         return this.repository.FindResearchEducation(institution, projectTitle);
+    }
+
+    public Task<Maybe<DegreeEducation>> FindDegreeEducation(DegreeEducation degreeToUpdate)
+    {
+        return this.repository.FindDegreeEducation(degreeToUpdate);
     }
 }

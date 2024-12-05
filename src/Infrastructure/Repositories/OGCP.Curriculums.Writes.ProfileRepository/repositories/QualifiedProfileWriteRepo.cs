@@ -38,6 +38,7 @@ public class QualifiedProfileWriteRepo : ProfileWriteRepo, IQualifiedProfileWrit
         return await this.context.QualifiedProfiles
             .Include(p => p.LanguagesSpoken)
             .Include(p => p.Educations)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(p => p.Id.Equals(id));
     }
 
@@ -54,13 +55,24 @@ public class QualifiedProfileWriteRepo : ProfileWriteRepo, IQualifiedProfileWrit
     public async Task<Maybe<DegreeEducation>> FindDegreeEducation(string institution, EducationLevel degree)
     {
         return await this.context.DegreeEducations
+            .AsNoTracking()
             .FirstOrDefaultAsync(p => p.Institution.Equals(institution) && p.Degree.Equals(degree));
     }
 
     public async Task<Maybe<ResearchEducation>> FindResearchEducation(string institution, string projectTitle)
     {
-        return await this.context.ResearchEducations
+        return await this.context.ResearchEducations.AsNoTracking()
             .FirstOrDefaultAsync(p => p.Institution.Equals(institution) && p.ProjectTitle.Equals(projectTitle));
+    }
+
+    public async Task<Maybe<DegreeEducation>> FindDegreeEducation(DegreeEducation education)
+    {
+        return await this.context.DegreeEducations
+            .FirstOrDefaultAsync(
+                p => p.Institution.Equals(education.Institution)
+                && p.Degree.Equals(education.Degree)
+                && p.StartDate.Equals(education.StartDate)
+                && p.EndDate.Equals(education.EndDate));
     }
 }
 

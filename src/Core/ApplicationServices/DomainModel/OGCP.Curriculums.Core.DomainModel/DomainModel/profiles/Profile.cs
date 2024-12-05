@@ -237,8 +237,12 @@ public class QualifiedProfile : Profile, IQualifiedProfile
             return Result.Failure("Not possible to do this update, conflict with an existing degree");
         }
 
+        //Si education ya tiene un id habria que remover en el join table la relacion y agregar una nueva
+        //Relacion a la instancie existente en la tabla de educaciones
+
         _educations.Remove(currentEducation);
         _educations.Add(education);
+        //currentEducation.Update(education);
         return Result.Success();
     }
 

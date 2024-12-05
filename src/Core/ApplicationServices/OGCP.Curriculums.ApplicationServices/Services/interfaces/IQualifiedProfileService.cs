@@ -8,6 +8,7 @@ namespace OGCP.Curriculum.API.services.interfaces
     {
         Task<Result> AddEducationAsync(int id, Education education);
         Task<Maybe<DegreeEducation>> FindDegreeEducation(string institution, EducationLevel degree);
+        Task<Maybe<DegreeEducation>> FindDegreeEducation(DegreeEducation degreeToUpdate);
         Task<Maybe<ResearchEducation>> FindResearchEducation(string institution, string projectTitle);
         Task<Result> RemoveEducationAsync(int id, int languageId);
         Task<Result> UpdateEducationAsync(int profileId, int educationId, Education education);

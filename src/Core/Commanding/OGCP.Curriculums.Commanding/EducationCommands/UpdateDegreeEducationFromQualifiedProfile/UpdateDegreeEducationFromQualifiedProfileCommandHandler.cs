@@ -30,14 +30,14 @@ public class UpdateDegreeEducationFromQualifiedProfileCommandHandler
         }
         var degreeToUpdate = degreeResult.Value;
 
-        Maybe<DegreeEducation> maybeDegree = await this.qualifiedService.FindDegreeEducation(institution, degree);
+        Maybe<DegreeEducation> maybeDegree = await this.qualifiedService.FindDegreeEducation(degreeToUpdate);
 
-        if (maybeDegree.HasValue && (maybeDegree.Value.IsEquivalent(degreeToUpdate)))
+        if (maybeDegree.HasValue)
         {
-            degreeToUpdate.UpdateId(maybeDegree.Value.Id);
+            degreeToUpdate= maybeDegree.Value;
         }
 
         return await this.qualifiedService
-            .UpdateEducationAsync(command.ProfileId, command.EducationId, degreeResult.Value);
+            .UpdateEducationAsync(command.ProfileId, command.EducationId, degreeToUpdate);
     }
 }
