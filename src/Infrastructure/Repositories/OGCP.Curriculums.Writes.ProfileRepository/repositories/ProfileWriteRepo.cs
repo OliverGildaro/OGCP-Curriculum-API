@@ -36,8 +36,9 @@ public class ProfileWriteRepo : IProfileWriteRepo
 
     public async Task<Maybe<Profile>> FindAsync(int id)
     {
+        //Lazy loading
         return await this.context.Set<Profile>()
-            .Include(p => p.LanguagesSpoken)
+            //.Include(p => p.LanguagesSpoken)
             .FirstOrDefaultAsync(p => p.Id.Equals(id));
     }
 

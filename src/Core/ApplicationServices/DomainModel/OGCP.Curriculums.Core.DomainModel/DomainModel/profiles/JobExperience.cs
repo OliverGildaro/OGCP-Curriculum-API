@@ -19,6 +19,10 @@ public abstract class JobExperience
 
 public class InternshipExperience : JobExperience
 {
+    protected InternshipExperience()
+    {
+        
+    }
     private InternshipExperience(string company, DateTime startDate, DateTime? endDate, string description, string role)
     {
         Company = company;
@@ -69,6 +73,10 @@ public class InternshipExperience : JobExperience
 
 public class WorkExperience : JobExperience
 {
+    protected WorkExperience()
+    {
+        
+    }
     private WorkExperience(string company, DateTime startDate, DateTime? endDate, string description, string position)
     {
         Company = company;

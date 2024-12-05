@@ -63,7 +63,8 @@ public class DbWriteProfileContext : DbContext
                         maxRetryDelay: TimeSpan.FromSeconds(15), // Max delay between retries
                         errorNumbersToAdd: null
                     )
-                );
+                )
+                .UseLazyLoadingProxies();
 
             //.UseLazyLoadingProxies();//To enable lazy loading (Only writes, never reads)
 

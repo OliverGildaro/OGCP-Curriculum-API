@@ -35,10 +35,15 @@ public class QualifiedProfileWriteRepo : ProfileWriteRepo, IQualifiedProfileWrit
     {
         //In order to protect the invariants of an agreggate we need to always load the full aggregate
         //Partial loading is not a good idea
+        //return await this.context.QualifiedProfiles
+        //    .Include(p => p.LanguagesSpoken)
+        //    .Include(p => p.Educations)
+        //    .AsSplitQuery()
+        //    .FirstOrDefaultAsync(p => p.Id.Equals(id));
+
+        //We can enable lazy loading for writes
+        //And avoid including nav properties here
         return await this.context.QualifiedProfiles
-            .Include(p => p.LanguagesSpoken)
-            .Include(p => p.Educations)
-            .AsSplitQuery()
             .FirstOrDefaultAsync(p => p.Id.Equals(id));
     }
 

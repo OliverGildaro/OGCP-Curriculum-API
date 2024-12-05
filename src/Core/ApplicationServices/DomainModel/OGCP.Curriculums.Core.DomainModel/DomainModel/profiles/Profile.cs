@@ -8,11 +8,6 @@ public interface IEntity<TEntityId>
     public TEntityId Id { get; }
 }
 
-public interface IProfile : IEntity<int>
-{
-    public Result AddLanguage(Language language);
-}
-
 //Always make non leaf clases in the herarchy abstract
 //If we makes this one abstract we do not have any other choice than instantiate a leaf class
 //It helps to see the full picture
@@ -33,7 +28,7 @@ public abstract class Profile : IEntity<int>
     //public TimeOnly StartTime { get; set; }
     protected DateTime _updatedAt;
     protected DetailInfo _personalInfo;//One to one
-    protected readonly List<Language> _languagesSpoken;//Many to many
+    protected List<Language> _languagesSpoken = new List<Language>();//Many to many
 
     protected Profile() {}
 
@@ -46,7 +41,6 @@ public abstract class Profile : IEntity<int>
         this._visibility = string.Empty;
         _createdAt = DateTime.UtcNow;
         _updatedAt = DateTime.UtcNow;
-        _languagesSpoken = new List<Language>();
     }
 
     public int Id => _id;
@@ -58,8 +52,8 @@ public abstract class Profile : IEntity<int>
     public ProfileDetailLevel DetailLevel => _detailLevel;
     public DateTime CreatedAt => _createdAt;
     public DateTime UpdatedAt => _updatedAt;
-    public DetailInfo PersonalInfo => _personalInfo;
-    public List<Language> LanguagesSpoken => _languagesSpoken;
+    public virtual DetailInfo PersonalInfo => _personalInfo;
+    public virtual IReadOnlyList<Language> LanguagesSpoken => this._languagesSpoken;
     
     public virtual Result AddLanguage(Language language)
     {
@@ -134,8 +128,8 @@ public interface IQualifiedProfile
 public class QualifiedProfile : Profile, IQualifiedProfile
 {
     private string _desiredJobRole;
-    private readonly List<Education> _educations;//many to many
-    private List<JobExperience> _experiences;//one to many
+    private readonly List<Education> _educations = new();
+    private List<JobExperience> _experiences = new();
     protected QualifiedProfile() { }
     private QualifiedProfile(
         string firstName,
@@ -145,8 +139,6 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         : base(firstName, lastName, summary)
     {
         _desiredJobRole = desiredJobRole;
-        this._educations = new List<Education>();
-        _experiences = new List<JobExperience>();
     }
 
     public QualifiedProfile(int id, string firstName, string lastName, string summary, string desiredJobRole)
@@ -158,8 +150,8 @@ public class QualifiedProfile : Profile, IQualifiedProfile
     public string DesiredJobRole => _desiredJobRole;
 
     //public EducationList Educations => _educations;
-    public List<Education> Educations => _educations;
-    public List<JobExperience> Experiences => _experiences;
+    public virtual IReadOnlyList<Education> Educations => _educations;
+    public virtual IReadOnlyList<JobExperience> Experiences => _experiences;
 
     //ENCAPSULATION is about protect data integrity
     //Avoid classes enter in an invalid state
@@ -250,8 +242,8 @@ public class QualifiedProfile : Profile, IQualifiedProfile
     {
         if (this.Educations.Any(edu => edu.Id == educationId))
         {
-            var educationToRemove = this.Educations.Find(edu => edu.Id == educationId);
-            this.Educations.Remove(educationToRemove);
+            var educationToRemove = this._educations.Find(edu => edu.Id == educationId);
+            this._educations.Remove(educationToRemove);
             return Result.Success();
         }
 
@@ -281,13 +273,12 @@ public interface IGeneralProfile
 public class GeneralProfile : Profile, IGeneralProfile
 {
     private string[] _personalGoals = Array.Empty<string>();
-    private List<WorkExperience> _experiences;//One to many
+    private List<WorkExperience> _experiences = new();
     protected GeneralProfile() { }
     private GeneralProfile(string firstName, string lastName, string summary, string[] personalGoals)
         : base(firstName, lastName, summary)
     {
         _personalGoals = personalGoals ?? Array.Empty<string>();
-        this._experiences = new List<WorkExperience>();
     }
 
     private GeneralProfile(int id, string firstName, string lastName, string summary, string[] personalGoals)
@@ -297,7 +288,7 @@ public class GeneralProfile : Profile, IGeneralProfile
     }
 
     public string[] PersonalGoals => _personalGoals;
-    public IReadOnlyList<WorkExperience> Experiences => _experiences;
+    public virtual IReadOnlyList<WorkExperience> Experiences => _experiences;
 
     public static Result<GeneralProfile, Error> Create(
         string firstName,
@@ -364,13 +355,11 @@ public class StudentProfile : Profile, IStudentProfile
 {
     private string _major;
     private string _careerGoals;
-    private readonly List<ResearchEducation> _educations = new();//many to many
-    private readonly List<InternshipExperience> _experience = new();//one to many
+    private List<ResearchEducation> _educations = new();
+    private List<InternshipExperience> _experiences = new();
 
     protected StudentProfile()
     {
-        this._educations = new List<ResearchEducation>();
-        this._experience = new List<InternshipExperience>();
     }
 
     public StudentProfile(
@@ -394,8 +383,9 @@ public class StudentProfile : Profile, IStudentProfile
     // Public properties
     public string Major => _major;
     public string CareerGoals => _careerGoals;
-    public IReadOnlyCollection<ResearchEducation> Educations => _educations.AsReadOnly();
-    public IReadOnlyCollection<InternshipExperience> Experiences => _experience.AsReadOnly();
+    //we need to mark as virtual to enable lazy loading
+    public virtual IReadOnlyList<ResearchEducation> Educations => _educations;
+    public virtual IReadOnlyList<InternshipExperience> Experiences => _experiences;
 
     // Factory method for controlled creation
     public static Result<StudentProfile, Error> Create(
@@ -432,7 +422,7 @@ public class StudentProfile : Profile, IStudentProfile
 
     public void AddJobExperience(InternshipExperience experience)
     {
-        this._experience.Add(experience);
+        this._experiences.Add(experience);
     }
 
     public Result RemoveEducation(int educationId)

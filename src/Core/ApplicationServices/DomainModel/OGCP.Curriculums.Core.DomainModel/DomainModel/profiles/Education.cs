@@ -29,6 +29,11 @@ public class DegreeEducation : Education
 {
     private EducationLevel _degree;
 
+    protected DegreeEducation()
+    {
+        
+    }
+
     private DegreeEducation(string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
     {
         _degree = degree;
@@ -106,6 +111,10 @@ public class ResearchEducation : Education
     private string _supervisor;
     private string _summary;
 
+    protected ResearchEducation()
+    {
+        
+    }
     private ResearchEducation(string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary)
     {
         _institution = institution;

@@ -23,10 +23,17 @@ public class StudentProfileWriteRepo : IStudentProfileWriteRepo
 
     public async Task<Maybe<StudentProfile>> FindAsync(int id)
     {
+        //We need always load all nav properties
+        //Because if we only load the required nav property for a business logic escenario
+        //We add business complexity about if all the required data has been loaded
+        //Increase chances of bugs and data corruption
+        //return await this.context.StudentProfiles
+        //    .Include(p => p.Educations)
+        //    .Include(p => p.LanguagesSpoken)
+        //    .AsSplitQuery()
+        //    .FirstOrDefaultAsync(p => p.Id.Equals(id));
+
         return await this.context.StudentProfiles
-            .Include(p => p.Educations)
-            .Include(p => p.LanguagesSpoken)
-            .AsSplitQuery()
             .FirstOrDefaultAsync(p => p.Id.Equals(id));
     }
 
@@ -38,7 +45,6 @@ public class StudentProfileWriteRepo : IStudentProfileWriteRepo
     public async Task<Maybe<ResearchEducation>> FindResearchEducation(string institution, string projectTitle)
     {
         return await this.context.ResearchEducations
-            .AsNoTracking()
             .FirstOrDefaultAsync(p => p.Institution.Equals(institution) && p.ProjectTitle.Equals(projectTitle));
     }
 

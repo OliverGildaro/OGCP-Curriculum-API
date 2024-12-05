@@ -24,9 +24,6 @@ public class GeneralProfileWriteRepo : IGeneralProfileWriteRepo
     public async Task<Maybe<GeneralProfile>> FindAsync(int id)
     {
         var profile = await this.context.GeneralProfiles
-            .Include(p => p.LanguagesSpoken)
-            .Include(p => p.Experiences)
-            .AsSplitQuery()
             .FirstOrDefaultAsync(p => p.Id == id);
         return profile;
     }
