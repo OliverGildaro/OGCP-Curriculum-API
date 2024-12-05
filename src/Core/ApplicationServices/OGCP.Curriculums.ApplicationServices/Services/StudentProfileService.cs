@@ -36,6 +36,11 @@ public class StudentProfileService : IStudentProfileService
         return Task.FromResult(Result.Success());
     }
 
+    public Task<Maybe<ResearchEducation>> FindResearchEducation(string institution, string projectTitle)
+    {
+        return this.repository.FindResearchEducation(institution, projectTitle);
+    }
+
     public Task<IReadOnlyList<StudentProfile>> GetAsync()
     {
         return null;
@@ -73,7 +78,7 @@ public class StudentProfileService : IStudentProfileService
         return Result.Success();
     }
 
-    public async Task<Result> UpdateEducationAsync(int profileId, ResearchEducation education)
+    public async Task<Result> UpdateEducationAsync(int profileId, int educationId, ResearchEducation education)
     {
         Maybe<StudentProfile> profile = await this.repository.FindAsync(profileId);
         if (profile.HasNoValue)
@@ -81,7 +86,12 @@ public class StudentProfileService : IStudentProfileService
             return Result.Failure("");
         }
 
-        profile.Value.UpdateEducation(education);
+        var result = profile.Value.UpdateEducation(educationId, education);
+
+        if (result.IsFailure)
+        { 
+            return result;
+        }
 
         await this.repository.SaveChangesAsync();
         return Result.Success();

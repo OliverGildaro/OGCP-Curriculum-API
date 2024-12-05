@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
 using ArtForAll.Shared.ErrorHandler;
+using ArtForAll.Shared.ErrorHandler.Maybe;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
 
@@ -13,7 +14,7 @@ public class UpdateEducationFromStudentProfileCommandHandler : ICommandHandler<U
     {
         this.profileService = profileService;
     }
-    public Task<Result> HandleAsync(UpdateEducationFromStudentProfileCommand command)
+    public async Task<Result> HandleAsync(UpdateEducationFromStudentProfileCommand command)
     {
         (int id,
         string institution,
@@ -24,7 +25,18 @@ public class UpdateEducationFromStudentProfileCommandHandler : ICommandHandler<U
         string summary) = command;
 
         var reserachEduResult = ResearchEducation
-            .Hidrate(id, institution, startDate, endDate, projectTitle, supervisor, summary);
-        return this.profileService.UpdateEducationAsync(command.ProfileId, reserachEduResult.Value);
+            .Create(institution, startDate, endDate, projectTitle, supervisor, summary);
+        if (reserachEduResult.IsFailure)
+        {
+            return Result.Failure("");
+        }
+        var researchToUpdate = reserachEduResult.Value;
+        Maybe<ResearchEducation> maybeResearch = await this.profileService.FindResearchEducation(institution, projectTitle);
+
+        if (maybeResearch.HasValue && (maybeResearch.Value.IsEquivalent(researchToUpdate)))
+        {
+            researchToUpdate.UpdateId(maybeResearch.Value.Id);
+        }
+        return await this.profileService.UpdateEducationAsync(command.ProfileId, command.EducationId, researchToUpdate);
     }
 }

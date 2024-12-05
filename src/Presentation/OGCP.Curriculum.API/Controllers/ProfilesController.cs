@@ -88,18 +88,11 @@ public class ProfilesController : Controller
     [ProducesResponseType(203)]
     public async Task<IActionResult> UpdateProfileAsync(int id, [FromBody] UpdateProfileRequest profile)
     {
-        try
-        {
             var command = this.mapper.Map<UpdateProfileCommand>(profile);
             command.Id = id;
             await this.message.DispatchCommand(command);
 
             return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest();
-        }
     }
 
     [HttpDelete("{id}")]
@@ -118,8 +111,6 @@ public class ProfilesController : Controller
     [ProducesResponseType(203)]
     public async Task<IActionResult> AddLanguageToProfileAsync(int id, [FromBody] AddLanguageRequest request)
     {
-        try
-        {
             var command = new AddLangueToProfileCommand
             {
                 Id = id,
@@ -130,19 +121,12 @@ public class ProfilesController : Controller
             await this.message.DispatchCommand(command);
 
             return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest();
-        }
     }
 
     [HttpPut("{id}/languages/{languageId}")]
     [ProducesResponseType(203)]
     public async Task<IActionResult> EditLanguageFromProfileAsync(int id, int languageId, [FromBody] UpdateLanguageRequest request)
     {
-        try
-        {
             var command = new UpdateLanguageFromProfileCommand
             {
                 Id = id,
@@ -154,11 +138,6 @@ public class ProfilesController : Controller
             await this.message.DispatchCommand(command);
 
             return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest();
-        }
     }
 
 
@@ -166,8 +145,6 @@ public class ProfilesController : Controller
     [ProducesResponseType(203)]
     public async Task<IActionResult> RemoveLanguageFromProfileAsync(int id, int languageId)
     {
-        try
-        {
             var command = new RemoveLangueFromProfileCommand
             {
                 Id = id,
@@ -177,11 +154,6 @@ public class ProfilesController : Controller
             await this.message.DispatchCommand(command);
 
             return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return BadRequest();
-        }
     }
 
     [HttpPut("{id}/WorkExperienceTypes")]

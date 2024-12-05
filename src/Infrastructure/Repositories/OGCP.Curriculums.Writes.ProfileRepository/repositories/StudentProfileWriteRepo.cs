@@ -23,12 +23,22 @@ public class StudentProfileWriteRepo : IStudentProfileWriteRepo
 
     public async Task<Maybe<StudentProfile>> FindAsync(int id)
     {
-        return await this.context.StudentProfiles.FindAsync(id);
+        return await this.context.StudentProfiles
+            .Include(p => p.Educations)
+            .Include(p => p.LanguagesSpoken)
+            .AsSplitQuery()
+            .FirstOrDefaultAsync(p => p.Id.Equals(id));
     }
 
     public Task<int> RemoveOrphanEducationsAsync(string removeEducation)
     {
         return this.context.Database.ExecuteSqlRawAsync(removeEducation);
+    }
+
+    public async Task<Maybe<ResearchEducation>> FindResearchEducation(string institution, string projectTitle)
+    {
+        return await this.context.ResearchEducations
+            .FirstOrDefaultAsync(p => p.Institution.Equals(institution) && p.ProjectTitle.Equals(projectTitle));
     }
 
     public Task<int> SaveChangesAsync()

@@ -60,6 +60,7 @@ public static class HostingExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
+        app.UseMiddleware<ExceptionMiddleware>();
         // Configure the HttP request pipeline.
         //the request fgoes from one midleware to the next one in the pipeline
         app.UseHttpsRedirection();

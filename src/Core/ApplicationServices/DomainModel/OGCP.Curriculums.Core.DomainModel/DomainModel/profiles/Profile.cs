@@ -237,12 +237,6 @@ public class QualifiedProfile : Profile, IQualifiedProfile
             return Result.Failure("Not possible to do this update, conflict with an existing degree");
         }
 
-        //if (education.Id != 0 && (currentEducation.Id != education.Id))
-        //{
-        //    _educations.Add(education);
-        //    return Result.Success();
-        //}
-
         _educations.Remove(currentEducation);
         _educations.Add(education);
         return Result.Success();
@@ -264,7 +258,6 @@ public class QualifiedProfile : Profile, IQualifiedProfile
     {
         QualifiedProfile studentProfile = (QualifiedProfile)profile;
         base._firstName = studentProfile.FirstName;
-        base._lastName = studentProfile.LastName;
         base._summary = studentProfile.Summary;
         this._desiredJobRole = studentProfile.DesiredJobRole;
         return Result.Success();
@@ -450,16 +443,27 @@ public class StudentProfile : Profile, IStudentProfile
         return Result.Failure($"The profile id: {educationId}, not found");
     }
 
-    public Result UpdateEducation(ResearchEducation education)
+    public Result UpdateEducation(int educationId, ResearchEducation education)
     {
-        if (_educations.Any(educ => educ.IsEquivalent(education)))
+        var currentEducation = this.Educations.FirstOrDefault(e => e.Id.Equals(educationId));
+        if (currentEducation == null)
+        {
+            return Result.Failure("");
+        }
+
+        if (currentEducation == education)
         {
             return Result.Success("Education already updated");
         }
 
-        var currentLanguage = this._educations.FirstOrDefault(currentEduc => currentEduc.Id == education.Id);
-        //UpdateTimestamp();
-        return currentLanguage.Update(education);
+        if (_educations.Any(educ => educ.IsEquivalent(education)))
+        {
+            return Result.Failure("Not possible to do this update, conflict with an existing degree");
+        }
+
+        _educations.Remove(currentEducation);
+        _educations.Add(education);
+        return Result.Success();
     }
 
     public override Result UpdateProfile(Profile profile)
