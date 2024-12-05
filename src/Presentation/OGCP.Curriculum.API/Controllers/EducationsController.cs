@@ -6,6 +6,8 @@ using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.commands.AddEducationDegree;
 using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile;
+using OGCP.Curriculum.API.DAL.Queries.interfaces;
+using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DTOs.requests.Education;
 using OGCP.Curriculum.API.Filters;
 using OGCP.Curriculum.API.POCOS.requests.Education;
@@ -18,13 +20,22 @@ namespace OGCP.Curriculum.API.Controllers;
 [ServiceFilter(typeof(ExceptionHandlerFilter))]
 public class EducationsController : Controller
 {
+    private readonly IProfileReadModelRepository repository;
     private readonly Message message;
     private readonly IMapper mapper;
 
-    public EducationsController(Message message, IMapper mapper)
+    public EducationsController(IProfileReadModelRepository repository, Message message, IMapper mapper)
     {
+        this.repository = repository;
         this.message = message;
         this.mapper = mapper;
+    }
+
+    [HttpGet("{id}/educations")]
+    public async Task<IActionResult> GetEducationsFromProfielAsync(int id)
+    {
+        IReadOnlyList<EducationReadModel> educations = await this.repository.FindEducationsFromProfile(id);
+        return Ok(educations);
     }
 
     [HttpPut("{profileId}/educations")]

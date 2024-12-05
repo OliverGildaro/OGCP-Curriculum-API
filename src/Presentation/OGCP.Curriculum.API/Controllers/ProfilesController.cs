@@ -20,6 +20,7 @@ using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
 using OGCP.Curriculum.API.Querying.GetProfileById;
 using OGCP.Curriculum.API.Querying.GetProfiles;
 using OGCP.Curriculum.API.Filters;
+using OGCP.Curriculum.API.DAL.Queries.interfaces;
 
 namespace OGCP.Curriculum.API.Controllers;
 
@@ -29,13 +30,13 @@ namespace OGCP.Curriculum.API.Controllers;
 [ServiceFilter(typeof(ExceptionHandlerFilter))]
 public class ProfilesController : Controller
 {
-    private readonly IQualifiedProfileService service;
+    private readonly IProfileReadModelRepository repository;
     private readonly Message message;
     private readonly customMapper.IMapper mapper;
 
-    public ProfilesController(IQualifiedProfileService service, Message message, customMapper.IMapper mapper)
+    public ProfilesController(IProfileReadModelRepository repository, Message message, customMapper.IMapper mapper)
     {
-        this.service = service;
+        this.repository = repository;
         this.message = message;
         this.mapper = mapper;
     }
@@ -72,6 +73,13 @@ public class ProfilesController : Controller
 
         var profile = await this.message.DispatchQuery(query);
         return Ok(profile);
+    }
+
+    [HttpGet("{id}/languages")]
+    public async Task<IActionResult> GetLanguagesFromProfielAsync(int id)
+    {
+        IReadOnlyList<LanguageReadModel> languages = await this.repository.FindLanguagesFromProfile(id);
+        return Ok(languages);
     }
 
     [HttpPost]

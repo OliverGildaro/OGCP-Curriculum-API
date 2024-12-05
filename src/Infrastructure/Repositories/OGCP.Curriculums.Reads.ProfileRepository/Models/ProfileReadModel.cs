@@ -11,7 +11,7 @@ public class ProfileReadModel
     public string? Major { get; set; }
     public string? CareerGoals { get; set; }
     public string? Discriminator { get; set; }
-    public IReadOnlyList<LanguageReadModel> Languages { get; set; }
-    public IReadOnlyList<EducationReadModel> Educations { get; set; }
+    public IReadOnlyList<LanguageReadModel> Languages { get; set; } = new List<LanguageReadModel>();
+    public IReadOnlyList<EducationReadModel> Educations { get; set; } = new List<EducationReadModel>();
     //public IReadOnlyList<WorkExpReadModel> WorkExp { get; set; }
 }

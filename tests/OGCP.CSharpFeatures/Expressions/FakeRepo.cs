@@ -78,4 +78,14 @@ public class FakeRepo : IProfileReadModelRepository
     {
         throw new NotImplementedException();
     }
+
+    public Task<IReadOnlyList<LanguageReadModel>> FindLanguagesFromProfile(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IReadOnlyList<EducationReadModel>> FindEducationsFromProfile(int id)
+    {
+        throw new NotImplementedException();
+    }
 }
