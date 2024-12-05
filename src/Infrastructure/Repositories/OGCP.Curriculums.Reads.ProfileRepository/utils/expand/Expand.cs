@@ -66,7 +66,7 @@ public class Expand
                     if (field == "Languages")
                     {
                         // Crear expresión para propiedad de navegación "Languages"
-                        var navigationProperty = typeof(ProfileReadModel).GetProperty(nameof(ProfileReadModel.Languages));
+                        var navigationProperty = typeof(ProfileReadModel).GetProperty(nameof(ProfileReadModel.ProfileLanguages));
                         var propertyNavExpression = Expression.Property(parameter, navigationProperty);
 
                         // Proyección para propiedades individuales de LanguageReadModel
@@ -90,7 +90,7 @@ public class Expand
                     else if (field == "Educations")
                     {
                         // Crear expresión para propiedad de navegación "Educations"
-                        var navigationProperty = typeof(ProfileReadModel).GetProperty(nameof(ProfileReadModel.Educations));
+                        var navigationProperty = typeof(ProfileReadModel).GetProperty(nameof(ProfileReadModel.ProfileEducations));
                         var propertyNavExpression = Expression.Property(parameter, navigationProperty);
 
                         // Proyección para propiedades individuales de EducationReadModel

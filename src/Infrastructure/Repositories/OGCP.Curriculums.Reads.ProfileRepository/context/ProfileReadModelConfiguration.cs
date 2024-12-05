@@ -1,8 +1,6 @@
-﻿using ArtForAll.Shared.Contracts.DDD;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OGCP.Curriculum.API.DAL.Queries.Models;
-using OGCP.Curriculum.API.domainmodel;
 
 namespace OGCP.Curriculum.API.DAL.Queries.context;
 
@@ -30,28 +28,6 @@ public class ProfileReadModelConfiguration : IEntityTypeConfiguration<ProfileRea
 
         builder.Property(p => p.Discriminator)
             .IsRequired(true);
-
-        builder.HasMany(p => p.Educations)
-            .WithMany()
-            .UsingEntity<Dictionary<string, object>>(
-                "ProfileEducations",
-                j => j.HasOne<EducationReadModel>()
-                    .WithMany()
-                    .HasForeignKey("EducationId"),
-                j => j.HasOne<ProfileReadModel>()
-                    .WithMany()
-                    .HasForeignKey("ProfileId"));
-
-        builder.HasMany(p => p.Languages)
-            .WithMany()
-            .UsingEntity<Dictionary<string, object>>(
-                "ProfileLanguages",
-                j => j.HasOne<LanguageReadModel>()
-                    .WithMany()
-                    .HasForeignKey("LanguageId"),
-                j => j.HasOne<ProfileReadModel>()
-                    .WithMany()
-                    .HasForeignKey("ProfileId"));
 
         //builder.HasMany(p => p.WorkExp)
         //    .WithOne()

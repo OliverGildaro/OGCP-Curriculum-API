@@ -1,4 +1,6 @@
-﻿namespace OGCP.Curriculum.API.DAL.Queries.Models;
+﻿using OGCP.Curriculums.Reads.ProfileRepository.Models;
+
+namespace OGCP.Curriculum.API.DAL.Queries.Models;
 
 public class LanguageReadModel
 {
@@ -6,4 +8,5 @@ public class LanguageReadModel
     //public int ProfileId { get; set; }
     public string Name { get; set; }
     public string Level { get; set; }
+    public IReadOnlyList<ProfileLanguageReadModel> ProfileLanguages { get; } = [];
 }

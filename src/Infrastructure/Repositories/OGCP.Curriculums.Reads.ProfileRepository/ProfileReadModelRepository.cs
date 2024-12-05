@@ -41,8 +41,10 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
             //IEnumerable works with delegates
             //That is compiled code
             var collection = context.Profiles
-                .Include(p => p.Educations)
-                .Include(p => p.Languages) as IQueryable<ProfileReadModel>;
+                .Include(p => p.ProfileEducations)
+                .ThenInclude(pe => pe.Education)
+                .Include(p => p.ProfileLanguages)
+                .ThenInclude(pl => pl.Language) as IQueryable<ProfileReadModel>;
 
             //Filtering
             if (!string.IsNullOrEmpty(parameters.FilterBy))
@@ -90,9 +92,11 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
         try
         {
             var result = await this.context.Profiles
-                .Include(p => p.Educations)
+                .Include(p => p.ProfileEducations)
+                .ThenInclude(pe => pe.Education)
                 //.Include(p => p.WorkExp)
-                .Include(p => p.Languages)
+                .Include(p => p.ProfileLanguages)
+                .ThenInclude(pl => pl.Language)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(p => p.Id.Equals(id));
             return result;
@@ -106,17 +110,14 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
 
     public async Task<IReadOnlyList<EducationReadModel>> FindEducationsFromProfile(int id)
     {
-        return await this.context.Profiles
-            .Where(p => p.Id.Equals(id))
-            .SelectMany(p => p.Educations)
+        return await this.context.Educations
+            .Include(p => p.ProfileEducations)
+            .Where(pe => pe.ProfileEducations.Equals(id))
             .ToListAsync();
     }
 
     public async Task<IReadOnlyList<LanguageReadModel>> FindLanguagesFromProfile(int profileId)
     {
-        return await this.context.Profiles
-            .Where(p => p.Id.Equals(profileId))
-            .SelectMany(p => p.Languages)
-            .ToListAsync();
+        return [];
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace OGCP.Curriculum.API.DAL.Queries.Models;
+﻿using OGCP.Curriculums.Reads.ProfileRepository.Models;
+
+namespace OGCP.Curriculum.API.DAL.Queries.Models;
 
 public class ProfileReadModel
 {
@@ -11,7 +13,7 @@ public class ProfileReadModel
     public string? Major { get; set; }
     public string? CareerGoals { get; set; }
     public string? Discriminator { get; set; }
-    public IReadOnlyList<LanguageReadModel> Languages { get; set; } = new List<LanguageReadModel>();
-    public IReadOnlyList<EducationReadModel> Educations { get; set; } = new List<EducationReadModel>();
+    public IReadOnlyList<ProfileLanguageReadModel> ProfileLanguages { get; } = [];
+    public IReadOnlyList<ProfileEducationReadModel> ProfileEducations { get; } = [];
     //public IReadOnlyList<WorkExpReadModel> WorkExp { get; set; }
 }

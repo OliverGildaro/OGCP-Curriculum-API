@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculums.Reads.ProfileRepository.Models;
 namespace OGCP.Curriculum.API.DAL.Queries.context;
 public class DbReadProfileContext : DbContext
 {
@@ -14,7 +15,9 @@ public class DbReadProfileContext : DbContext
 
     public DbSet<ProfileReadModel> Profiles { get; set; }
     public DbSet<LanguageReadModel> Languages { get; set; }
+    public DbSet<ProfileLanguageReadModel> ProfileLanguages { get; set; }
     public DbSet<EducationReadModel> Educations { get; set; }
+    public DbSet<ProfileEducationReadModel> ProfileEducations { get; set; }
     public virtual DbSet<Dictionary<string, object>> Certifications =>
             Set<Dictionary<string, object>>("Certification");
 

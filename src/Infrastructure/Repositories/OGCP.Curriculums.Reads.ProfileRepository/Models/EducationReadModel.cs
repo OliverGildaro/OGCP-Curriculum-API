@@ -1,4 +1,6 @@
-﻿namespace OGCP.Curriculum.API.DAL.Queries.Models;
+﻿using OGCP.Curriculums.Reads.ProfileRepository.Models;
+
+namespace OGCP.Curriculum.API.DAL.Queries.Models;
 
 public class EducationReadModel
 {
@@ -11,4 +13,5 @@ public class EducationReadModel
     public string ProjectTitle { get; set; }
     public string Supervisor { get; set; }
     public string Summary { get; set; }
+    public IReadOnlyList<ProfileEducationReadModel> ProfileEducations { get; } = [];
 }
