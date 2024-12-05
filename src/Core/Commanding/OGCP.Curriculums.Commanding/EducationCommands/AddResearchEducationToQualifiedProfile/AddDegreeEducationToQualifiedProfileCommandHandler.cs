@@ -20,13 +20,6 @@ public class AddResearchEducationToQualifiedProfileCommandHandler
 
     public async Task<Result> HandleAsync(AddResearchEducationToQualifiedProfileCommand command)
     {
-        Maybe<ResearchEducation> maybeResearch = await this.qualifiedService
-            .FindResearchEducation(command.Institution, command.ProjectTitle);
-
-        if (maybeResearch.HasValue)
-        {
-            return await this.qualifiedService.AddEducationAsync(command.ProfileId, maybeResearch.Value);
-        }
 
         (int id, string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary)
             = command;
@@ -36,7 +29,16 @@ public class AddResearchEducationToQualifiedProfileCommandHandler
         {
             return Result.Failure("");
         }
+        var researchToAdd = researchResult.Value;
+        Maybe<ResearchEducation> maybeResearch = await this.qualifiedService
+            .FindResearchEducation(researchToAdd);
 
-        return await this.qualifiedService.AddEducationAsync(command.ProfileId, researchResult.Value);
+        if (maybeResearch.HasValue)
+        {
+            researchToAdd = maybeResearch.Value;
+        }
+
+
+        return await this.qualifiedService.AddEducationAsync(command.ProfileId, researchToAdd);
     }
 }

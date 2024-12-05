@@ -52,25 +52,24 @@ public class QualifiedProfileWriteRepo : ProfileWriteRepo, IQualifiedProfileWrit
         return base.Add(entity);
     }
 
-    public async Task<Maybe<DegreeEducation>> FindDegreeEducation(string institution, EducationLevel degree)
-    {
-        return await this.context.DegreeEducations
-            .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.Institution.Equals(institution) && p.Degree.Equals(degree));
-    }
-
-    public async Task<Maybe<ResearchEducation>> FindResearchEducation(string institution, string projectTitle)
-    {
-        return await this.context.ResearchEducations.AsNoTracking()
-            .FirstOrDefaultAsync(p => p.Institution.Equals(institution) && p.ProjectTitle.Equals(projectTitle));
-    }
-
     public async Task<Maybe<DegreeEducation>> FindDegreeEducation(DegreeEducation education)
     {
         return await this.context.DegreeEducations
             .FirstOrDefaultAsync(
                 p => p.Institution.Equals(education.Institution)
                 && p.Degree.Equals(education.Degree)
+                && p.StartDate.Equals(education.StartDate)
+                && p.EndDate.Equals(education.EndDate));
+    }
+
+    public async Task<Maybe<ResearchEducation>> FindResearchEducation(ResearchEducation education)
+    {
+        return await this.context.ResearchEducations
+            .FirstOrDefaultAsync(
+                p => p.Institution.Equals(education.Institution)
+                && p.ProjectTitle.Equals(education.ProjectTitle)
+                && p.Supervisor.Equals(education.Supervisor)
+                && p.ProjectTitle.Equals(education.ProjectTitle)
                 && p.StartDate.Equals(education.StartDate)
                 && p.EndDate.Equals(education.EndDate));
     }

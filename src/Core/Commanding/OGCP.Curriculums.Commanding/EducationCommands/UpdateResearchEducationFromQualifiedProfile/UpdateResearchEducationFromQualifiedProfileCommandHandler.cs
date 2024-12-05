@@ -29,11 +29,11 @@ public class UpdateResearchEducationFromQualifiedProfileCommandHandler
         }
         var researchToUpdate = reserachEduResult.Value;
 
-        Maybe<ResearchEducation> maybeResearch = await this.qualifiedService.FindResearchEducation(institution, projectTitle);
+        Maybe<ResearchEducation> maybeResearch = await this.qualifiedService.FindResearchEducation(researchToUpdate);
 
         if (maybeResearch.HasValue && (maybeResearch.Value.IsEquivalent(researchToUpdate)))
         {
-            researchToUpdate.UpdateId(maybeResearch.Value.Id);
+            researchToUpdate = maybeResearch.Value;
         }
 
         return await this.qualifiedService

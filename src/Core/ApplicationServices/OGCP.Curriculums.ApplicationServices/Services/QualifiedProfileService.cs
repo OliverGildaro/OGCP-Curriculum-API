@@ -113,14 +113,9 @@ public class QualifiedProfileService : IQualifiedProfileService
         return await this.repository.RemoveOrphanEducationsAsync(removeOrphanEducation);
     }
 
-    public Task<Maybe<DegreeEducation>> FindDegreeEducation(string institution, EducationLevel degree)
+    public Task<Maybe<ResearchEducation>> FindResearchEducation(ResearchEducation education)
     {
-        return this.repository.FindDegreeEducation(institution, degree);
-    }
-
-    public Task<Maybe<ResearchEducation>> FindResearchEducation(string institution, string projectTitle)
-    {
-        return this.repository.FindResearchEducation(institution, projectTitle);
+        return this.repository.FindResearchEducation(education);
     }
 
     public Task<Maybe<DegreeEducation>> FindDegreeEducation(DegreeEducation degreeToUpdate)

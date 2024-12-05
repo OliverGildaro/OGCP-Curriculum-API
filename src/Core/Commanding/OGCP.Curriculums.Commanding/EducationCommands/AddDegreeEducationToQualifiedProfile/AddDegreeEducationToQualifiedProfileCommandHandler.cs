@@ -20,14 +20,6 @@ public class AddDegreeEducationToQualifiedProfileCommandHandler
 
     public async Task<Result> HandleAsync(AddDegreeEducationToQualifiedProfileCommand command)
     {
-        Maybe<DegreeEducation> maybeDegree = await this.qualifiedService
-            .FindDegreeEducation(command.Institution, command.Degree);
-
-        if (maybeDegree.HasValue)
-        {
-            return await this.qualifiedService.AddEducationAsync(command.ProfileId, maybeDegree.Value);
-        }
-
         (int id, string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
             = command;
         var degreeResult = DegreeEducation.Create(institution, degree, startDate, endDate);
@@ -37,6 +29,16 @@ public class AddDegreeEducationToQualifiedProfileCommandHandler
             return Result.Failure("");
         }
 
-        return await this.qualifiedService.AddEducationAsync(command.ProfileId, degreeResult.Value);
+        var degreeToAdd = degreeResult.Value;
+
+        Maybe<DegreeEducation> maybeDegree = await this.qualifiedService
+            .FindDegreeEducation(degreeToAdd);
+
+        if (maybeDegree.HasValue)
+        {
+            degreeToAdd = maybeDegree.Value;
+        }
+
+        return await this.qualifiedService.AddEducationAsync(command.ProfileId, degreeToAdd);
     }
 }
