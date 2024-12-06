@@ -8,7 +8,9 @@ using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile;
 using OGCP.Curriculum.API.DAL.Queries.interfaces;
 using OGCP.Curriculum.API.DAL.Queries.Models;
+using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.DTOs.requests.Education;
+using OGCP.Curriculum.API.DTOs.responses;
 using OGCP.Curriculum.API.Filters;
 using OGCP.Curriculum.API.POCOS.requests.Education;
 
@@ -35,7 +37,9 @@ public class EducationsController : Controller
     public async Task<IActionResult> GetEducationsFromProfielAsync(int id)
     {
         IReadOnlyList<EducationReadModel> educations = await this.repository.FindEducationsFromProfile(id);
-        return Ok(educations);
+        var eduRes = this.mapper.Map<IReadOnlyList<EducationResponse>>(educations);
+
+        return Ok(eduRes);
     }
 
     [HttpPut("{profileId}/educations")]

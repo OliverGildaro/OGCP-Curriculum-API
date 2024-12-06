@@ -6,6 +6,7 @@ using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.DAL.Queries.utils.expand;
 using OGCP.Curriculum.API.DAL.Queries.utils.pagination;
+using OGCP.Curriculum.API.domainmodel;
 
 namespace OGCP.Curriculum.API.DAL.Queries;
 
@@ -109,15 +110,15 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
 
     public async Task<IReadOnlyList<EducationReadModel>> FindEducationsFromProfile(int id)
     {
-        //return await this.context.Educations
-        //    .Include(p => p.ProfileEducations)
-        //    .Where(pe => pe.ProfileEducations.Equals(id))
-        //    .ToListAsync();
-        return [];
+        return await this.context.Educations
+                .Where(l => l.ProfileEducations.Any(pe => pe.ProfileId == id))
+                .ToListAsync();
     }
 
     public async Task<IReadOnlyList<LanguageReadModel>> FindLanguagesFromProfile(int profileId)
     {
-        return [];
+        return await this.context.Languages
+                .Where(l => l.ProfileLanguages.Any(pl => pl.ProfileId == profileId))
+                .ToListAsync();
     }
 }

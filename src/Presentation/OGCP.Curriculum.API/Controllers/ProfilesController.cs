@@ -22,6 +22,7 @@ using OGCP.Curriculum.API.Querying.GetProfiles;
 using OGCP.Curriculum.API.Filters;
 using OGCP.Curriculum.API.DAL.Queries.interfaces;
 using ArtForAll.Shared.ErrorHandler.Maybe;
+using OGCP.Curriculum.API.DTOs.responses;
 
 namespace OGCP.Curriculum.API.Controllers;
 
@@ -86,7 +87,8 @@ public class ProfilesController : Controller
     public async Task<IActionResult> GetLanguagesFromProfielAsync(int id)
     {
         IReadOnlyList<LanguageReadModel> languages = await this.repository.FindLanguagesFromProfile(id);
-        return Ok(languages);
+        IReadOnlyList<LanguageResponse> langRes = this.mapper.Map<IReadOnlyList<LanguageResponse>>(languages);
+        return Ok(langRes);
     }
 
     [HttpPost]
