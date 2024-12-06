@@ -91,10 +91,9 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
     {
         try
         {
-            var result = await this.context.Profiles
+            var result = await context.Profiles
                 .Include(p => p.ProfileEducations)
                 .ThenInclude(pe => pe.Education)
-                //.Include(p => p.WorkExp)
                 .Include(p => p.ProfileLanguages)
                 .ThenInclude(pl => pl.Language)
                 .AsSplitQuery()

@@ -8,5 +8,5 @@ public class LanguageReadModel
     //public int ProfileId { get; set; }
     public string Name { get; set; }
     public string Level { get; set; }
-    //public IReadOnlyList<ProfileLanguageReadModel> ProfileLanguages { get; } = new List<ProfileLanguageReadModel>();
+    public IReadOnlyList<ProfileLanguageReadModel> ProfileLanguages { get; } = new List<ProfileLanguageReadModel>();
 }

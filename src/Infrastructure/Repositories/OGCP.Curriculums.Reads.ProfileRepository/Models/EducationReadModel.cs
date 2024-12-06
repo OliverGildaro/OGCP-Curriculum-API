@@ -9,9 +9,9 @@ public class EducationReadModel
     public string Institution { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
-    public string Degree { get; set; }
-    public string ProjectTitle { get; set; }
-    public string Supervisor { get; set; }
-    public string Summary { get; set; }
-    //public IReadOnlyList<ProfileEducationReadModel> ProfileEducations { get; } = new List<ProfileEducationReadModel>();
+    public string? Degree { get; set; }
+    public string? ProjectTitle { get; set; }
+    public string? Supervisor { get; set; }
+    public string? Summary { get; set; }
+    public IReadOnlyList<ProfileEducationReadModel> ProfileEducations { get; } = new List<ProfileEducationReadModel>();
 }

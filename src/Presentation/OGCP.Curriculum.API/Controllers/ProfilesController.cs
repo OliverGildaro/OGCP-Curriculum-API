@@ -21,6 +21,7 @@ using OGCP.Curriculum.API.Querying.GetProfileById;
 using OGCP.Curriculum.API.Querying.GetProfiles;
 using OGCP.Curriculum.API.Filters;
 using OGCP.Curriculum.API.DAL.Queries.interfaces;
+using ArtForAll.Shared.ErrorHandler.Maybe;
 
 namespace OGCP.Curriculum.API.Controllers;
 
@@ -71,8 +72,14 @@ public class ProfilesController : Controller
             Id = id
         };
 
-        var profile = await this.message.DispatchQuery(query);
-        return Ok(profile);
+        Maybe<ProfileReadModel> maybeProfile = await this.message.DispatchQuery(query);
+        if (maybeProfile.HasNoValue)
+        {
+            return NotFound();
+        }
+        ProfileResponse profileResponse = mapper.Map<ProfileResponse>(maybeProfile.Value);
+
+        return Ok(profileResponse);
     }
 
     [HttpGet("{id}/languages")]
