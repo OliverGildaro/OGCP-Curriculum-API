@@ -15,7 +15,10 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
 	  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.0" />
-    <ProjectReference Include="..\..\..\Core\ApplicationServices\DomainServices\OGCP.Curriculums.DomainServices\OGCP.Curriculums.DomainServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Domain\DomainModel\OGCP.Curriculums.Core.DomainModel\OGCP.Curriculums.Core.DomainModel.csproj" />
   </ItemGroup>
 
 </Project>

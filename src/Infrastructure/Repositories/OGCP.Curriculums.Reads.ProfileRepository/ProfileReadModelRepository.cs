@@ -6,7 +6,6 @@ using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.DAL.Queries.utils.expand;
 using OGCP.Curriculum.API.DAL.Queries.utils.pagination;
-using OGCP.Curriculum.API.domainmodel;
 
 namespace OGCP.Curriculum.API.DAL.Queries;
 

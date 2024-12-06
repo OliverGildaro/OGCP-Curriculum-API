@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OGCP.Curriculum.API.DAL.Queries.Models;
-using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculums.Reads.ProfileRepository.Models;
 namespace OGCP.Curriculum.API.DAL.Queries.context;
 public class DbReadProfileContext : DbContext

@@ -8,7 +8,6 @@ using OGCP.Curriculum.API.commanding.commands.UpdateEducationToQualifiedProfile;
 using OGCP.Curriculum.API.Commanding.commands.RemoveEducationFromQualifiedProfile;
 using OGCP.Curriculum.API.DAL.Queries.interfaces;
 using OGCP.Curriculum.API.DAL.Queries.Models;
-using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.DTOs.requests.Education;
 using OGCP.Curriculum.API.DTOs.responses;
 using OGCP.Curriculum.API.Filters;
