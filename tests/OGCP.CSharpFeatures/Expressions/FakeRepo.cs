@@ -4,6 +4,7 @@ using OGCP.Curriculum.API.DAL.Queries.interfaces;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.DAL.Queries.utils.expand;
+using OGCP.Curriculums.Reads.ProfileRepository.DTOs;
 
 namespace OGCP.CSharpFeatures.Expressions;
 
@@ -85,6 +86,16 @@ public class FakeRepo : IProfileReadModelRepository
     }
 
     public Task<IReadOnlyList<EducationReadModel>> FindEducationsFromProfile(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IReadOnlyList<ProfileEducationDto>> FindEducationsAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task FindLanguagesGrouped()
     {
         throw new NotImplementedException();
     }

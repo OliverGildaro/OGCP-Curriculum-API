@@ -12,6 +12,7 @@ using OGCP.Curriculum.API.DTOs.requests.Education;
 using OGCP.Curriculum.API.DTOs.responses;
 using OGCP.Curriculum.API.Filters;
 using OGCP.Curriculum.API.POCOS.requests.Education;
+using OGCP.Curriculums.Reads.ProfileRepository.DTOs;
 
 namespace OGCP.Curriculum.API.Controllers;
 
@@ -39,6 +40,15 @@ public class EducationsController : Controller
         var eduRes = this.mapper.Map<IReadOnlyList<EducationResponse>>(educations);
 
         return Ok(eduRes);
+    }
+
+    [HttpGet("educations")]
+    public async Task<IActionResult> GetEducationsAsync()
+    {
+        IReadOnlyList<ProfileEducationDto> educationsDto = await this.repository.FindEducationsAsync();
+        //var eduRes = this.mapper.Map<IReadOnlyList<ProfileEducationResponse>>(educationsDto);
+
+        return Ok(educationsDto);
     }
 
     [HttpPut("{profileId}/educations")]

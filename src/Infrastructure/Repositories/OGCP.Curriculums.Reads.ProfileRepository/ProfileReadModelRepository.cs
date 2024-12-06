@@ -6,6 +6,7 @@ using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.DAL.Queries.utils.expand;
 using OGCP.Curriculum.API.DAL.Queries.utils.pagination;
+using OGCP.Curriculums.Reads.ProfileRepository.DTOs;
 
 namespace OGCP.Curriculum.API.DAL.Queries;
 
@@ -119,5 +120,41 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
         return await this.context.Languages
                 .Where(l => l.ProfileLanguages.Any(pl => pl.ProfileId == profileId))
                 .ToListAsync();
+    }
+
+    //Just to learn
+    //Ej1: Cuantos saben un idioma, detallando su nivel
+    public Task FindLanguagesGrouped()
+    {
+        //The problem with this groupBy is that the list of leves have duplicated values
+        var languagesGrouped = this.context.Languages
+            .AsNoTracking()
+            .GroupBy(l => new { Name = l.Name, Level = l.Level },//We can add a second groupBy argument to avoid duplicate data
+            (langGroup, languages) => new
+            {
+                Key = langGroup.Name,
+                //Levels = languages.Select(l => l.Level),//execute left join with the groupBy table by name
+                Level = langGroup.Level,
+                Count = languages.Count(),
+            });
+
+        foreach (var item in languagesGrouped.Distinct())
+        {
+            
+        }
+        return Task.FromResult(languagesGrouped);
+    }
+
+    //SelectMany: WE can use to build diferent kind of responses
+    public async Task<IReadOnlyList<ProfileEducationDto>> FindEducationsAsync()
+    {
+        return await this.context.Profiles
+            .Include(p => p.ProfileEducations)
+            .ThenInclude(pe => pe.Education)
+            .SelectMany(p => p.ProfileEducations, (profile, profileEducation) => new ProfileEducationDto
+            {
+                FirstName = profile.FirstName,
+                Institution = profileEducation.Education.Institution,
+            }).ToListAsync();
     }
 }

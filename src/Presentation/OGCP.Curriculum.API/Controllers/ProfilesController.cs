@@ -90,6 +90,18 @@ public class ProfilesController : Controller
         return Ok(langRes);
     }
 
+
+    [HttpGet("languages")]
+    public async Task<IActionResult> GetLanguagesGroupedAsync()
+    {
+        await this.repository.FindLanguagesGrouped();
+
+        //IReadOnlyList<LanguageResponse> langRes = 
+        //    this.mapper.Map<IReadOnlyList<LanguageResponse>>(languages);
+
+        return Ok();
+    }
+
     [HttpPost]
     [Consumes("application/json")]
     public async Task<IActionResult> CreateProfileAsync([FromBody] ProfileRequest profileRequest)
