@@ -6,9 +6,9 @@ using OGCP.Curriculum.API.POCOS.requests.Profile;
 
 namespace OGCP.Curriculum.API.DTOs.mappers;
 
-public class ProfileMapper :Profile
+public class ProfileRequestMapper :Profile
 {
-    public ProfileMapper()
+    public ProfileRequestMapper()
     {
         this.CreateProfileMapping();
         this.UpdateProfileMapping();

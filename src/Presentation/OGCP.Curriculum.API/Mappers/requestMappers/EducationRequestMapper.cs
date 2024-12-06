@@ -10,9 +10,9 @@ using OGCP.Curriculum.API.POCOS.requests.Education;
 
 namespace OGCP.Curriculum.API.POCOS.mappers;
 
-public class EducationProfile : Profile
+public class EducationRequestMapper : Profile
 {
-    public EducationProfile()
+    public EducationRequestMapper()
     {
         this.AddEducationMapping();
         this.UpdateEducationMapping();

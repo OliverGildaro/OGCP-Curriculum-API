@@ -110,10 +110,11 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
 
     public async Task<IReadOnlyList<EducationReadModel>> FindEducationsFromProfile(int id)
     {
-        return await this.context.Educations
-            .Include(p => p.ProfileEducations)
-            .Where(pe => pe.ProfileEducations.Equals(id))
-            .ToListAsync();
+        //return await this.context.Educations
+        //    .Include(p => p.ProfileEducations)
+        //    .Where(pe => pe.ProfileEducations.Equals(id))
+        //    .ToListAsync();
+        return [];
     }
 
     public async Task<IReadOnlyList<LanguageReadModel>> FindLanguagesFromProfile(int profileId)

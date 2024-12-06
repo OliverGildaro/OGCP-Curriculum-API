@@ -13,7 +13,6 @@ public class ProfileReadModel
     public string? Major { get; set; }
     public string? CareerGoals { get; set; }
     public string? Discriminator { get; set; }
-    public IReadOnlyList<ProfileLanguageReadModel> ProfileLanguages { get; } = [];
-    public IReadOnlyList<ProfileEducationReadModel> ProfileEducations { get; } = [];
-    //public IReadOnlyList<WorkExpReadModel> WorkExp { get; set; }
+    public IReadOnlyList<ProfileLanguageReadModel> ProfileLanguages { get; } = new List<ProfileLanguageReadModel>();
+    public IReadOnlyList<ProfileEducationReadModel> ProfileEducations { get; } = new List<ProfileEducationReadModel>();
 }

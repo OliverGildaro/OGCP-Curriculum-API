@@ -55,9 +55,9 @@ public class ProfilesController : Controller
         };
 
         IReadOnlyList<ProfileReadModel> profiles = await this.message.DispatchQuery(query);
-        
+        IReadOnlyList<ProfileResponse> profilesResponse = mapper.Map<IReadOnlyList<ProfileResponse>>(profiles);
         IEnumerable<ExpandoObject> eventEntitiesDto =
-                profiles.ShapeData(parameters.Fields);
+                profilesResponse.ShapeData(parameters.Fields);
         return Ok(eventEntitiesDto);
     }
 
