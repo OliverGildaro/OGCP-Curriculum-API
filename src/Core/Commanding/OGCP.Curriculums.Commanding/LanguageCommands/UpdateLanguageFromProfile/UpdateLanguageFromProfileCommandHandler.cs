@@ -14,9 +14,17 @@ public class UpdateLanguageFromProfileCommandHandler : ICommandHandler<UpdateLan
         this.profileService = profileService;
     }
 
-    public Task<Result> HandleAsync(UpdateLanguageFromProfileCommand command)
+    public async Task<Result> HandleAsync(UpdateLanguageFromProfileCommand command)
     {
-        var language = Language.Hidrate(command.Name, command.Level, command.LanguageId);
-        return profileService.EdiLanguageAsync(command.Id, language);
+        var language = Language.Create(command.Name, command.Level);
+
+        var maybeLang = await this.profileService.FindByLanguageAsync(language);
+
+        if (maybeLang.HasValue)
+        {
+            language = maybeLang.Value;
+        }
+
+        return await profileService.EdiLanguageAsync(command.Id, command.LanguageId, language);
     }
 }

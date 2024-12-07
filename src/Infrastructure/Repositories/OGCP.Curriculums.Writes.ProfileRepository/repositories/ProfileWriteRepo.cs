@@ -91,4 +91,12 @@ public class ProfileWriteRepo : IProfileWriteRepo
             return Result.Failure("");
         }
     }
+
+    public async Task<Maybe<Language>> FindAsync(Language language)
+    {
+        return await this.context.Set<Language>()
+            .FirstOrDefaultAsync(lang => lang.Name.Equals(language.Name) &&
+                lang.Level == language.Level);
+    }
+
 }

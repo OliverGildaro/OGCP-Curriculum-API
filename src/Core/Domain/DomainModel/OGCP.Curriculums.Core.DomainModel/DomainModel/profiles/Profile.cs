@@ -57,10 +57,10 @@ public abstract class Profile : IEntity<int>
     
     public virtual Result AddLanguage(Language language)
     {
-        //if (_languagesSpoken.Any(l => l.IsEquivalent(language)))
-        //{
-        //    return Result.Failure($"{language.Name} can not be added twice");
-        //}
+        if (language is null)
+        {
+            return Result.Failure("Language can not be null");
+        }
 
         var currentLanguage = this.LanguagesSpoken.FirstOrDefault(l => l.Name == language.Name);
         if (currentLanguage != null)
@@ -79,21 +79,17 @@ public abstract class Profile : IEntity<int>
         _updatedAt = DateTime.UtcNow;
     }
 
-    public Result EditLanguage(Language language)
+    public Result EditLanguage(int languageId, Language language)
     {
-        if (this.LanguagesSpoken.Any(lang => lang.Id != language.Id && lang.Name == language.Name))
-        {
-            return Result.Failure($"Invalid operation: two same languages can not be added");
-        }
-
-        var languageToUpdate = this.LanguagesSpoken.FirstOrDefault(l => l.Id == language.Id);
+        var languageToUpdate = this.LanguagesSpoken.FirstOrDefault(l => l.Id == languageId);
 
         if (languageToUpdate == null)
         {
             return Result.Failure($"A language with this id: {language.Id}, not found");
         }
 
-        languageToUpdate.Update(language);
+        this._languagesSpoken.Remove(languageToUpdate);
+        this._languagesSpoken.Add(language);
         UpdateTimestamp();
         return Result.Success();
     }

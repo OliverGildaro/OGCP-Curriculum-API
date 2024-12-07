@@ -20,9 +20,9 @@ namespace OGCP.Curriculum.API.services
         {
             Maybe<Profile> profile = await this.writeRepo.FindAsync(id);
 
-            if (profile.HasValue)
+            if (profile.HasNoValue)
             {
-
+                return Result.Failure("");
             }
             var langAdded = profile.Value.AddLanguage(language);
 
@@ -66,7 +66,7 @@ namespace OGCP.Curriculum.API.services
             return result;
         }
 
-        public async Task<Result> EdiLanguageAsync(int id, Language language)
+        public async Task<Result> EdiLanguageAsync(int id, int languageId, Language language)
         {
             Maybe<Profile> profile = await this.writeRepo.FindAsync(id);
 
@@ -74,7 +74,7 @@ namespace OGCP.Curriculum.API.services
             {
                 return Result.Failure($"The profile id: {id}, not found");
             }
-            Result result = profile.Value.EditLanguage(language);
+            Result result = profile.Value.EditLanguage(languageId, language);
 
             if (result.IsFailure)
             {
@@ -82,6 +82,11 @@ namespace OGCP.Curriculum.API.services
             }
             await this.writeRepo.SaveChangesAsync();
             return result;
+        }
+
+        public Task<Maybe<Language>> FindByLanguageAsync(Language language)
+        {
+            return this.writeRepo.FindAsync(language);
         }
 
         public Task<IReadOnlyList<Profile>> GetAsync()

@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.Contracts.CQRS;
 using ArtForAll.Shared.ErrorHandler;
+using ArtForAll.Shared.ErrorHandler.Maybe;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
 
@@ -14,9 +15,15 @@ public class AddLanguageToProfileCommandHandler : ICommandHandler<AddLangueToPro
         this.profileService = profileService;
     }
 
-    public Task<Result> HandleAsync(AddLangueToProfileCommand command)
+    public async Task<Result> HandleAsync(AddLangueToProfileCommand command)
     {
         var language = Language.Create(command.Name, command.Level);
-        return profileService.AddLangueAsync(command.Id, language);
+        Maybe<Language> maybeLang = await this.profileService.FindByLanguageAsync(language);
+
+        if (maybeLang.HasValue)
+        {
+            language = maybeLang.Value;
+        }
+        return await profileService.AddLangueAsync(command.Id, language);
     }
 }
