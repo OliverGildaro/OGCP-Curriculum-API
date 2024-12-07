@@ -16,12 +16,12 @@ public class EducationDetailDto
 public class InstitutionSummaryDto
 {
     public string? Institution { get; set; }
-    public int ProfileCount { get; set; }
+    public int? ProfileCount { get; set; }
 }
 
 public class EducationByRangeResponse
 {
     public List<EducationDetailDto> EducationDetails { get; set; }
-    public int TotalEducationsInRange { get; set; }
+    public int? TotalEducationsInRange { get; set; }
     public List<InstitutionSummaryDto> InstitutionSummary { get; set; }
 }

@@ -194,8 +194,8 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
                         Institution = reader.GetString(2),
                         StartDate = DateOnly.FromDateTime(reader.GetDateTime(3)),
                         EndDate = reader.IsDBNull(4) ? null : DateOnly.FromDateTime(reader.GetDateTime(4)),
-                        Degree = reader.GetString(5),
-                        ProjectTitle = reader.GetString(6)
+                        Degree = reader.IsDBNull(5) ? null : reader.GetString(5),
+                        ProjectTitle = reader.IsDBNull(6) ? null : reader.GetString(6),
                     });
                 }
 
