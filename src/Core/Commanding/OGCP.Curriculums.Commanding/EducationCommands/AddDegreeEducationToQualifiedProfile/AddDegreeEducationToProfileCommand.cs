@@ -13,8 +13,8 @@ public abstract class AddEducationToProfileCommand : ICommand
 {
     public int ProfileId { get; set; }
     public string Institution { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
+    public DateOnly StartDate { get; set; }
+    public DateOnly? EndDate { get; set; }
 }
 
 public class AddDegreeEducationToQualifiedProfileCommand : AddEducationToProfileCommand
@@ -25,8 +25,8 @@ public class AddDegreeEducationToQualifiedProfileCommand : AddEducationToProfile
         out int id,
         out string institution,
         out EducationLevel degree,
-        out DateTime startDate,
-        out DateTime? endDate)
+        out DateOnly startDate,
+        out DateOnly? endDate)
     {
         id = base.ProfileId;
         institution = base.Institution;
@@ -50,8 +50,8 @@ public class AddResearchEducationToQualifiedProfileCommand : AddEducationToProfi
     public void Deconstruct(
         out int id,
         out string institution,
-        out DateTime startDate,
-        out DateTime? endDate,
+        out DateOnly startDate,
+        out DateOnly? endDate,
         out string projectTitle,
         out string supervisor,
         out string summary)

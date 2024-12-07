@@ -99,7 +99,7 @@ public class ApplicationWriteDbContext : DbContext
             entity.ToTable("Profiles");
             entity.HasKey(p => p.Id);
             //alternateKey has unique values, can be used as fk from other tables
-            entity.HasAlternateKey(p => p.LastName);
+            //entity.HasAlternateKey(p => p.LastName);
             //entity.HasKey(p => new {p.Id, p.LastName });composite key
             entity.Property(p => p.FirstName)
                 .IsRequired()
@@ -281,9 +281,11 @@ public class ApplicationWriteDbContext : DbContext
             entity.HasKey(p => p.Id);
 
             entity.Property(p => p.StartDate)
+                .HasColumnType("date")
                 .IsRequired();
 
             entity.Property(p => p.EndDate)
+                .HasColumnType("date")
                 .IsRequired(false);
 
             entity.Property(p => p.Institution)

@@ -10,16 +10,16 @@ public abstract class Education
 {
     protected int _id;
     protected string _institution;
-    protected DateTime _startDate;
-    protected DateTime? _endDate;
+    protected DateOnly _startDate;
+    protected DateOnly? _endDate;
 
     public int Id => _id;
     public string Institution => _institution;
 
     //TODO: DateOnly
     //public DateOnly StartDate { get; set; }
-    public DateTime StartDate => _startDate;
-    public DateTime? EndDate => _endDate;
+    public DateOnly StartDate => _startDate;
+    public DateOnly? EndDate => _endDate;
 
     public abstract bool IsEquivalent(Education other);
     public abstract Result Update(Education education);
@@ -34,7 +34,7 @@ public class DegreeEducation : Education
         
     }
 
-    private DegreeEducation(string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
+    private DegreeEducation(string institution, EducationLevel degree, DateOnly startDate, DateOnly? endDate)
     {
         _degree = degree;
         _institution = institution;
@@ -42,7 +42,7 @@ public class DegreeEducation : Education
         _endDate = endDate;
     }
 
-    public DegreeEducation(int educationId, string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
+    public DegreeEducation(int educationId, string institution, EducationLevel degree, DateOnly startDate, DateOnly? endDate)
         :this(institution, degree, startDate, endDate)
     {
         base._id = educationId;
@@ -50,14 +50,14 @@ public class DegreeEducation : Education
 
     public EducationLevel Degree => _degree;
 
-    public static Result<DegreeEducation, Error> Create(string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
+    public static Result<DegreeEducation, Error> Create(string institution, EducationLevel degree, DateOnly startDate, DateOnly? endDate)
     {
         if (string.IsNullOrWhiteSpace(institution))
         {
             return new Error("Institution is required.", "InvalidInstitution");
         }
 
-        if (startDate > DateTime.Now)
+        if (startDate > DateOnly.FromDateTime(DateTime.UtcNow))
         {
             return new Error("Start date cannot be in the future.", "InvalidStartDate");
         }
@@ -93,7 +93,7 @@ public class DegreeEducation : Education
         return false;
     }
 
-    public static Result<DegreeEducation, Error> Hidrate(int educationId, string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
+    public static Result<DegreeEducation, Error> Hidrate(int educationId, string institution, EducationLevel degree, DateOnly startDate, DateOnly? endDate)
     {
         return new DegreeEducation(educationId, institution, degree, startDate, endDate);
 
@@ -115,7 +115,7 @@ public class ResearchEducation : Education
     {
         
     }
-    private ResearchEducation(string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary)
+    private ResearchEducation(string institution, DateOnly startDate, DateOnly? endDate, string projectTitle, string supervisor, string summary)
     {
         _institution = institution;
         _startDate = startDate;
@@ -127,8 +127,8 @@ public class ResearchEducation : Education
 
     private ResearchEducation(int educationId,
         string institution,
-        DateTime startDate,
-        DateTime? endDate,
+        DateOnly startDate,
+        DateOnly? endDate,
         string projectTitle,
         string supervisor,
         string summary)
@@ -143,8 +143,8 @@ public class ResearchEducation : Education
 
     public static Result<ResearchEducation, Error> Create(
         string institution,
-        DateTime startDate,
-        DateTime? endDate,
+        DateOnly startDate,
+        DateOnly? endDate,
         string projectTitle,
         string supervisor,
         string summary)
@@ -154,7 +154,7 @@ public class ResearchEducation : Education
             return new Error("Institution is required.", "InvalidInstitution");
         }
 
-        if (startDate > DateTime.Now)
+        if (startDate > DateOnly.FromDateTime(DateTime.UtcNow))
         {
             return new Error("Start date cannot be in the future.", "InvalidStartDate");
         }
@@ -175,8 +175,8 @@ public class ResearchEducation : Education
     public static Result<ResearchEducation, Error> Hidrate(
         int educationId,
         string institution,
-        DateTime startDate,
-        DateTime? endDate,
+        DateOnly startDate,
+        DateOnly? endDate,
         string projectTitle,
         string supervisor,
         string summary)

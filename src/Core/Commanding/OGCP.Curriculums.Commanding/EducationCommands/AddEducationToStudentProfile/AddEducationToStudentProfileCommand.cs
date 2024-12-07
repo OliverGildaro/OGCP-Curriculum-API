@@ -18,8 +18,8 @@ public class AddEducationToStudentProfileCommand : AddEducationToProfileCommand
     public void Deconstruct(
         out int id,
         out string institution,
-        out DateTime startDate,
-        out DateTime? endDate,
+        out DateOnly startDate,
+        out DateOnly? endDate,
         out string projectTitle,
         out string supervisor,
         out string summary)

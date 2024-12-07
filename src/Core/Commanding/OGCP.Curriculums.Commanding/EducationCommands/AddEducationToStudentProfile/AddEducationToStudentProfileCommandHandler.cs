@@ -15,7 +15,7 @@ public class AddEducationToStudentProfileCommandHandler : ICommandHandler<AddEdu
     }
     public Task<Result> HandleAsync(AddEducationToStudentProfileCommand command)
     {
-        (int id, string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary)
+        (int id, string institution, DateOnly startDate, DateOnly? endDate, string projectTitle, string supervisor, string summary)
             = command;
 
         ResearchEducation education = ResearchEducation

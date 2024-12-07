@@ -56,12 +56,12 @@ public class QualifiedProfile_UT
         string desiredRole,
         string institution,
         EducationLevel educationLevel,
-        DateTime startDate)
+        string startDate)
     {
         var qualifProfResult = QualifiedProfile.Create(firstName, lastName, summary, desiredRole);
         var qualifiedProf = qualifProfResult.Value;
 
-        var education = DegreeEducation.Create(institution, educationLevel, startDate, null).Value;
+        var education = DegreeEducation.Create(institution, educationLevel, DateOnly.Parse(startDate), null).Value;
         qualifiedProf.AddEducation(education);
         var result = qualifiedProf.AddEducation(education);
 

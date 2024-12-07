@@ -21,7 +21,7 @@ public class AddResearchEducationToQualifiedProfileCommandHandler
     public async Task<Result> HandleAsync(AddResearchEducationToQualifiedProfileCommand command)
     {
 
-        (int id, string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary)
+        (int id, string institution, DateOnly startDate, DateOnly? endDate, string projectTitle, string supervisor, string summary)
             = command;
         var researchResult = ResearchEducation.Create(institution, startDate, endDate, projectTitle, supervisor, summary);
 

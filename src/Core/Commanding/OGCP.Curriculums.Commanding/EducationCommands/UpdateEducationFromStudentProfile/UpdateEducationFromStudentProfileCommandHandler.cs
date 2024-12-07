@@ -18,8 +18,8 @@ public class UpdateEducationFromStudentProfileCommandHandler : ICommandHandler<U
     {
         (int id,
         string institution,
-        DateTime startDate,
-        DateTime? endDate,
+        DateOnly startDate,
+        DateOnly? endDate,
         string projectTitle,
         string supervisor,
         string summary) = command;

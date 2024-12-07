@@ -20,7 +20,7 @@ public class AddDegreeEducationToQualifiedProfileCommandHandler
 
     public async Task<Result> HandleAsync(AddDegreeEducationToQualifiedProfileCommand command)
     {
-        (int id, string institution, EducationLevel degree, DateTime startDate, DateTime? endDate)
+        (int id, string institution, EducationLevel degree, DateOnly startDate, DateOnly? endDate)
             = command;
         var degreeResult = DegreeEducation.Create(institution, degree, startDate, endDate);
 

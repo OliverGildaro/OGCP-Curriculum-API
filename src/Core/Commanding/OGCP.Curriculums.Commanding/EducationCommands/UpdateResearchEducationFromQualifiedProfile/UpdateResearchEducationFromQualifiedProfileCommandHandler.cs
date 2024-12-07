@@ -18,7 +18,7 @@ public class UpdateResearchEducationFromQualifiedProfileCommandHandler
 
     public async Task<Result> HandleAsync(UpdateResearchEducationFromQualifiedProfileCommand command)
     {
-        (int id, string institution, DateTime startDate, DateTime? endDate, string projectTitle, string supervisor, string summary)
+        (int id, string institution, DateOnly startDate, DateOnly? endDate, string projectTitle, string supervisor, string summary)
             = command;
         var reserachEduResult = ResearchEducation
             .Hidrate(id, institution, startDate, endDate, projectTitle, supervisor, summary);
