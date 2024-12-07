@@ -6,6 +6,7 @@ namespace OGCP.Curriculum.API.DAL.Queries.interfaces;
 public interface IProfileReadModelRepository : IReadRepository<ProfileReadModel, int>
 {
     Task<IReadOnlyList<ProfileEducationDto>> FindEducationsAsync();
+    Task<EducationByRangeResponse> FindEducationsByRange(DateOnly startDate, DateOnly endDate);
     Task<IReadOnlyList<EducationReadModel>> FindEducationsFromProfile(int id);
     Task<IReadOnlyList<LanguageReadModel>> FindLanguagesFromProfile(int id);
     Task FindLanguagesGrouped();

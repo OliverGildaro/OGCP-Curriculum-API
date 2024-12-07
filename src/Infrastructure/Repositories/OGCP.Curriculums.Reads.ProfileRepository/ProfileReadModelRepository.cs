@@ -1,4 +1,5 @@
 ﻿using ArtForAll.Shared.ErrorHandler.Maybe;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OGCP.Curriculum.API.DAL.Queries.context;
 using OGCP.Curriculum.API.DAL.Queries.interfaces;
@@ -7,6 +8,7 @@ using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.DAL.Queries.utils.expand;
 using OGCP.Curriculum.API.DAL.Queries.utils.pagination;
 using OGCP.Curriculums.Reads.ProfileRepository.DTOs;
+using System.Data;
 
 namespace OGCP.Curriculum.API.DAL.Queries;
 
@@ -66,7 +68,7 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
             {
                 collection = parameters.Desc
                     ? collection.OrderByDescending(OrderFunctions[parameters.OrderBy])
-	                : collection.OrderBy(OrderFunctions[parameters.OrderBy]);
+                    : collection.OrderBy(OrderFunctions[parameters.OrderBy]);
             }
 
             if (parameters.Fields != null && parameters.Fields.Length != 0)
@@ -140,7 +142,7 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
 
         foreach (var item in languagesGrouped.Distinct())
         {
-            
+
         }
         return Task.FromResult(languagesGrouped);
     }
@@ -156,5 +158,71 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
                 FirstName = profile.FirstName,
                 Institution = profileEducation.Education.Institution,
             }).ToListAsync();
+    }
+
+    public async Task<EducationByRangeResponse> FindEducationsByRange(
+        DateOnly startDate, DateOnly endDate)
+    {
+        var sql = "EXEC [dbo].[GetEducationsByRangeDate] @startDate, @endDate";
+
+        var parameters = new[]
+        {
+            new SqlParameter("@startDate", startDate),
+            new SqlParameter("@endDate", endDate)
+        };
+
+        using (var command = context.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = sql;
+            command.CommandType = CommandType.Text;
+            command.Parameters.AddRange(parameters);
+
+            await context.Database.OpenConnectionAsync();
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                var educationDetails = new List<EducationDetailDto>();
+                var institutionSummaries = new List<InstitutionSummaryDto>();
+                int totalEducationsInRange = 0;
+
+                while (await reader.ReadAsync())
+                {
+                    educationDetails.Add(new EducationDetailDto
+                    {
+                        FirstName = reader.GetString(0),
+                        LastName = reader.GetString(1),
+                        Institution = reader.GetString(2),
+                        StartDate = DateOnly.FromDateTime(reader.GetDateTime(3)),
+                        EndDate = reader.IsDBNull(4) ? null : DateOnly.FromDateTime(reader.GetDateTime(4)),
+                        Degree = reader.GetString(5),
+                        ProjectTitle = reader.GetString(6)
+                    });
+                }
+
+                if (await reader.NextResultAsync() && await reader.ReadAsync())
+                {
+                    totalEducationsInRange = reader.GetInt32(0);
+                }
+
+                if (await reader.NextResultAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        institutionSummaries.Add(new InstitutionSummaryDto
+                        {
+                            Institution = reader.GetString(0),
+                            ProfileCount = reader.GetInt32(1)
+                        });
+                    }
+                }
+
+                return new EducationByRangeResponse
+                {
+                    EducationDetails = educationDetails,
+                    TotalEducationsInRange = totalEducationsInRange,
+                    InstitutionSummary = institutionSummaries
+                };
+            }
+        }
     }
 }

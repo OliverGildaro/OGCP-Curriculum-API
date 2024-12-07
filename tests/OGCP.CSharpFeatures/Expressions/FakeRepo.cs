@@ -99,4 +99,9 @@ public class FakeRepo : IProfileReadModelRepository
     {
         throw new NotImplementedException();
     }
+
+    public Task<EducationByRangeResponse> FindEducationsByRange(DateOnly startDate, DateOnly endDate)
+    {
+        throw new NotImplementedException();
+    }
 }

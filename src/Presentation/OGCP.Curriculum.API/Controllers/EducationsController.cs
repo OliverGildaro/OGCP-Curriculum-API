@@ -75,7 +75,8 @@ public class EducationsController : Controller
 
     [HttpDelete("{profileId}/educations/{educationId}")]
     [ProducesResponseType(203)]
-    public async Task<IActionResult> RemoveEducationFromProfileAsync(int profileId, int educationId, [FromBody] DeleteEducationRequest request)
+    public async Task<IActionResult> RemoveEducationFromProfileAsync(
+        int profileId, int educationId, [FromBody] DeleteEducationRequest request)
     {
             var command = this.mapper.Map<RemoveEducationFromProfileCommand>(request);
             command.Id = profileId;
@@ -83,4 +84,13 @@ public class EducationsController : Controller
             Result sds = await this.message.DispatchCommand(command);
             return NoContent();
     }
+
+    [HttpGet("educations/by-range")]
+    public async Task<IActionResult> GetEducationsByDateRangeAsync(
+        [FromQuery] DateOnly startDate, [FromQuery] DateOnly endDate)
+    {
+        EducationByRangeResponse results = await repository.FindEducationsByRange(startDate, endDate);
+        return Ok(results);
+    }
+
 }
