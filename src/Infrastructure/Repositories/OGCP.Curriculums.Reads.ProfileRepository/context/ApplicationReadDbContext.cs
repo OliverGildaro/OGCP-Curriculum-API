@@ -3,11 +3,11 @@ using Microsoft.Extensions.Logging;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculums.Reads.ProfileRepository.Models;
 namespace OGCP.Curriculum.API.DAL.Queries.context;
-public class DbReadProfileContext : DbContext
+public class ApplicationReadDbContext : DbContext
 {
     private DbProfileReadsContextConfig config;
 
-    public DbReadProfileContext(DbProfileReadsContextConfig config)
+    public ApplicationReadDbContext(DbProfileReadsContextConfig config)
     {
         this.config = config;
     }
@@ -55,7 +55,7 @@ public class DbReadProfileContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(
-            typeof(DbReadProfileContext).Assembly,
+            typeof(ApplicationReadDbContext).Assembly,
             WriteConfigurationsFilter);
     }
 

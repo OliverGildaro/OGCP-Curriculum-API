@@ -9,7 +9,7 @@ namespace OGCP.Profiles.UnitTests.EntityFrameworkContext.GeneralProfileUnitTests
 [Collection("DBProfileContectFixtureCollection")]
 public class GeneralProfileRepo_UT
 {
-    private readonly DbWriteProfileContext dbContext;
+    private readonly ApplicationWriteDbContext dbContext;
 
     public GeneralProfileRepo_UT(DBProfileContextFixtureClass contectFixtureClass)
     {
@@ -63,18 +63,18 @@ public class DBProfileContectFixtureCollection
 public class DBProfileContextFixtureClass : IDisposable
 {
     private SqliteConnection connection;
-    public DbWriteProfileContext context { get; }
+    public ApplicationWriteDbContext context { get; }
 
     public DBProfileContextFixtureClass()
     {
         connection = new("DataSource=:memory:");
         connection.Open();
 
-        DbContextOptions<DbWriteProfileContext> contextOptions = new DbContextOptionsBuilder<DbWriteProfileContext>()
+        DbContextOptions<ApplicationWriteDbContext> contextOptions = new DbContextOptionsBuilder<ApplicationWriteDbContext>()
                    .UseSqlite(connection)
                    .Options;
 
-        context = new DbWriteProfileContext(contextOptions);
+        context = new ApplicationWriteDbContext(contextOptions);
         context.Database.EnsureCreated();
     }
 

@@ -12,7 +12,7 @@ namespace OGCP.Curriculum.API.DAL.Queries;
 
 public class ProfileReadModelRepository : IProfileReadModelRepository
 {
-    private readonly DbReadProfileContext context;
+    private readonly ApplicationReadDbContext context;
 
     private readonly Dictionary<string, IOrderBy> OrderFunctions =
         new Dictionary<string, IOrderBy>
@@ -25,7 +25,7 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
                     { "Discriminator",   new OrderBy<string>(x => x.Discriminator) },
         };
 
-    public ProfileReadModelRepository(DbReadProfileContext profileContext)
+    public ProfileReadModelRepository(ApplicationReadDbContext profileContext)
     {
         this.context = profileContext;
     }

@@ -239,22 +239,22 @@ public static class ServiceMounter
         //    ConnectionString = builder.Configuration.GetConnectionString("conectionDb"),
         //    UseConsoleLogger = true
         //});
-        Services.AddScoped<DbWriteProfileContext>(provider =>
+        Services.AddScoped<ApplicationWriteDbContext>(provider =>
         {
             //I need to register in this way because there is an abiguity between the two constructors I have
             //In the DbProfileContext
-            return new DbWriteProfileContext(new DbProfileWritesContextConfig
+            return new ApplicationWriteDbContext(new DbProfileWritesContextConfig
             {
                 ConnectionString = Configuration.GetConnectionString("conectionDb"),
                 UseConsoleLogger = true
             });
         });
 
-        Services.AddScoped<DbReadProfileContext>(provider =>
+        Services.AddScoped<ApplicationReadDbContext>(provider =>
         {
             //I need to register in this way because there is an abiguity between the two constructors I have
             //In the DbProfileContext
-            return new DbReadProfileContext(new DbProfileReadsContextConfig
+            return new ApplicationReadDbContext(new DbProfileReadsContextConfig
             {
                 ConnectionString = Configuration.GetConnectionString("conectionDb"),
                 UseConsoleLogger = true

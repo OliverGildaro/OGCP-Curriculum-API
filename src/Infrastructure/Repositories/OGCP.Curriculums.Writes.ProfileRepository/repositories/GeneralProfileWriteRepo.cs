@@ -9,9 +9,9 @@ namespace OGCP.Curriculum.API.DAL.Mutations;
 
 public class GeneralProfileWriteRepo : IGeneralProfileWriteRepo
 {
-    private readonly DbWriteProfileContext context;
+    private readonly ApplicationWriteDbContext context;
 
-    public GeneralProfileWriteRepo(DbWriteProfileContext context)
+    public GeneralProfileWriteRepo(ApplicationWriteDbContext context)
     {
         this.context = context;
     }

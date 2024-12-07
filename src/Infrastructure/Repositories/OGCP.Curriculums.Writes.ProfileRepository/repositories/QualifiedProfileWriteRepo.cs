@@ -9,9 +9,9 @@ namespace OGCP.Curriculum.API.DAL.Mutations;
 
 public class QualifiedProfileWriteRepo : ProfileWriteRepo, IQualifiedProfileWriteRepo
 {
-    private readonly DbWriteProfileContext context;
+    private readonly ApplicationWriteDbContext context;
 
-    public QualifiedProfileWriteRepo(DbWriteProfileContext context)
+    public QualifiedProfileWriteRepo(ApplicationWriteDbContext context)
         :base(context)
     {
         this.context = context;

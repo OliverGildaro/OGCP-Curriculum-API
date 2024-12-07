@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using OGCP.Curriculum.API.domainmodel;
 namespace OGCP.Curriculum.API.DAL.Mutations.context;
-public class DbWriteProfileContext : DbContext
+public class ApplicationWriteDbContext : DbContext
 {
     //ValueComparer code helps Entity Framework Core track changes within string[]
     //Maybe value objects may help tp dp this calculation
@@ -13,13 +13,13 @@ public class DbWriteProfileContext : DbContext
         c => c.ToArray());                               // Create a snapshot of the array
     private DbProfileWritesContextConfig config;
 
-    public DbWriteProfileContext(DbProfileWritesContextConfig config)
+    public ApplicationWriteDbContext(DbProfileWritesContextConfig config)
     {
         this.config = config;
     }
 
     //This constructor is only for testing porpouses
-    public DbWriteProfileContext(DbContextOptions<DbWriteProfileContext> dbContext)
+    public ApplicationWriteDbContext(DbContextOptions<ApplicationWriteDbContext> dbContext)
         : base(dbContext)
     {
 
