@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ArtForAll.Shared.Contracts.DDD;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 
-namespace OGCP.Curriculum.API.DAL.Queries.context;
+namespace OGCP.Curriculums.Reads.ProfileRepository.context.configurations;
 
 public class ProfileReadModelConfiguration : IEntityTypeConfiguration<ProfileReadModel>
 {
@@ -32,5 +33,9 @@ public class ProfileReadModelConfiguration : IEntityTypeConfiguration<ProfileRea
         //builder.HasMany(p => p.WorkExp)
         //    .WithOne()
         //    .HasForeignKey("ProfileId");
+
+
+
+
     }
 }

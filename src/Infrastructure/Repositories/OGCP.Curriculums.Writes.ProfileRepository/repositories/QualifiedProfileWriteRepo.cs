@@ -74,7 +74,6 @@ public class QualifiedProfileWriteRepo : ProfileWriteRepo, IQualifiedProfileWrit
                 p => p.Institution.Equals(education.Institution)
                 && p.ProjectTitle.Equals(education.ProjectTitle)
                 && p.Supervisor.Equals(education.Supervisor)
-                && p.ProjectTitle.Equals(education.ProjectTitle)
                 && p.StartDate.Equals(education.StartDate)
                 && p.EndDate.Equals(education.EndDate));
     }

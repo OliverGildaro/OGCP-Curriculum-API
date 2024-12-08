@@ -9,7 +9,6 @@
   <ItemGroup>
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.10" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
-	  <!--to get a data provider for sql server-->
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.tools" Version="8.0.10">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

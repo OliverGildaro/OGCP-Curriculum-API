@@ -27,6 +27,5 @@ internal class EducationConfiguration : IEntityTypeConfiguration<Education>
             .HasValue<Education>("BaseEducation")
             .HasValue<DegreeEducation>("DegreeEducation")
             .HasValue<ResearchEducation>("ResearchEducation");
-
     }
 }

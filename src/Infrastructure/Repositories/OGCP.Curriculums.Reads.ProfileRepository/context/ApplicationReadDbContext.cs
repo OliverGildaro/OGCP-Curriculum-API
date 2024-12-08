@@ -60,5 +60,5 @@ public class ApplicationReadDbContext : DbContext
     }
 
     private static bool WriteConfigurationsFilter(Type type) =>
-    type.FullName?.Contains("Queries.context") ?? false;
+    type.FullName?.Contains("Reads.ProfileRepository.context.configurations") ?? false;
 }
