@@ -94,6 +94,7 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
     {
         try
         {
+            //25ms average frm postman
             var result = await context.Profiles
                 .Include(p => p.ProfileEducations)
                 .ThenInclude(pe => pe.Education)

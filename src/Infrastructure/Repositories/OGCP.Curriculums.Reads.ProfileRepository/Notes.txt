@@ -1,0 +1,16 @@
+﻿***** VIEWS *****
+Can be used to encapsulate complex queries
+Can be seen like a virtual table
+Can not contains loops of if statements
+
+***** STORED PROCS *****
+Encapsulate complex sql transactions
+Add a layer of security
+Is reusable code
+Can receive some inputs and return a set of results
+
+***** USER DEFINED FUNCTIONS *****
+Scalar
+	returns a single value
+Table-valued
+	return a table set

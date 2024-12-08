@@ -97,7 +97,13 @@ public class ApplicationWriteDbContext : DbContext
         modelBuilder.Entity<Profile>(entity =>
         {
             entity.ToTable("Profiles");
+
+            //THis already create a clustered index, that is a b-tree
+            //which enables searches, inserts, updates, and deletes in logarithmic amortized time
+            //log₂(n)
+            //Cada nivel del arbol reduce el tiempo de busqueda a la mitad
             entity.HasKey(p => p.Id);
+
             //alternateKey has unique values, can be used as fk from other tables
             //entity.HasAlternateKey(p => p.LastName);
             //entity.HasKey(p => new {p.Id, p.LastName });composite key
