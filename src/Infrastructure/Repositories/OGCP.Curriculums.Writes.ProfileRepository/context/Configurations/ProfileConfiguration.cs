@@ -86,8 +86,8 @@ internal class ProfileConfiguration : IEntityTypeConfiguration<Profile>
         //INDEXING
         //FirstName values existiran en el indice
         //Tendremos un puntero a la tabla por si queremos traer mas datos
-        //entity.HasIndex(p => new { p.FirstName })
-        //    .HasDatabaseName("IX_Profiles_FirstName_LastName")
-        //    .IsUnique(false);
+        entity.HasIndex(p => new { p.FirstName })
+            .HasDatabaseName("IX_Profiles_FirstName_LastName")
+            .IsUnique(false);
     }
 }

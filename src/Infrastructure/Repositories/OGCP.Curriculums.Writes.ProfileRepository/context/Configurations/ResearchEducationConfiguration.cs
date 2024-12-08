@@ -20,8 +20,8 @@ internal class ResearchEducationConfiguration : IEntityTypeConfiguration<Researc
             .IsRequired();
 
         //INDEXING
-        //entity.HasIndex(p => new { p.ProjectTitle, p.Institution })
-        //    .HasDatabaseName("IX_Educations_ProjectTitle_Institution_NC")
-        //    .IncludeProperties(p => new { p.StartDate, p.EndDate, p.Supervisor });
+        entity.HasIndex(p => new { p.ProjectTitle, p.Institution })
+            .HasDatabaseName("IX_Educations_ProjectTitle_Institution_NC")
+            .IncludeProperties(p => new { p.StartDate, p.EndDate, p.Supervisor });
     }
 }
