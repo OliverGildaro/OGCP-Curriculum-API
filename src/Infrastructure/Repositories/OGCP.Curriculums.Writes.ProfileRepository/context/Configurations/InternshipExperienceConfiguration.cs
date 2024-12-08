@@ -11,5 +11,7 @@ internal class InternshipExperienceConfiguration : IEntityTypeConfiguration<Inte
         entity.ToTable("JobExperiences");
         entity.Property(p => p.Role)
             .IsRequired();
+
+
     }
 }
