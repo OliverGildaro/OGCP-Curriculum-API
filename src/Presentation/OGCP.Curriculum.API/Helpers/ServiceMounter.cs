@@ -70,6 +70,16 @@ public static class HostingExtensions
         //In the case that the user fails authorization, from this midleware 403 is returned
         app.UseAuthorization();
 
+        app.UseRequestLocalization(options => {
+            string[] supportedCultures = { "en", "en-US", "es", "fr-FR" };
+
+            options.SetDefaultCulture("en-US");
+
+            options.AddSupportedCultures(supportedCultures);
+            options.AddSupportedUICultures(supportedCultures);
+            options.ApplyCurrentCultureToResponseHeaders = true;
+        });
+
         app.MapControllers();
 
         return app;
@@ -171,6 +181,7 @@ public static class ServiceMounter
         Services.AddScoped<Message>();
         Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+        Services.AddLocalization(options => options.ResourcesPath = "Resources");
     }
 
     public static void SetupCommands(this IServiceCollection Services)
