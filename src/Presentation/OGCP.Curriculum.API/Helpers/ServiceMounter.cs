@@ -33,6 +33,13 @@ using OGCP.Curriculum.API.Querying.GetProfileById;
 using ArtForAll.Shared.ErrorHandler.Maybe;
 using OGCP.Curriculum.API.Commanding.commands.DeleteProfile;
 using OGCP.Curriculum.API.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
+using OGCP.Curriculums.API.Envelopes;
+using System.Net;
+using ArtForAll.Shared.Contracts.DDD;
+using FluentValidation.AspNetCore;
+using OGCP.Curriculum.API.Validators;
 
 namespace OGCP.Curriculum.API.Helpers;
 
@@ -103,6 +110,16 @@ public static class ServiceMounter
         Services.AddControllers(options =>
         {
             options.Filters.Add<ExceptionHandlerFilter>();
+        })
+        .ConfigureApiBehaviorOptions(options =>
+        {
+            options.InvalidModelStateResponseFactory = ModelStateValidator.ValidateModelState;
+        })
+        .AddFluentValidation(options =>
+        {
+            options.RegisterValidatorsFromAssemblyContaining<CreateGeneralProfileRequestValidator>();
+            options.RegisterValidatorsFromAssemblyContaining<CreateStudentProfileRequestValidator>();
+            options.RegisterValidatorsFromAssemblyContaining<AddDegreeEducationRequestValidator>();
         })
         .AddNewtonsoftJson(options =>
         {
@@ -271,5 +288,20 @@ public static class ServiceMounter
                 UseConsoleLogger = true
             });
         });
+    }
+
+    private class ModelStateValidator
+    {
+        public static IActionResult ValidateModelState(ActionContext context)
+        {
+            (string fieldName, ModelStateEntry entry) = context.ModelState.First(x => x.Value.Errors.Count > 0);
+            string errorSerialized = entry.Errors.First().ErrorMessage;
+
+            Error error = Error.Deserialize(errorSerialized);
+            Envelope envelope = Envelope.Error(error, fieldName);
+            var envelopeResult = new EnvelopeResult(envelope, HttpStatusCode.BadRequest);
+
+            return envelopeResult;
+        }
     }
 }

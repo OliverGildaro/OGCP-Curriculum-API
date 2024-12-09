@@ -27,9 +27,8 @@ namespace OGCP.Curriculum.API.Controllers;
 
 [Route("api/v1/profiles")]
 [EnableCors("AllowSpecificOrigins")]
-[Produces("application/json")]
 [ServiceFilter(typeof(ExceptionHandlerFilter))]
-public class ProfilesController : Controller
+public class ProfilesController : ApplicationController
 {
     private readonly IProfileReadModelRepository repository;
     private readonly Message message;
