@@ -1,4 +1,5 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
+using OGCP.Curriculums.Core.DomainModel;
 
 namespace OGCP.Curriculums.API.Envelopes;
 

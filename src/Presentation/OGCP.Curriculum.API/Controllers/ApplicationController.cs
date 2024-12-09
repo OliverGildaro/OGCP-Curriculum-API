@@ -2,6 +2,7 @@
 using ArtForAll.Shared.ErrorHandler;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculums.API.Envelopes;
+using OGCP.Curriculums.Core.DomainModel;
 using System.Net;
 
 namespace OGCP.Curriculum.API.Controllers;

@@ -3,6 +3,7 @@ using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
 using ArtForAll.Shared.ErrorHandler.Results;
 using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculums.Core.DomainModel;
 using CustomResult = ArtForAll.Shared.ErrorHandler.Results;
 namespace OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
 

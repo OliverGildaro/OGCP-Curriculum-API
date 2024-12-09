@@ -1,6 +1,7 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
 using ArtForAll.Shared.ErrorHandler.Results;
+using OGCP.Curriculums.Core.DomainModel;
 using System.Security.Cryptography;
 //using CustomResult = ArtForAll.Shared.ErrorHandler.Results;
 

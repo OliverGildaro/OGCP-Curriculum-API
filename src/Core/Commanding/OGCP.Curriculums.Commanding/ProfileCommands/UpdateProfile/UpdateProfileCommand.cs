@@ -2,6 +2,7 @@
 using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler.Results;
 using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculums.Core.DomainModel;
 namespace OGCP.Curriculum.API.Commanding.commands.UpdateProfile;
 
 public abstract class UpdateProfileCommand : ICommand

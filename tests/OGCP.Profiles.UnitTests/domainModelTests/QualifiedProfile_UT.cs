@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculums.Core.DomainModel;
 
 namespace OGCP.Profiles.UnitTests.domainModelTests;
 

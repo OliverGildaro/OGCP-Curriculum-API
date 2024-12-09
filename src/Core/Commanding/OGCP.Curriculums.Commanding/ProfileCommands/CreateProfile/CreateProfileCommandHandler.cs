@@ -5,6 +5,7 @@ using ArtForAll.Shared.ErrorHandler.Results;
 using Azure.Core;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
+using OGCP.Curriculums.Core.DomainModel;
 
 namespace OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile
 {

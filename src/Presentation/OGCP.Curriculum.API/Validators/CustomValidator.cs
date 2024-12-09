@@ -7,13 +7,13 @@ namespace OGCP.Curriculums.API.Validators;
 
 public static class CustomValidator
 {
-    public static IRuleBuilderOptions<T, TProperty> NotEmpty<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder)
+    public static IRuleBuilderOptions<T, TProperty> NotEmptyCustom<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder)
     {
         return DefaultValidatorExtensions.NotEmpty(ruleBuilder)
             .WithMessage(Errors.General.ValueIsRequired().Serialize());
     }
 
-    public static IRuleBuilderOptions<T, string> Length<T>(this IRuleBuilder<T, string> ruleBuilder, int min, int max)
+    public static IRuleBuilderOptions<T, string> LengthCustom<T>(this IRuleBuilder<T, string> ruleBuilder, int min, int max)
     {
         return DefaultValidatorExtensions.Length(ruleBuilder, min, max)
             .WithMessage(Errors.General.InvalidLength().Serialize());
