@@ -1,0 +1,31 @@
+name: publish
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      -main
+
+jobs:
+  publish:
+    runs-on: ubuntu:latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore ./OGCP-Curriculum-API.sln
+
+      - name: Build
+        run: dotnet build ./OGCP-Curriculum-API.sln --no-restore
+
+      - name: Publish
+        run: dotnet publish ./OGCP-Curriculum-API.sln --configuration release --no-build
+        
+
+      
