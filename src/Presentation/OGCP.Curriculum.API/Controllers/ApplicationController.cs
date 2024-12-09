@@ -17,22 +17,22 @@ public class ApplicationController : ControllerBase
         return new EnvelopeResult(Envelope.Ok(result), HttpStatusCode.OK);
     }
 
-    protected IActionResult NotFound(Error error, string invalidField = null)
-    {
-        return new EnvelopeResult(Envelope.Error(error, invalidField), HttpStatusCode.NotFound);
-    }
+    //protected IActionResult NotFound(Error error, string invalidField = null)
+    //{
+    //    return new EnvelopeResult(Envelope.Error(error, invalidField), HttpStatusCode.NotFound);
+    //}
 
-    protected IActionResult Error(Error error, string invalidField = null)
-    {
-        return new EnvelopeResult(Envelope.Error(error, invalidField), HttpStatusCode.BadRequest);
-    }
+    //protected IActionResult Error(Error error, string invalidField = null)
+    //{
+    //    return new EnvelopeResult(Envelope.Error(error, invalidField), HttpStatusCode.BadRequest);
+    //}
 
-    protected IActionResult FromResult<T>(Result<T, Error> result)
-        where T : class
-    {
-        if (result.IsSucces)
-            return Ok();
+    //protected IActionResult FromResult<T>(Result<T, Error> result)
+    //    where T : class
+    //{
+    //    if (result.IsSucces)
+    //        return Ok();
 
-        return Error(result.Error);
-    }
+    //    return Error(result.Error);
+    //}
 }

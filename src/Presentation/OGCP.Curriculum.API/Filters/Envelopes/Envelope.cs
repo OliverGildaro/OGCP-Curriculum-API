@@ -1,32 +1,25 @@
-﻿using ArtForAll.Shared.Contracts.DDD;
-using OGCP.Curriculums.Core.DomainModel;
-
-namespace OGCP.Curriculums.API.Envelopes;
+﻿namespace OGCP.Curriculums.API.Envelopes;
 
 public class Envelope
 {
     public object Result { get; }
-    public string ErrorCode { get; }
-    public string ErrorMessage { get; }
-    public string InvalidField { get; }
+    public List<EnvelopeChild> Errors { get; set; }
     public DateTime TimeGenerated { get; }
 
-    private Envelope(object result, Error error, string invalidField)
+    private Envelope(object result, List<EnvelopeChild> errors)
     {
         Result = result;
-        ErrorCode = error?.Code;
-        ErrorMessage = error?.Message;
-        InvalidField = invalidField;
+        Errors = errors;
         TimeGenerated = DateTime.UtcNow;
     }
 
     public static Envelope Ok(object result = null)
     {
-        return new Envelope(result, null, null);
+        return new Envelope(result, null);
     }
 
-    public static Envelope Error(Error error, string invalidField)
+    internal static Envelope Error(List<EnvelopeChild> errors)
     {
-        return new Envelope(null, error, invalidField);
+        return new Envelope(null, errors);
     }
 }

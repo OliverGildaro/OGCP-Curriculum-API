@@ -16,6 +16,7 @@ using ArtForAll.Shared.Contracts.DDD;
 using FluentValidation.AspNetCore;
 using OGCP.Curriculum.API.Validators;
 using OGCP.Curriculums.Core.DomainModel;
+using OGCP.Curriculum.API.Filters.Envelopes;
 
 namespace OGCP.Curriculum.API.Helpers.DIMounters;
 
@@ -121,14 +122,32 @@ public static class PresentationServicesMounter
 
     private class ModelStateValidator
     {
+        //public static IActionResult ValidateModelState(ActionContext context)
+        //{
+        //    (string fieldName, ModelStateEntry entry) = context.ModelState.First(x => x.Value.Errors.Count > 0);
+        //    string errorSerialized = entry.Errors.First().ErrorMessage;
+
+        //    Error error = Error.Deserialize(errorSerialized);
+        //    Envelope envelope = Envelope.Error(error, fieldName);
+        //    var envelopeResult = new EnvelopeResult(envelope, HttpStatusCode.BadRequest);
+
+        //    return envelopeResult;
+        //}
+
         public static IActionResult ValidateModelState(ActionContext context)
         {
-            (string fieldName, ModelStateEntry entry) = context.ModelState.First(x => x.Value.Errors.Count > 0);
-            string errorSerialized = entry.Errors.First().ErrorMessage;
+            List<KeyValueError> allErrors = context.ModelState
+                .Where(x => x.Value.Errors.Count > 0)
+                .SelectMany(x => x.Value.Errors.Select(e => new KeyValueError
+                {
+                    FieldName = x.Key,
+                    Error = Error.Deserialize(e.ErrorMessage)
+                }))
+                .ToList();
 
-            Error error = Error.Deserialize(errorSerialized);
-            Envelope envelope = Envelope.Error(error, fieldName);
-            var envelopeResult = new EnvelopeResult(envelope, HttpStatusCode.BadRequest);
+            List<EnvelopeChild> envelopeErrors = EnvelopeChild.Error(allErrors);
+            Envelope sd = Envelope.Error(envelopeErrors);
+            var envelopeResult = new EnvelopeResult(sd, HttpStatusCode.BadRequest);
 
             return envelopeResult;
         }
