@@ -96,9 +96,8 @@ public class QualifiedProfile_UT
     }
 
     [Theory]
-    [InlineData(null, "Castro", "I am a fullstack java dev with bla", "java backend dev", "First name is required.")]
-    [InlineData("Carolina", null, "I am a fullstack java dev with bla", "java backend dev", "Last name is required.")]
-    [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", null, "Desired job role is required.")]
+    [InlineData(null, "Castro", "I am a fullstack java dev with bla", "java backend dev", "Value is required for 'firstName'.")]
+    [InlineData("Carolina", null, "I am a fullstack java dev with bla", "java backend dev", "Value is required for 'lastName'.")]
     public void CreateQualifiedProfile_failsWithNullValues(string firstName, string lastName, string summary, string desiredRole, string expectedErrorMessage)
     {
         var qualifProfResult = QualifiedProfile.Create(firstName, lastName, summary, desiredRole);

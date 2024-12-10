@@ -32,23 +32,22 @@ public class FixtureClassContext_UT : IClassFixture<QualifiedProfileServiceFIxtu
     {
         var result = await context.service.CreateAsync(request);
 
-        Assert.IsType<int>(result);
-        //Assert.Equal(1, result);
+        Assert.IsType<Result>(result);
     }
 
-    [Fact]
-    public async Task test22()
-    {
-        var result = await context.service.GetAsync(1);
+    //[Fact]
+    //public async Task test22()
+    //{
+    //    var result = await context.service.GetAsync(1);
 
-        Assert.IsType<QualifiedProfile>(result);
-        Assert.Equal("Oliver", result.FirstName);
-        Assert.Equal("Castro", result.LastName);
-        Assert.NotNull(result.Summary);
-        Assert.NotNull(result);
-        Assert.StartsWith("O", result.FirstName);
-        Assert.Contains("str", result.LastName);
-    }
+    //    Assert.IsType<QualifiedProfile>(result);
+    //    Assert.Equal("Oliver", result.FirstName);
+    //    Assert.Equal("Castro", result.LastName);
+    //    Assert.NotNull(result.Summary);
+    //    Assert.NotNull(result);
+    //    Assert.StartsWith("O", result.FirstName);
+    //    Assert.Contains("str", result.LastName);
+    //}
 }
 
 

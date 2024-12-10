@@ -37,8 +37,8 @@ namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests
             var qualified = QualifiedProfile.Create(firstName, lastName, summary, rolePos).Value;
             var result = await service.CreateAsync(qualified);
 
-            Assert.IsType<int>(result);
-            //Assert.Equal(1 , result);
+            Assert.IsType<Result>(result);
+            Assert.True(result.IsSucces);
         }
     }
 }

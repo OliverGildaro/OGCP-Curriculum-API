@@ -162,17 +162,12 @@ public class QualifiedProfile : Profile, IQualifiedProfile
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {
-            return new Error("First name is required.", "InvalidFirstName");
+            return Errors.Validation.ValueIsRequired(nameof(firstName));
         }
 
         if (string.IsNullOrWhiteSpace(lastName))
         {
-            return new Error("Last name is required.", "InvalidLastName");
-        }
-
-        if (string.IsNullOrWhiteSpace(desiredJobRole))
-        {
-            return new Error("Desired job role is required.", "InvalidDesiredJobRole");
+            return Errors.Validation.ValueIsRequired(nameof(lastName));
         }
 
         return new QualifiedProfile(firstName, lastName, summary, desiredJobRole);

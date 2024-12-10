@@ -41,7 +41,7 @@ public static class Errors
     public static class Validation
     {
         public static Error ValueIsRequired(string fieldName) =>
-            new Error("VALIDATION_REQUIRED_VALUE", $"Value is required for {fieldName}");
+            new Error("VALIDATION_REQUIRED_VALUE", $"Value is required for '{fieldName}'.");
 
         public static Error ValueIsInvalid() =>
             new Error("VALIDATION_INVALID_VALUE", "Value is invalid");

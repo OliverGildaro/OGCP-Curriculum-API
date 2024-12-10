@@ -29,17 +29,16 @@ public class ConstructorContext_UT : IDisposable
     {
     }
 
-    //***** INLIENE DATA *****//////
+    //***** INLINE DATA *****//////
     [Theory]
     [InlineData("Oliver", "Castro", "Fillstack dev", "Job here goal")]
     [InlineData("Cristian", "Morato", "Fillstack dev", "Job here goal")]
     public async Task Test1(string firstName, string lastName, string summanry, string personalGoal)
     {
         var request = GeneralProfile.Create(firstName, lastName, summanry, new string[] { personalGoal });
-        var result = await service.CreateAsync(request.Value);
+        var resourceCreated = await service.CreateAsync(request.Value);
 
-        //Assert.Equal(1, result);
-        Assert.IsType<int>(result);
-        Assert.NotNull(result);
+        Assert.IsType<Result>(resourceCreated);
+        Assert.NotNull(resourceCreated);
     }
 }

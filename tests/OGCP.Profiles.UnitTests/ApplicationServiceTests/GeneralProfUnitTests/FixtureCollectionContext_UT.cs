@@ -21,12 +21,12 @@ public class FixtureCollectionContext_UT
 
     [Theory]
     [ClassData(typeof(CreateGeneralProfileRequestTestData))]
-    public async Task Test1(GeneralProfile generalProfile)
+    public async Task CreateGeneralProfile_Success(GeneralProfile generalProfile)
     {
         var result = await fixture.service.CreateAsync(generalProfile);
 
         //Assert.Equal(1, result);
-        Assert.IsType<int>(result);
+        Assert.IsType<Result>(result);
     }
 
 
