@@ -1,6 +1,7 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculums.Core.DomainModel;
+using static OGCP.Curriculums.Core.DomainModel.Errors;
 
 namespace OGCP.Curriculum.API.domainmodel;
 
@@ -60,7 +61,7 @@ public abstract class Profile : IEntity<int>
     {
         if (language is null)
         {
-            return Result.Failure("Language can not be null");
+            throw new ArgumentNullException(nameof(language), "Language cannot be null.");
         }
 
         var currentLanguage = this.LanguagesSpoken.FirstOrDefault(l => l.Name == language.Name);
@@ -213,7 +214,7 @@ public class QualifiedProfile : Profile, IQualifiedProfile
         var currentEducation = this.Educations.FirstOrDefault(e => e.Id.Equals(educationId));
         if (currentEducation == null) 
         {
-            return Result.Failure("");
+            throw new ArgumentNullException(nameof(education), "Education cannot be null.");
         }
 
         if (currentEducation == education)
@@ -223,7 +224,7 @@ public class QualifiedProfile : Profile, IQualifiedProfile
 
         if (_educations.Any(educ => educ.IsEquivalent(education)))
         {
-            return Result.Failure("Not possible to do this update, conflict with an existing degree");
+            return Result.Failure(General.EntityCanNotBeAddedTwice("EDUCATION", "Education").Message);
         }
 
         //Si education ya tiene un id habria que remover en el join table la relacion y agregar una nueva

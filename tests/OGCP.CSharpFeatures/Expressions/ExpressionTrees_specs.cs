@@ -32,9 +32,9 @@ public class ExpressionTrees_specs
     {
         IEnumerable<QualifiedProfile> profileList = new List<QualifiedProfile>
         {
-            QualifiedProfile.Create("Oliver", "CAstro", "I am bla", "Backedn").Value,
-            QualifiedProfile.Create("Ivan", "CAstro", "I am bla", "Frontend").Value,
-            QualifiedProfile.Create("Alvaro", "CAstro", "I am bla", "Architect").Value
+            QualifiedProfile.Create("Oliver", "Castro", "I am bla", "Backedn").Value,
+            QualifiedProfile.Create("Ivan", "Castro", "I am bla", "Frontend").Value,
+            QualifiedProfile.Create("Alvaro", "Castro", "I am bla", "Architect").Value
         };
 
         string firstName = "Oliver";

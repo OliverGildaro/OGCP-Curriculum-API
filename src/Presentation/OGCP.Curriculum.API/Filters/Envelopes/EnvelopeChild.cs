@@ -7,13 +7,14 @@ namespace OGCP.Curriculums.API.Envelopes;
 
 public class EnvelopeChild
 {
+    public string Code { get; }
     public string ErrorMessage { get; }
     public string InvalidField { get; }
 
     private EnvelopeChild(object result, KeyValueError error)
     {
+        Code = error?.Error.Code;
         ErrorMessage = error?.Error.Message;
-        ErrorMessage = error?.Error.Code;
         InvalidField = error?.FieldName;
     }
 

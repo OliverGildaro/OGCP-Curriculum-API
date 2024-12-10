@@ -10,13 +10,13 @@ public static class CustomValidator
     public static IRuleBuilderOptions<T, TProperty> NotEmptyCustom<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder)
     {
         return DefaultValidatorExtensions.NotEmpty(ruleBuilder)
-            .WithMessage(Errors.General.ValueIsRequired().Serialize());
+            .WithMessage(Errors.Validation.ValueIsInvalid().Serialize());
     }
 
     public static IRuleBuilderOptions<T, string> LengthCustom<T>(this IRuleBuilder<T, string> ruleBuilder, int min, int max)
     {
         return DefaultValidatorExtensions.Length(ruleBuilder, min, max)
-            .WithMessage(Errors.General.InvalidLength().Serialize());
+            .WithMessage(Errors.Validation.InvalidLength().Serialize());
     }
 
     public static IRuleBuilderOptionsConditions<T, IReadOnlyList<TElement>> ListMustContainNumberOfItems<T, TElement>(
@@ -26,11 +26,11 @@ public static class CustomValidator
         {
             if (min.HasValue && list.Count < min.Value)
             {
-                context.AddFailure(Errors.General.CollectionIsTooSmall(min.Value, list.Count).Serialize());
+                context.AddFailure(Errors.Validation.CollectionIsTooSmall(min.Value, list.Count).Serialize());
             }
             if (max.HasValue && list.Count > max.Value)
             {
-                context.AddFailure(Errors.General.CollectionIsTooLarge(min.Value, list.Count).Serialize());
+                context.AddFailure(Errors.Validation.CollectionIsTooLarge(min.Value, list.Count).Serialize());
             }
         });
     }

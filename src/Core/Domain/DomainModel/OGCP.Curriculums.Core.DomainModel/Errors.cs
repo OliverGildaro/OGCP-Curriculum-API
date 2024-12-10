@@ -1,10 +1,8 @@
-﻿using ArtForAll.Shared.Contracts.DDD;
-
-namespace OGCP.Curriculums.Core.DomainModel;
+﻿namespace OGCP.Curriculums.Core.DomainModel;
 
 public static class Errors
 {
-    public static class Order
+    public static class Profiles
     {
         //public static Error TooManyEnrollments() =>
         //    new Error("student.too.many.enrollments", "Student cannot have more than 2 enrollments");
@@ -12,8 +10,8 @@ public static class Errors
         //public static Error AlreadyEnrolled(string courseName) =>
         //    new Error("student.already.enrolled", $"Student is already enrolled into course '{courseName}'");
 
-        //public static Error EmailIsTaken() =>
-        //    new Error("user.email.is.taken", emailErrorMessages.emailTaken);
+        public static Error EmailIsTaken() =>
+            new Error("user.email.is.taken", "");
 
         public static Error InvalidEmail(string email) =>
              new Error("user.email.is.duplicated", "user email is duplicated");
@@ -31,43 +29,57 @@ public static class Errors
             new Error("price.is.invalid", "Price cannot be negatice or zero");
     }
 
-    public static class General
+    public class Educations
     {
-        public static Error NotFound(string id = null)
-        {
-            string forId = id == null ? "" : $" for Id '{id}'";
-            return new Error("record.not.found", $"Record not found{forId}");
-        }
+        
+    }
+
+    public class Languages
+    {
+    }
+
+    public static class Validation
+    {
+        public static Error ValueIsRequired(string fieldName) =>
+            new Error("VALIDATION_REQUIRED_VALUE", $"Value is required for {fieldName}");
 
         public static Error ValueIsInvalid() =>
-            new Error("value.is.invalid", "Value is invalid");
-
-        public static Error ValueIsRequired() =>
-            new Error("value.is.required", "Value is required");
+            new Error("VALIDATION_INVALID_VALUE", "Value is invalid");
 
         public static Error InvalidLength(string name = null)
         {
             string label = name == null ? " " : " " + name + " ";
-            return new Error("invalid.string.length", $"Invalid{label}length");
+            return new Error("VALIDATION_INVALID_STRING_LENGTH", $"Invalid{label}length");
         }
 
         public static Error CollectionIsTooSmall(int min, int current)
         {
             return new Error(
-                "collection.is.too.small",
+                "VALIDATION_COLLECTION_TOO_SMALL",
                 $"The collection must contain {min} items or more. It contains {current} items.");
         }
 
         public static Error CollectionIsTooLarge(int max, int current)
         {
             return new Error(
-                "collection.is.too.large",
+                "VALIDATION_COLLECTION_TOO_LARGE",
                 $"The collection must contain {max} items or more. It contains {current} items.");
         }
+    }
 
-        public static Error InternalServerError(string message)
-        {
-            return new Error("internal.server.error", message);
-        }
+    public static class General
+    {
+        public static Error NotFound(int id) =>
+            new Error("GENERAL_NOT_FOUND", $"Record not found for id: {id}");
+
+        public static Error InternalServerError(string message) =>
+            new Error("GENERAL_INTERNAL_SERVER_ERROR", message);
+
+        public static Error EntityCanNotBeAddedTwice(string codeName, string entityName) =>
+            new Error($"{codeName}_DUPLICATED_LANGUAGE", $"The same {entityName} can not be added twice");
+
+        public static Error ValueIsRequired() =>
+            new Error("VALIDATION_REQUIRED_VALUE", "Value is required");
+
     }
 }
