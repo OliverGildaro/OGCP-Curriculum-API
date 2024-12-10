@@ -1,4 +1,6 @@
-﻿namespace OGCP.Curriculums.Core.DomainModel;
+﻿using System.Diagnostics.Metrics;
+
+namespace OGCP.Curriculums.Core.DomainModel;
 
 public static class Errors
 {
@@ -40,8 +42,15 @@ public static class Errors
 
     public static class Validation
     {
+        
         public static Error ValueIsRequired(string fieldName) =>
             new Error("VALIDATION_REQUIRED_VALUE", $"Value is required for '{fieldName}'.");
+
+        public static Error InvalidCountryCode(string fieldName) =>
+            new Error("VALIDATION_REQUIRED_VALUE", $"{fieldName} must contain only digits.");
+
+        public static Error InvalidPhoneNumber(string fieldName) =>
+            new Error("VALIDATION_REQUIRED_VALUE", $"{fieldName} must contain only digits.");
 
         public static Error ValueIsInvalid() =>
             new Error("VALIDATION_INVALID_VALUE", "Value is invalid");

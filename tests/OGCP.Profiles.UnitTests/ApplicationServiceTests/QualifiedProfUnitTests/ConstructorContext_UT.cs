@@ -4,6 +4,7 @@ using Moq.Language.Flow;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services;
+using OGCP.Curriculums.Core.DomainModel.profiles;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests
 {
@@ -30,11 +31,19 @@ namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests
         }
 
         [Theory]
-        [InlineData("Oliver", "Castro", "I am bla bla", "Fullstack software dev")]
-        [InlineData("Carolina", "Castro", "I am bla bla", "Fullstack software dev2")]
-        public async Task Test1(string firstName, string lastName, string summary, string rolePos)
+        [InlineData("Oliver", "Castro", "I am bla bla", "Fullstack software dev", "+59169554851", "gildaro.castro@gmail.com")]
+        [InlineData("Carolina", "Castro", "I am bla bla", "Fullstack software dev2", "+59169554851", "gildaro.castro@gmail.com")]
+        public async Task Test1(
+            string firstName,
+            string lastName,
+            string summary, 
+            string rolePos,
+            string phone,
+            string email)
         {
-            var qualified = QualifiedProfile.Create(firstName, lastName, summary, rolePos).Value;
+            var phoneNumber = PhoneNumber.Parse(phone);
+
+            var qualified = QualifiedProfile.Create(firstName, lastName, summary, rolePos, phoneNumber, email).Value;
             var result = await service.CreateAsync(qualified);
 
             Assert.IsType<Result>(result);

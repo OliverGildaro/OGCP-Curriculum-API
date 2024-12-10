@@ -4,6 +4,7 @@ using ArtForAll.Shared.ErrorHandler;
 using ArtForAll.Shared.ErrorHandler.Results;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculums.Core.DomainModel;
+using OGCP.Curriculums.Core.DomainModel.profiles;
 using CustomResult = ArtForAll.Shared.ErrorHandler.Results;
 namespace OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
 
@@ -12,6 +13,8 @@ public abstract class CreateProfileCommand : ICommand
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Summary { get; set; }
+    public PhoneNumber Phone { get; set; }
+    public string Email { get; set; }
     public abstract CustomResult.IResult<Profile, Error> MapTo();
 }
 
@@ -29,7 +32,7 @@ public class CreateQualifiedProfileCommand : CreateProfileCommand
 
     public override IResult<Profile, Error> MapTo()
     {
-        return QualifiedProfile.Create(FirstName, LastName, Summary, DesiredJobRole);
+        return QualifiedProfile.Create(FirstName, LastName, Summary, DesiredJobRole, Phone, Email);
     }
 }
 
@@ -47,7 +50,7 @@ public class CreateGeneralProfileCommand : CreateProfileCommand
 
     public override IResult<Profile, Error> MapTo()
     {
-        return GeneralProfile.Create(FirstName, LastName, Summary, PersonalGoals);
+        return GeneralProfile.Create(FirstName, LastName, Summary, PersonalGoals, Phone, Email);
     }
 }
 
@@ -67,6 +70,6 @@ public class CreateStudentProfileCommand : CreateProfileCommand
 
     public override IResult<Profile, Error> MapTo()
     {
-        return StudentProfile.Create(FirstName, LastName, Summary, Major, CareerGoals);
+        return StudentProfile.Create(FirstName, LastName, Summary, Major, CareerGoals, Phone, Email);
     }
 }

@@ -2,8 +2,8 @@
 using Moq;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.services;
+using OGCP.Curriculums.Core.DomainModel.profiles;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.GeneralProfUnitTests;
 
@@ -23,8 +23,22 @@ public class FixtureClassContext_UT : IClassFixture<GeneralProfileServiceFixture
     {
         return new TheoryData<GeneralProfile>
         {
-            GeneralProfile.Create("Oliver", "Castro", "Fullstack sumary", new string[] { "Be the best", "Another" }).Value,
-            GeneralProfile.Create("Cristian", "Morato", "Fullstack sumary", new string[] { "Be the best", "Another" }).Value,
+            GeneralProfile.Create(
+                "Oliver",
+                "Castro",
+                "Fullstack sumary",
+                new string[] { "Be the best", "Another" },
+                PhoneNumber.CreateNew("591", "69554851").Value,
+                "gildaro.castro@gmai.com"
+                ).Value,
+            GeneralProfile.Create(
+                "Cristian",
+                "Morato",
+                "Fullstack sumary",
+                new string[] { "Be the best", "Another" },
+                PhoneNumber.CreateNew("591", "69554851").Value,
+                "gildaro.castro@gmai.com"
+                ).Value,
         };
     }
 

@@ -1,6 +1,7 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
+using OGCP.Curriculums.Core.DomainModel.profiles;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests;
 
@@ -38,6 +39,8 @@ public class CreateQualifiedProfileRequestClassData
 {
     public CreateQualifiedProfileRequestClassData()
     {
-        Add(QualifiedProfile.Create("Oliver", "CAstro", "I am bla", "Backedn").Value);
+        Add(QualifiedProfile.Create("Oliver", "CAstro", "I am bla", "Backedn",
+                            PhoneNumber.CreateNew("591", "69554851").Value,
+                "gildaro.castro@gmai.com").Value);
     }
 }

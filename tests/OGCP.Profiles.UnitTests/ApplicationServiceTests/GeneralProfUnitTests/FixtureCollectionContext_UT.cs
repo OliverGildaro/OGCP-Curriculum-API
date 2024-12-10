@@ -2,6 +2,7 @@
 using Moq;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
+using OGCP.Curriculums.Core.DomainModel.profiles;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.GeneralProfUnitTests;
 
@@ -47,6 +48,12 @@ public class CreateGeneralProfileRequestTestData : TheoryData<GeneralProfile>
     public CreateGeneralProfileRequestTestData()
     {
         Add(
-            GeneralProfile.Create("Oliver", "Castro", "Fullstack sumary", new string[] { "Be the best", "Another" }).Value);
+            GeneralProfile.Create(
+                "Oliver",
+                "Castro",
+                "Fullstack sumary",
+                new string[] { "Be the best", "Another" },
+                PhoneNumber.CreateNew("591", "69554851").Value,
+                "gildaro.castro@gmai.com").Value);
     }
 }

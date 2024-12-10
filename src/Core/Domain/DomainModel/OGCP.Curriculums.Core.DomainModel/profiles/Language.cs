@@ -1,6 +1,4 @@
-﻿using OGCP.Curriculum.API.domainModel;
-
-namespace OGCP.Curriculum.API.domainmodel;
+﻿namespace OGCP.Curriculum.API.domainmodel;
 
 public class Language
 {
@@ -14,7 +12,7 @@ public class Language
     }
 
     public Language(Languages name, ProficiencyLevel level, int id)
-        :this(name, level)
+        : this(name, level)
     {
         Id = id;
     }

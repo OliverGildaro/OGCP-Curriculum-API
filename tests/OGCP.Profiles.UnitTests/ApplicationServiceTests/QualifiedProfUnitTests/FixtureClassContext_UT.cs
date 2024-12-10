@@ -2,9 +2,8 @@
 using Moq;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
-using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.services;
-using System.Runtime.Serialization;
+using OGCP.Curriculums.Core.DomainModel.profiles;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests;
 
@@ -21,8 +20,12 @@ public class FixtureClassContext_UT : IClassFixture<QualifiedProfileServiceFIxtu
     {
         return new TheoryData<QualifiedProfile>
         {
-            QualifiedProfile.Create("Oliver", "Castro", "Fullstack", "Backend").Value,
-            QualifiedProfile.Create("Alvaro", "Castro", "Fullstack", "Backend and architect").Value,
+            QualifiedProfile.Create("Oliver", "Castro", "Fullstack", "Backend",
+                            PhoneNumber.CreateNew("591", "69554851").Value,
+                "gildaro.castro@gmai.com").Value,
+            QualifiedProfile.Create("Alvaro", "Castro", "Fullstack", "Backend and architect",
+                            PhoneNumber.CreateNew("591", "69554851").Value,
+                "gildaro.castro@gmai.com").Value,
         };
     }
 
@@ -66,7 +69,9 @@ public class QualifiedProfileServiceFIxtureClass
 
         repo.Setup(m => m.FindAsync(It.IsAny<int>()))
                 .ReturnsAsync(QualifiedProfile
-                    .Create("Oliver", "Castro", "I am bla bla", "Fullstack software dev").Value);
+                    .Create("Oliver", "Castro", "I am bla bla", "Fullstack software dev",
+                                    PhoneNumber.CreateNew("591", "69554851").Value,
+                "gildaro.castro@gmai.com").Value);
 
         service = new ProfileService(repo.Object);
     }

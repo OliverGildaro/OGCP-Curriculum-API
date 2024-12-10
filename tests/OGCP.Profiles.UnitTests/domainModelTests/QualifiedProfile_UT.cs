@@ -1,17 +1,28 @@
 ﻿using ArtForAll.Shared.Contracts.DDD;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculums.Core.DomainModel;
+using OGCP.Curriculums.Core.DomainModel.profiles;
+using System.Reflection.Metadata;
 
 namespace OGCP.Profiles.UnitTests.domainModelTests;
 
 public class QualifiedProfile_UT
 {
     [Theory]
-    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev")]
-    [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", "java backend dev")]
-    public void CreateQualifiedProfile(string firstName, string lastName, string summary, string desiredRole)
+    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev",
+        "+59169554851", "gildaro.castro@gmail.com")]
+    [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", "java backend dev",
+        "+59169554851", "gildaro.castro@gmail.com")]
+    public void CreateQualifiedProfile(
+        string firstName,
+        string lastName,
+        string summary,
+        string desiredRole,
+        string phone, string email)
     {
-        var qualifProfResult = QualifiedProfile.Create(firstName, lastName, summary, desiredRole);
+        var phoneNumb = PhoneNumber.Parse(phone);
+        var qualifProfResult = QualifiedProfile
+            .Create(firstName, lastName, summary, desiredRole, phoneNumb,email);
         var qualifiedProf = qualifProfResult.Value;
 
         Assert.NotNull(qualifiedProf);
@@ -24,17 +35,25 @@ public class QualifiedProfile_UT
     }
 
     [Theory]
-    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev", Languages.English, ProficiencyLevel.Proficient)]
-    [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", "java backend dev", Languages.Italian, ProficiencyLevel.Intermediate)]
+    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev",
+        Languages.English, ProficiencyLevel.Proficient,
+        "+59169554851", "gildaro.castro@gmail.com")]
+    [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", "java backend dev",
+        Languages.Italian, ProficiencyLevel.Intermediate,
+        "+59169554851", "gildaro.castro@gmail.com")]
     public void CreatedQualifiedProfile_CanNotAddTheSameLanguageTwice(
         string firstName,
         string lastName,
         string summary,
         string desiredRole,
         Languages language,
-        ProficiencyLevel proficiency)
+        ProficiencyLevel proficiency,
+        string phone,
+        string email)
     {
-        var qualifProfResult = QualifiedProfile.Create(firstName, lastName, summary, desiredRole);
+        var phoneNumb = PhoneNumber.Parse(phone);
+        var qualifProfResult = QualifiedProfile
+            .Create(firstName, lastName, summary, desiredRole, phoneNumb, email);
         var qualifiedProf = qualifProfResult.Value;
 
         var languageResult = Language.Create(language, proficiency);
@@ -48,8 +67,10 @@ public class QualifiedProfile_UT
     }
 
     [Theory]
-    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev",  "UMSS", EducationLevel.Doctorate, "2021-12-14")]
-    [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", "java backend dev", "UMSS", EducationLevel.Doctorate, "2021-12-14")]
+    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev",  "UMSS", EducationLevel.Doctorate, "2021-12-14",
+        "+59169554851", "gildaro.castro@gmail.com")]
+    [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", "java backend dev", "UMSS", EducationLevel.Doctorate, "2021-12-14",
+        "+59169554851", "gildaro.castro@gmail.com")]
     public void CreatedQualifiedProfile_CanNotAddTheSameEducationTwice(
         string firstName,
         string lastName,
@@ -57,9 +78,13 @@ public class QualifiedProfile_UT
         string desiredRole,
         string institution,
         EducationLevel educationLevel,
-        string startDate)
+        string startDate,
+        string phone,
+        string email)
     {
-        var qualifProfResult = QualifiedProfile.Create(firstName, lastName, summary, desiredRole);
+        var phoneNumb = PhoneNumber.Parse(phone);
+        var qualifProfResult = QualifiedProfile
+            .Create(firstName, lastName, summary, desiredRole, phoneNumb, email);
         var qualifiedProf = qualifProfResult.Value;
 
         var education = DegreeEducation.Create(institution, educationLevel, DateOnly.Parse(startDate), null).Value;
@@ -71,12 +96,18 @@ public class QualifiedProfile_UT
     }
 
     [Theory]
-    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev", "Jalasoft", "2021-12-14", "2022-12-14", "Description", "Backend")]
-    [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", "java backend dev", "Jalasoft", "2021-12-14", "2021-12-14", "Desc", "Frontend")]
+    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev",
+        "+59169554851", "gildaro.castro@gmail.com",
+        "Jalasoft",
+        "2021-12-14", "2022-12-14", "Description", "Backend")]
+    [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", "java backend dev",
+        "+59169554851", "gildaro.castro@gmail.com", "Jalasoft", "2021-12-14", "2021-12-14", "Desc", "Frontend")]
     public void CreatedQualifiedProfile_CanNotAddTheSameWorkExperienceTwice(
     string firstName,
     string lastName,
     string summary,
+    string phone,
+    string email,
     string desiredRole,
     string company,
     DateTime startDate,
@@ -84,7 +115,9 @@ public class QualifiedProfile_UT
     string description,
     string position)
     {
-        var qualifProfResult = QualifiedProfile.Create(firstName, lastName, summary, desiredRole);
+        var phoneNumb = PhoneNumber.Parse(phone);
+        var qualifProfResult = QualifiedProfile
+            .Create(firstName, lastName, summary, desiredRole, phoneNumb, email);
         var qualifiedProf = qualifProfResult.Value;
 
         var WorkExp1 = WorkExperience.Create(company, startDate, endDate, description, position).Value;
@@ -96,11 +129,22 @@ public class QualifiedProfile_UT
     }
 
     [Theory]
-    [InlineData(null, "Castro", "I am a fullstack java dev with bla", "java backend dev", "Value is required for 'firstName'.")]
-    [InlineData("Carolina", null, "I am a fullstack java dev with bla", "java backend dev", "Value is required for 'lastName'.")]
-    public void CreateQualifiedProfile_failsWithNullValues(string firstName, string lastName, string summary, string desiredRole, string expectedErrorMessage)
+    [InlineData(null, "Castro", "I am a fullstack java dev with bla", "java backend dev", "Value is required for 'firstName'.",
+        "+59169554851", "gildaro.castro@gmail.com")]
+    [InlineData("Carolina", null, "I am a fullstack java dev with bla", "java backend dev", "Value is required for 'lastName'.",
+        "+59169554851", "gildaro.castro@gmail.com")]
+    public void CreateQualifiedProfile_failsWithNullValues(
+        string firstName,
+        string lastName,
+        string summary,
+        string desiredRole,
+        string expectedErrorMessage,
+        string phone,
+        string email)
     {
-        var qualifProfResult = QualifiedProfile.Create(firstName, lastName, summary, desiredRole);
+        var phoneNumb = PhoneNumber.Parse(phone);
+        var qualifProfResult = QualifiedProfile.Create(
+            firstName, lastName, summary, desiredRole, phoneNumb, email);
         var error = qualifProfResult.Error;
 
         Assert.False(qualifProfResult.IsSucces);

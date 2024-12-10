@@ -5,6 +5,7 @@ using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculum.API.services;
 using OGCP.Curriculum.API.services.interfaces;
+using OGCP.Curriculums.Core.DomainModel.profiles;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.GeneralProfUnitTests;
 
@@ -31,11 +32,18 @@ public class ConstructorContext_UT : IDisposable
 
     //***** INLINE DATA *****//////
     [Theory]
-    [InlineData("Oliver", "Castro", "Fillstack dev", "Job here goal")]
-    [InlineData("Cristian", "Morato", "Fillstack dev", "Job here goal")]
-    public async Task Test1(string firstName, string lastName, string summanry, string personalGoal)
+    [InlineData("Oliver", "Castro", "Fillstack dev", "Job here goal", "+59169554851", "gildaro.castro@gmail.com")]
+    [InlineData("Cristian", "Morato", "Fillstack dev", "Job here goal", "+59169554851", "gildaro.castro@gmail.com")]
+    public async Task Test1(string firstName,
+        string lastName,
+        string summanry, 
+        string personalGoal,
+        string phone,
+        string email)
     {
-        var request = GeneralProfile.Create(firstName, lastName, summanry, new string[] { personalGoal });
+        var phoneNumber = PhoneNumber.Parse(phone);
+
+        var request = GeneralProfile.Create(firstName, lastName, summanry, new string[] { personalGoal }, phoneNumber, email);
         var resourceCreated = await service.CreateAsync(request.Value);
 
         Assert.IsType<Result>(resourceCreated);
