@@ -9,10 +9,12 @@ public class ProfileLanguage
 {
     public int ProfileId { get; private set; }
     public int LanguageId { get; private set; }
-    public Language Language { get; private set; }
+    public virtual Language Language { get; private set; }
+    public virtual Profile Profile { get; private set; }
 
     private List<LanguageSkill> _languageSkills = new();
 
+    protected ProfileLanguage() { }
     private ProfileLanguage(Language language, List<LanguageSkill> skills)
     {
         Language = language;

@@ -9,16 +9,25 @@ internal class ProfileLanguageConfiguration : IEntityTypeConfiguration<ProfileLa
 {
     public void Configure(EntityTypeBuilder<ProfileLanguage> entity)
     {
-        entity.HasKey(p => new {p.ProfileId, p.LanguageId});
+        entity.ToTable("ProfileLanguages");
+        entity.HasKey(p => new { p.ProfileId, p.LanguageId });
+
+        entity.Property(p => p.ProfileId).IsRequired();
+        entity.Property(p => p.LanguageId).IsRequired();
 
         entity.HasOne(p => p.Language)
             .WithMany()
             .HasForeignKey(p => p.LanguageId)
-            .HasForeignKey(p => p.ProfileId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        entity.Property(typeof(List<LanguageSkill>), "_languageSkills")
-                .HasColumnName("LanguageSkills")
-                .HasColumnType("jsonb");
+        //entity.HasOne(p => p.Profile)
+        //    .WithMany()
+        //    .HasForeignKey(p => p.ProfileId)
+        //    .OnDelete(DeleteBehavior.Cascade);
+
+        entity.OwnsMany(p => p.LanguageSkills, builder =>
+        {
+            builder.ToJson("LangSkills"); // Map the collection to a JSON column
+        });
     }
 }

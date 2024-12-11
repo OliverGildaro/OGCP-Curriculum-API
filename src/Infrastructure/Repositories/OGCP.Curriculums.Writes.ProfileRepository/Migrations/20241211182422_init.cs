@@ -39,10 +39,10 @@ namespace OGCP.Curriculums.Writes.ProfileRepository.Migrations
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: true),
                     Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
-                    Degree = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProjectTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Supervisor = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Degree = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ProjectTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Supervisor = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Summary = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,7 +57,7 @@ namespace OGCP.Curriculums.Writes.ProfileRepository.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Level = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Checksum = table.Column<byte[]>(type: "varbinary(max)", nullable: true, computedColumnSql: "CONVERT(VARBINARY(1024),CHECKSUM([Name],[Level]))")
+                    Checksum = table.Column<byte[]>(type: "varbinary(max)", nullable: true, computedColumnSql: "CONVERT(VARBINARY(1024), CHECKSUM([Name], [Level]))")
                 },
                 constraints: table =>
                 {
@@ -70,9 +70,12 @@ namespace OGCP.Curriculums.Writes.ProfileRepository.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    GivenName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    FamilyNames = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryCode = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
+                    Number = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     Visibility = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DetailLevel = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
@@ -164,12 +167,13 @@ namespace OGCP.Curriculums.Writes.ProfileRepository.Migrations
                 name: "ProfileLanguages",
                 columns: table => new
                 {
+                    ProfileId = table.Column<int>(type: "int", nullable: false),
                     LanguageId = table.Column<int>(type: "int", nullable: false),
-                    ProfileId = table.Column<int>(type: "int", nullable: false)
+                    LangSkills = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProfileLanguages", x => new { x.LanguageId, x.ProfileId });
+                    table.PrimaryKey("PK_ProfileLanguages", x => new { x.ProfileId, x.LanguageId });
                     table.ForeignKey(
                         name: "FK_ProfileLanguages_Languages_LanguageId",
                         column: x => x.LanguageId,
@@ -191,6 +195,18 @@ namespace OGCP.Curriculums.Writes.ProfileRepository.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Educations_Degree_Institution_NC",
+                table: "Educations",
+                columns: new[] { "Degree", "Institution" })
+                .Annotation("SqlServer:Include", new[] { "StartDate", "EndDate", "Id" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Educations_ProjectTitle_Institution_NC",
+                table: "Educations",
+                columns: new[] { "ProjectTitle", "Institution" })
+                .Annotation("SqlServer:Include", new[] { "StartDate", "EndDate", "Supervisor" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JobExperiences_ProfileId",
                 table: "JobExperiences",
                 column: "ProfileId");
@@ -201,9 +217,9 @@ namespace OGCP.Curriculums.Writes.ProfileRepository.Migrations
                 column: "ProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfileLanguages_ProfileId",
+                name: "IX_ProfileLanguages_LanguageId",
                 table: "ProfileLanguages",
-                column: "ProfileId");
+                column: "LanguageId");
         }
 
         /// <inheritdoc />

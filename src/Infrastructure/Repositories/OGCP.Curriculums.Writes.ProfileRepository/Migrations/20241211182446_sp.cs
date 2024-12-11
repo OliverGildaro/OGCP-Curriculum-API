@@ -5,7 +5,7 @@
 namespace OGCP.Curriculums.Writes.ProfileRepository.Migrations
 {
     /// <inheritdoc />
-    public partial class sP : Migration
+    public partial class sp : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,8 +31,8 @@ namespace OGCP.Curriculums.Writes.ProfileRepository.Migrations
                     DECLARE @count as INT = 0;
 
                     --select all profiles educations that were completed in a range date
-                    SELECT p.FirstName,
-                    p.LastName,
+                    SELECT p.GivenName,
+                    p.FamilyNames,
                     e.Institution,
                     e.StartDate,
                     e.EndDate,

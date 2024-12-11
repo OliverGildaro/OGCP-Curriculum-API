@@ -89,17 +89,13 @@ internal class ProfileConfiguration : IEntityTypeConfiguration<Profile>
         //EF will create a shadow property, the fk in the language table
         //This shadow property is not defined in our Language entity domain class
         //Indexer properties will be used to create the join table in this many to many relationship
-        entity.HasMany(p => p.LanguagesSpoken)
-            .WithOne()
-            .HasForeignKey("ProfileId")
-            .OnDelete(DeleteBehavior.Cascade);
 
         //INDEXING
         //INDEXING
         //FirstName values existiran en el indice
         //Tendremos un puntero a la tabla por si queremos traer mas datos
-        entity.HasIndex(p => new { p.Name.GivenName, p.Name.FamilyNames })
-            .HasDatabaseName("IX_Profiles_GivenName_FamilyNames")
-            .IsUnique(false);
+        //entity.HasIndex(p => new { p.Name.GivenName, p.Name.FamilyNames })
+        //    .HasDatabaseName("IX_Profiles_GivenName_FamilyNames")
+        //    .IsUnique(false);
     }
 }
