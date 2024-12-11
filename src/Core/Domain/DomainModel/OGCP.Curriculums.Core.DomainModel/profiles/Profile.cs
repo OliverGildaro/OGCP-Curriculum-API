@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculums.Core.DomainModel.profiles;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
 namespace OGCP.Curriculum.API.domainmodel;
 
@@ -10,10 +11,9 @@ namespace OGCP.Curriculum.API.domainmodel;
 public abstract class Profile : IEntity<int>
 {
     protected int _id;
-    protected string _firstName;
-    protected string _lastName;
+    protected Name _name;
     protected string _summary;
-    protected string _email;
+    protected Email _email;
     protected PhoneNumber _phone;
     protected bool _isPublic;
     protected string _visibility;
@@ -30,27 +30,26 @@ public abstract class Profile : IEntity<int>
     protected Profile() {}
 
     protected Profile(
-        string firstName,
-        string lastName, 
+        Name name,
         string summary, 
         PhoneNumber phoneNumber,
-        string email)
+        Email email)
     {
-        this._firstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
-        this._lastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
+        this._name = name ?? throw new ArgumentNullException(nameof(name));
         this._summary = summary;
         this._isPublic = true;
         this._visibility = string.Empty;
+        this._phone = phoneNumber;
+        this._email = email;
         _createdAt = DateTime.UtcNow;
         _updatedAt = DateTime.UtcNow;
     }
 
     public int Id => _id;
-    public string FirstName => _firstName;
-    public string LastName => _lastName;
+    public Name Name => _name;
     public string Summary => _summary;
     public PhoneNumber Phone => _phone;
-    public string Email => _email;
+    public Email Email => _email;
     public bool IsPublic => _isPublic;
     public string Visibility => _visibility;
     public ProfileDetailLevel DetailLevel => _detailLevel;

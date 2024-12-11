@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.Metrics;
+﻿using ArtForAll.Shared.ErrorHandler;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
+using System.Diagnostics.Metrics;
 
 namespace OGCP.Curriculums.Core.DomainModel;
 
@@ -73,6 +75,11 @@ public static class Errors
             return new Error(
                 "VALIDATION_COLLECTION_TOO_LARGE",
                 $"The collection must contain {max} items or more. It contains {current} items.");
+        }
+
+        internal static Result<Email, Error> InvalidEmail(string v)
+        {
+            throw new NotImplementedException();
         }
     }
 

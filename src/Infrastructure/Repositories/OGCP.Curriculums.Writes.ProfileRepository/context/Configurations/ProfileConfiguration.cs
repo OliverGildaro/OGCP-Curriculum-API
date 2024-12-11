@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
 namespace OGCP.Curriculums.Writes.ProfileRepository.context.Configurations;
 internal class ProfileConfiguration : IEntityTypeConfiguration<Profile>
@@ -19,15 +20,36 @@ internal class ProfileConfiguration : IEntityTypeConfiguration<Profile>
         //alternateKey has unique values, can be used as fk from other tables
         //entity.HasAlternateKey(p => p.LastName);
         //entity.HasKey(p => new {p.Id, p.LastName });composite key
-        entity.Property(p => p.FirstName)
-            .IsRequired()
-            .HasColumnName("FirstName")
-            .HasMaxLength(50);
 
-        entity.Property(p => p.LastName)
+        entity.OwnsOne(p => p.Name, p =>
+        {
+            p.Property(pp => pp.GivenName)
+                .IsRequired()
+                .HasColumnName("GivenName")
+                .HasMaxLength(100);
+
+            p.Property(pp => pp.FamilyNames)
+                .IsRequired()
+                .HasColumnName("FamilyNames")
+                .HasMaxLength(100);
+        });
+
+        entity.OwnsOne(p => p.Phone, p =>
+        {
+            p.Property(pp => pp.CountryCode)
+                .IsRequired(false)
+                .HasColumnName("CountryCode")
+                .HasMaxLength(3);
+            p.Property(pp => pp.Number)
+                .IsRequired(false)
+                .HasColumnName("Number")
+                .HasMaxLength(20);
+        });
+
+        entity.Property(p => p.Email)
+            .HasMaxLength(100)
             .IsRequired()
-            .HasColumnName("LastName")
-            .HasMaxLength(50);
+            .HasConversion(p => p.Value, p => Email.CreateNew(p).Value);
 
         entity.Property(p => p.Summary)
             .IsRequired(false);
@@ -86,8 +108,8 @@ internal class ProfileConfiguration : IEntityTypeConfiguration<Profile>
         //INDEXING
         //FirstName values existiran en el indice
         //Tendremos un puntero a la tabla por si queremos traer mas datos
-        entity.HasIndex(p => new { p.FirstName })
-            .HasDatabaseName("IX_Profiles_FirstName_LastName")
+        entity.HasIndex(p => new { p.Name.GivenName, p.Name.FamilyNames })
+            .HasDatabaseName("IX_Profiles_GivenName_FamilyNames")
             .IsUnique(false);
     }
 }

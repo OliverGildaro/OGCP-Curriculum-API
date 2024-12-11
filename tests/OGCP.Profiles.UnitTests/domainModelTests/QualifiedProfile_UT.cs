@@ -9,20 +9,34 @@ namespace OGCP.Profiles.UnitTests.domainModelTests;
 public class QualifiedProfile_UT
 {
     [Theory]
-    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev",
-        "+59169554851", "gildaro.castro@gmail.com")]
-    [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", "java backend dev",
-        "+59169554851", "gildaro.castro@gmail.com")]
+    [InlineData(
+        "Oliver",
+        "Castro",
+        "I am a fullstack dev with bla",
+        ".net backend dev",
+        "591",
+        "69554851",
+        "gildaro.castro@gmail.com")]
+    [InlineData(
+        "Carolina",
+        "Castro",
+        "I am a fullstack java dev with bla",
+        "java backend dev",
+        "591",
+        "69554851",
+        "gildaro.castro@gmail.com")]
     public void CreateQualifiedProfile(
         string firstName,
         string lastName,
         string summary,
         string desiredRole,
-        string phone, string email)
+        string countryCode,
+        string number, string email)
     {
-        var phoneNumb = PhoneNumber.Parse(phone);
+        //var phoneNumb = PhoneNumber.Parse(phone);
+        var phoneNumb2 = PhoneNumber.CreateNew(countryCode, number);
         var qualifProfResult = QualifiedProfile
-            .Create(firstName, lastName, summary, desiredRole, phoneNumb,email);
+            .Create(firstName, lastName, summary, desiredRole, phoneNumb2.Value, email);
         var qualifiedProf = qualifProfResult.Value;
 
         Assert.NotNull(qualifiedProf);
@@ -30,17 +44,32 @@ public class QualifiedProfile_UT
         Assert.Equal(lastName, qualifiedProf.LastName);
         Assert.Equal(summary, qualifiedProf.Summary);
         Assert.Equal(desiredRole, qualifiedProf.DesiredJobRole);
+        Assert.Equal(countryCode, qualifiedProf.Phone.CountryCode);
+        Assert.Equal(number, qualifiedProf.Phone.Number);
+        Assert.Equal(email, qualifiedProf.Email);
         Assert.IsType<QualifiedProfile>(qualifiedProf);
         Assert.True(qualifProfResult.IsSucces);
     }
 
     [Theory]
-    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev",
-        Languages.English, ProficiencyLevel.Proficient,
-        "+59169554851", "gildaro.castro@gmail.com")]
-    [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", "java backend dev",
-        Languages.Italian, ProficiencyLevel.Intermediate,
-        "+59169554851", "gildaro.castro@gmail.com")]
+    [InlineData(
+    "Oliver",
+    "Castro",
+    "I am a fullstack dev with bla",
+    ".net backend dev",
+    Languages.Italian, ProficiencyLevel.Intermediate,
+    "591",
+    "69554851",
+    "gildaro.castro@gmail.com")]
+    [InlineData(
+    "Carolina",
+    "Castro",
+    "I am a fullstack java dev with bla",
+    "java backend dev",
+    Languages.English, ProficiencyLevel.Proficient,
+    "591",
+    "69554851",
+    "gildaro.castro@gmail.com")]
     public void CreatedQualifiedProfile_CanNotAddTheSameLanguageTwice(
         string firstName,
         string lastName,
@@ -48,12 +77,13 @@ public class QualifiedProfile_UT
         string desiredRole,
         Languages language,
         ProficiencyLevel proficiency,
-        string phone,
+        string countryCode,
+        string number,
         string email)
     {
-        var phoneNumb = PhoneNumber.Parse(phone);
+        var phoneNumb2 = PhoneNumber.CreateNew(countryCode, number);
         var qualifProfResult = QualifiedProfile
-            .Create(firstName, lastName, summary, desiredRole, phoneNumb, email);
+            .Create(firstName, lastName, summary, desiredRole, phoneNumb2.Value, email);
         var qualifiedProf = qualifProfResult.Value;
 
         var languageResult = Language.Create(language, proficiency);

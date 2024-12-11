@@ -10,10 +10,8 @@ public class PhoneNumber : ValueObject
     public string Number { get; private set; }
 
     public string FullNumber => $"+{CountryCode} {Number}";
-
     private static readonly Regex PhoneNumberRegex = new Regex(
-        @"^\+?(?<countryCode>\d{1,4})\s?(?<number>\d{4,15})$",
-        RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        @"^\+(?<countryCode>\d{1,3})(?<number>\d+)$");
 
     private PhoneNumber(string countryCode, string number)
     {

@@ -1,6 +1,7 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculums.Core.DomainModel;
 using OGCP.Curriculums.Core.DomainModel.profiles;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
 namespace OGCP.Curriculum.API.domainmodel;
 
@@ -16,14 +17,13 @@ public class StudentProfile : Profile
     }
 
     public StudentProfile(
-        string firstName,
-        string lastName,
+        Name name,
         string summary,
         string major,
         string careerGoals,
         PhoneNumber phone,
-        string email)
-        : base(firstName, lastName, summary, phone, email)
+        Email email)
+        : base(name, summary, phone, email)
     {
         _major = major;
         _careerGoals = careerGoals;
@@ -38,15 +38,14 @@ public class StudentProfile : Profile
 
     // Factory method for controlled creation
     public static Result<StudentProfile, Error> Create(
-        string firstName,
-        string lastName,
+        Name name,
         string summary,
         string major,
         string careerGoals,
         PhoneNumber phone,
-        string email)
+        Email email)
     {
-        return new StudentProfile(firstName, lastName, summary, major, careerGoals, phone, email);
+        return new StudentProfile(name, summary, major, careerGoals, phone, email);
     }
 
     public Result AddEducation(ResearchEducation education)
@@ -114,8 +113,8 @@ public class StudentProfile : Profile
     public override Result UpdateProfile(Profile profile)
     {
         StudentProfile studentProfile = (StudentProfile)profile;
-        base._firstName = studentProfile.FirstName;
-        base._lastName = studentProfile.LastName;
+        base._name = studentProfile.Name;
+        base._email = studentProfile.Email;
         base._summary = studentProfile.Summary;
         this._major = studentProfile.Major;
         this._careerGoals = studentProfile.CareerGoals;

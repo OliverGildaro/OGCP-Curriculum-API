@@ -4,16 +4,16 @@ using ArtForAll.Shared.ErrorHandler.Results;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculums.Core.DomainModel;
 using OGCP.Curriculums.Core.DomainModel.profiles;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 namespace OGCP.Curriculum.API.Commanding.commands.UpdateProfile;
 
 public abstract class UpdateProfileCommand : ICommand
 {
     public int  Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public Name Name { get; set; }
     public string Summary { get; set; }
     public PhoneNumber Phone { get; set; }
-    public string Email { get; set; }
+    public Email Email { get; set; }
     public abstract IResult<Profile, Error> MapTo();
 }
 
@@ -32,7 +32,7 @@ public class UpdateQualifiedProfileCommand : UpdateProfileCommand
 
     public override IResult<Profile, Error> MapTo()
     {
-        return QualifiedProfile.Create(FirstName, LastName, Summary, DesiredJobRole, Phone, Email);
+        return QualifiedProfile.Create(Name, Summary, DesiredJobRole, Phone, Email);
     }
 }
 
@@ -51,7 +51,7 @@ public class UpdateGeneralProfileCommand : UpdateProfileCommand
 
     public override IResult<Profile, Error> MapTo()
     {
-        return GeneralProfile.Create(FirstName, LastName, Summary, PersonalGoals, Phone, Email);
+        return GeneralProfile.Create(Name, Summary, PersonalGoals, Phone, Email);
     }
 }
 
@@ -72,6 +72,6 @@ public class UpdateStudentProfileCommand : UpdateProfileCommand
 
     public override IResult<Profile, Error> MapTo()
     {
-        return StudentProfile.Create(FirstName, LastName, Summary, Major, CareerGoals, Phone, Email);
+        return StudentProfile.Create(Name, Summary, Major, CareerGoals, Phone, Email);
     }
 }

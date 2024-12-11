@@ -1,6 +1,7 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculums.Core.DomainModel;
 using OGCP.Curriculums.Core.DomainModel.profiles;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 using static OGCP.Curriculums.Core.DomainModel.Errors;
 
 namespace OGCP.Curriculum.API.domainmodel;
@@ -12,13 +13,12 @@ public class QualifiedProfile : Profile
     private List<JobExperience> _experiences = new();
     protected QualifiedProfile() { }
     private QualifiedProfile(
-        string firstName,
-        string lastName,
+        Name name,
         string summary,
         string desiredJobRole,
         PhoneNumber phone,
-        string email)
-        : base(firstName, lastName, summary, phone, email)
+        Email email)
+        : base(name, summary, phone, email)
     {
         _desiredJobRole = desiredJobRole;
     }
@@ -33,24 +33,13 @@ public class QualifiedProfile : Profile
     //Avoid classes enter in an invalid state
     //ENCAPSULATION and ABSTRACTION goes together
     public static Result<QualifiedProfile, Error> Create(
-        string firstName,
-        string lastName,
+        Name name,
         string summary,
         string desiredJobRole,
         PhoneNumber phone,
-        string email)
+        Email email)
     {
-        if (string.IsNullOrWhiteSpace(firstName))
-        {
-            return Errors.Validation.ValueIsRequired(nameof(firstName));
-        }
-
-        if (string.IsNullOrWhiteSpace(lastName))
-        {
-            return Errors.Validation.ValueIsRequired(nameof(lastName));
-        }
-
-        return new QualifiedProfile(firstName, lastName, summary, desiredJobRole, phone, email);
+        return new QualifiedProfile(name, summary, desiredJobRole, phone, email);
     }
 
     //ABSTRACTION is about focus on a single application concern
@@ -125,10 +114,11 @@ public class QualifiedProfile : Profile
 
     public override Result UpdateProfile(Profile profile)
     {
-        QualifiedProfile studentProfile = (QualifiedProfile)profile;
-        base._firstName = studentProfile.FirstName;
-        base._summary = studentProfile.Summary;
-        this._desiredJobRole = studentProfile.DesiredJobRole;
+        QualifiedProfile qualifiedProfile = (QualifiedProfile)profile;
+        base._name = qualifiedProfile.Name;
+        base._email = qualifiedProfile.Email;
+        base._summary = qualifiedProfile.Summary;
+        this._desiredJobRole = qualifiedProfile.DesiredJobRole;
         return Result.Success();
     }
 

@@ -1,6 +1,7 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using OGCP.Curriculums.Core.DomainModel;
 using OGCP.Curriculums.Core.DomainModel.profiles;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
 namespace OGCP.Curriculum.API.domainmodel;
 
@@ -10,17 +11,15 @@ public class GeneralProfile : Profile
     private List<WorkExperience> _experiences = new();
     protected GeneralProfile() { }
     private GeneralProfile(
-        string firstName,
-        string lastName,
+        Name name,
         string summary, 
         string[] personalGoals,
         PhoneNumber phone,
-        string email)
-        : base(firstName, lastName, summary, phone, email)
+        Email email)
+        : base(name, summary, phone, email)
     {
         _personalGoals = personalGoals ?? Array.Empty<string>();
     }
-
     //private GeneralProfile(int id, string firstName, string lastName, string summary, string[] personalGoals)
     //    :this(firstName, lastName, summary, personalGoals)
     //{
@@ -31,29 +30,18 @@ public class GeneralProfile : Profile
     public virtual IReadOnlyList<WorkExperience> Experiences => _experiences;
 
     public static Result<GeneralProfile, Error> Create(
-        string firstName,
-        string lastName,
+        Name name,
         string summary,
         string[] personalGoals,
         PhoneNumber phone,
-        string email)
+        Email email)
     {
-        if (string.IsNullOrWhiteSpace(firstName))
-        {
-            return new Error("InvalidFirstName", "First name is required.");
-        }
-
-        if (string.IsNullOrWhiteSpace(lastName))
-        {
-            return new Error("InvalidLastName", "Last name is required.");
-        }
-
         if (string.IsNullOrWhiteSpace(summary))
         {
             return new Error("InvalidSummary", "Summary is required.");
         }
 
-        return new GeneralProfile(firstName, lastName, summary, personalGoals, phone, email);
+        return new GeneralProfile(name, summary, personalGoals, phone, email);
     }
 
     public void UpdatePersonalGoals(string[] personalGoals)
@@ -73,11 +61,11 @@ public class GeneralProfile : Profile
 
     public override Result UpdateProfile(Profile profile)
     {
-        GeneralProfile studentProfile = (GeneralProfile)profile;
-        base._firstName = studentProfile.FirstName;
-        base._lastName = studentProfile.LastName;
-        base._summary = studentProfile.Summary;
-        this._personalGoals = studentProfile.PersonalGoals;
+        GeneralProfile generalProfile = (GeneralProfile)profile;
+        base._name = generalProfile.Name;
+        base._email = generalProfile.Email;
+        base._summary = generalProfile.Summary;
+        this._personalGoals = generalProfile.PersonalGoals;
         return Result.Success();
     }
 }
