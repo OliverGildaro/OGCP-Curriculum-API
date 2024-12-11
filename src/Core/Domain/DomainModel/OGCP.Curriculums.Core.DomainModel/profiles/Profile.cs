@@ -10,6 +10,8 @@ namespace OGCP.Curriculum.API.domainmodel;
 //Ad an specific profile help us to see what kind of profiles we can create
 public abstract class Profile : IEntity<int>
 {
+    protected List<ProfileLanguage> _languagesSpoken = new List<ProfileLanguage>();//Many to many
+
     protected int _id;
     protected Name _name;
     protected string _summary;
@@ -25,7 +27,6 @@ public abstract class Profile : IEntity<int>
     //public TimeOnly StartTime { get; set; }
     protected DateTime _updatedAt;
     protected DetailInfo _personalInfo;//One to one
-    protected List<Language> _languagesSpoken = new List<Language>();//Many to many
 
     protected Profile() {}
 
@@ -56,7 +57,7 @@ public abstract class Profile : IEntity<int>
     public DateTime CreatedAt => _createdAt;
     public DateTime UpdatedAt => _updatedAt;
     public virtual DetailInfo PersonalInfo => _personalInfo;
-    public virtual IReadOnlyList<Language> LanguagesSpoken => this._languagesSpoken;
+    public virtual IReadOnlyList<ProfileLanguage> LanguagesSpoken => this._languagesSpoken;
     
     public virtual Result AddLanguage(Language language)
     {
@@ -65,13 +66,18 @@ public abstract class Profile : IEntity<int>
             throw new ArgumentNullException(nameof(language), "Language cannot be null.");
         }
 
-        var currentLanguage = this.LanguagesSpoken.FirstOrDefault(l => l.Name == language.Name);
+        var currentLanguage = this.LanguagesSpoken.FirstOrDefault(l => l.Language == language);
         if (currentLanguage != null)
         {
             return Result.Failure($"{language.Name} can not be added twice");
         }
-        
-        this._languagesSpoken.Add(language);
+        var profiLang = ProfileLanguage.CreateNew(language);
+
+        if (profiLang.IsFailure)
+        {
+
+        }
+        this._languagesSpoken.Add(profiLang.Value);
 
         UpdateTimestamp();
         return Result.Success();
@@ -84,35 +90,66 @@ public abstract class Profile : IEntity<int>
 
     public Result EditLanguage(int languageId, Language language)
     {
-        var languageToUpdate = this.LanguagesSpoken.FirstOrDefault(l => l.Id == languageId);
+        var profileLang = this.LanguagesSpoken.FirstOrDefault(l => l.Language.Id == languageId);
 
-        if (languageToUpdate == null)
+        if (profileLang == null)
         {
             return Result.Failure($"A language with this id: {language.Id}, not found");
         }
 
-        this._languagesSpoken.Remove(languageToUpdate);
-        this._languagesSpoken.Add(language);
+        profileLang.UpdateLanguage(language);
         UpdateTimestamp();
+        return Result.Success();
+    }
+
+    public Result UpdateLanguageSkills(Language language, List<LanguageSkill> newSkills)
+    {
+        var profileLanguage = _languagesSpoken.FirstOrDefault(pl => pl.Language.Name == language.Name);
+        if (profileLanguage == null)
+            return Result.Failure($"Language {language.Name} not found.");
+
+        profileLanguage.UpdateSkills(newSkills); // Update the skills in the ProfileLanguage
+
         return Result.Success();
     }
 
     private bool IsValidToRemoveLanguage(int languageId)
     {
-        return this._languagesSpoken.Any(lang => lang.Id == languageId);
+        return this._languagesSpoken.Any(lang => lang.Language.Id == languageId);
     }
 
     public Result RemoveLanguage(int languageId)
     {
         if(this.IsValidToRemoveLanguage(languageId))
         {
-            var language = this._languagesSpoken.Find(lang => lang.Id == languageId);
+            var language = this._languagesSpoken.Find(lang => lang.Language.Id == languageId);
             this._languagesSpoken.Remove(language);
             return Result.Success();
         }
 
         return Result.Failure($"The profile id: {languageId}, not found");
 
+    }
+
+    public void AddLAnguageSkill(int id, LanguageSkill langSki)
+    {
+        if (langSki.Level.Equals(ProficiencyLevel.Native))
+        {
+            return;
+        }
+        if (!this.LanguagesSpoken.Any(lang => lang.LanguageId.Equals(id)))
+        {
+
+        }
+
+        if (this.LanguagesSpoken.Any(lang => lang.Equals(langSki)))
+        {
+
+        }
+
+        ProfileLanguage profLang = this._languagesSpoken.FirstOrDefault(lang => lang.LanguageId == id);
+
+        profLang.AddNewLangSkill(langSki);
     }
 
     public abstract Result UpdateProfile(Profile profile);

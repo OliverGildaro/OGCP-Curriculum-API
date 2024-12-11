@@ -90,19 +90,9 @@ internal class ProfileConfiguration : IEntityTypeConfiguration<Profile>
         //This shadow property is not defined in our Language entity domain class
         //Indexer properties will be used to create the join table in this many to many relationship
         entity.HasMany(p => p.LanguagesSpoken)
-            .WithMany()
-            .UsingEntity<Dictionary<string, object>>(
-                "ProfileLanguages",
-                j => j.HasOne<Language>()
-                    .WithMany()
-                    .HasForeignKey("LanguageId")
-                    .OnDelete(DeleteBehavior.Cascade),
-                j => j.HasOne<Profile>()
-                    .WithMany()
-                    .HasForeignKey("ProfileId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                );
-
+            .WithOne()
+            .HasForeignKey("ProfileId")
+            .OnDelete(DeleteBehavior.Cascade);
 
         //INDEXING
         //INDEXING

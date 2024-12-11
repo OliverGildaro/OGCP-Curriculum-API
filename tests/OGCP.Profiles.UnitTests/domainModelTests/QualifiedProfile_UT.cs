@@ -2,6 +2,7 @@
 using OGCP.Curriculums.Core.DomainModel;
 using OGCP.Curriculums.Core.DomainModel.profiles;
 using OGCP.Curriculums.Core.DomainModel.valueObjects;
+using static OGCP.Curriculums.Core.DomainModel.valueObjects.LanguageSkill;
 
 namespace OGCP.Profiles.UnitTests.domainModelTests;
 
@@ -85,8 +86,27 @@ public class QualifiedProfile_UT
         var languageResult = Language.Create(language, proficiency);
         qualifiedProf.AddLanguage(languageResult);
 
-        //var writing = new LanguageSkill("Writing", "basic");
-        //qualifiedProf.AddLangSkill(writing);
+        var skillWriting = LanguageSkill.CreateNew(LangSkill.WRITING, ProficiencyLevel.Intermediate);
+        var skillListening = LanguageSkill.CreateNew(LangSkill.LISTENING, ProficiencyLevel.Advanced);
+        var reading = LanguageSkill.CreateNew(LangSkill.READING, ProficiencyLevel.Beginner);
+        var speaking = LanguageSkill.CreateNew(LangSkill.SPEAKING, ProficiencyLevel.Proficient);
+
+        qualifiedProf.AddLAnguageSkill(0, skillWriting.Value);
+        qualifiedProf.AddLAnguageSkill(0, skillListening.Value);
+        qualifiedProf.AddLAnguageSkill(0, reading.Value);
+        qualifiedProf.AddLAnguageSkill(0, speaking.Value);
+
+
+        //add native
+        //var languageNativeResult = Language.Create(Languages.Spanish, ProficiencyLevel.Native);
+        //qualifiedProf.AddLanguage(languageResult);
+
+        //var readingNative = LanguageSkill.CreateNew(LangSkill.READING, ProficiencyLevel.Beginner);
+        //qualifiedProf.AddLAnguageSkill(0, readingNative.Value);
+
+        Assert.Single(qualifiedProf.LanguagesSpoken);
+        Assert.Equal(4, qualifiedProf.LanguagesSpoken[0].LanguageSkills.Count);
+        //Assert.Empty(qualifiedProf.LanguagesSpoken[1].LanguageSkills);
     }
 
     [Theory]

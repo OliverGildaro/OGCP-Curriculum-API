@@ -2,6 +2,9 @@
 
 public class Language
 {
+    public int Id { get; private set; }
+    public Languages Name { get; private set; }
+    public ProficiencyLevel Level { get; private set; }
     protected Language()
     {
     }
@@ -18,9 +21,7 @@ public class Language
     }
 
     // Properties
-    public int Id { get; private set; }
-    public Languages Name { get; private set; }
-    public ProficiencyLevel Level { get; private set; }
+
 
     // Factory method for controlled instantiation
     public static Language Create(Languages name, ProficiencyLevel level)

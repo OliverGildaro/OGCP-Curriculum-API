@@ -14,9 +14,9 @@ public class LanguageSkill
         Level = level;
     }
 
-    public Result<LanguageSkill, Error> CreateNew(LangSkill skill, ProficiencyLevel level)
+    public static Result<LanguageSkill, Error> CreateNew(LangSkill skill, ProficiencyLevel level)
     {
-        return new LanguageSkill(Skill, level);
+        return new LanguageSkill(skill, level);
     }
 
     public enum LangSkill

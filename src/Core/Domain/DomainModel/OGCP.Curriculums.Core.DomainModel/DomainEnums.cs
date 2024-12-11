@@ -24,7 +24,8 @@ public enum ProficiencyLevel
     Intermediate = 2,
     Proficient = 3,
     Advanced = 4,
-    Expert = 5
+    Expert = 5,
+    Native = 6
 }
 
 public enum Languages
