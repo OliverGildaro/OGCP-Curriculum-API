@@ -1,8 +1,7 @@
-﻿using ArtForAll.Shared.Contracts.DDD;
-using OGCP.Curriculum.API.domainmodel;
+﻿using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculums.Core.DomainModel;
 using OGCP.Curriculums.Core.DomainModel.profiles;
-using System.Reflection.Metadata;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
 namespace OGCP.Profiles.UnitTests.domainModelTests;
 
@@ -31,24 +30,63 @@ public class QualifiedProfile_UT
         string summary,
         string desiredRole,
         string countryCode,
-        string number, string email)
+        string number,
+        string email)
     {
         //var phoneNumb = PhoneNumber.Parse(phone);
         var phoneNumb2 = PhoneNumber.CreateNew(countryCode, number);
+        var name = Name.CreateNew(firstName, lastName);
+        var emailResult = Email.CreateNew(email);
         var qualifProfResult = QualifiedProfile
-            .Create(firstName, lastName, summary, desiredRole, phoneNumb2.Value, email);
+            .Create(name.Value, summary, desiredRole, phoneNumb2.Value, emailResult.Value);
         var qualifiedProf = qualifProfResult.Value;
 
         Assert.NotNull(qualifiedProf);
-        Assert.Equal(firstName, qualifiedProf.FirstName);
-        Assert.Equal(lastName, qualifiedProf.LastName);
+        Assert.Equal(firstName, qualifiedProf.Name.GivenName);
+        Assert.Equal(lastName, qualifiedProf.Name.FamilyNames);
         Assert.Equal(summary, qualifiedProf.Summary);
         Assert.Equal(desiredRole, qualifiedProf.DesiredJobRole);
         Assert.Equal(countryCode, qualifiedProf.Phone.CountryCode);
         Assert.Equal(number, qualifiedProf.Phone.Number);
-        Assert.Equal(email, qualifiedProf.Email);
+        Assert.Equal(email, qualifiedProf.Email.Value);
         Assert.IsType<QualifiedProfile>(qualifiedProf);
         Assert.True(qualifProfResult.IsSucces);
+    }
+
+    [Theory]
+    [InlineData(
+        "Oliver",
+        "Castro",
+        "I am a fullstack dev with bla",
+        ".net backend dev",
+        Languages.Italian,
+        ProficiencyLevel.Intermediate,
+        "591",
+        "69554851",
+        "gildaro.castro@gmail.com")]
+    public void CreateQualifiedProfileAndAddLanguagesAndLanguageDetails(
+        string firstName,
+        string lastName,
+        string summary,
+        string desiredRole,
+        Languages language,
+        ProficiencyLevel proficiency,
+        string countryCode,
+        string number,
+        string email)
+    {
+        var phoneNumb2 = PhoneNumber.CreateNew(countryCode, number);
+        var name = Name.CreateNew(firstName, lastName);
+        var emailResult = Email.CreateNew(email);
+        var qualifProfResult = QualifiedProfile
+            .Create(name.Value, summary, desiredRole, phoneNumb2.Value, emailResult.Value);
+        var qualifiedProf = qualifProfResult.Value;
+
+        var languageResult = Language.Create(language, proficiency);
+        qualifiedProf.AddLanguage(languageResult);
+
+        //var writing = new LanguageSkill("Writing", "basic");
+        //qualifiedProf.AddLangSkill(writing);
     }
 
     [Theory]
@@ -82,8 +120,10 @@ public class QualifiedProfile_UT
         string email)
     {
         var phoneNumb2 = PhoneNumber.CreateNew(countryCode, number);
+        var name = Name.CreateNew(firstName, lastName);
+        var emailResult = Email.CreateNew(email);
         var qualifProfResult = QualifiedProfile
-            .Create(firstName, lastName, summary, desiredRole, phoneNumb2.Value, email);
+            .Create(name.Value, summary, desiredRole, phoneNumb2.Value, emailResult.Value);
         var qualifiedProf = qualifProfResult.Value;
 
         var languageResult = Language.Create(language, proficiency);
@@ -91,13 +131,13 @@ public class QualifiedProfile_UT
 
         var language2 = Language.Create(language, proficiency);
         var resultAdd = qualifiedProf.AddLanguage(language2);
-        
+
         Assert.False(resultAdd.IsSucces);
         Assert.Equal($"{language} can not be added twice", resultAdd.Message);
     }
 
     [Theory]
-    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev",  "UMSS", EducationLevel.Doctorate, "2021-12-14",
+    [InlineData("Oliver", "Castro", "I am a fullstack dev with bla", ".net backend dev", "UMSS", EducationLevel.Doctorate, "2021-12-14",
         "+59169554851", "gildaro.castro@gmail.com")]
     [InlineData("Carolina", "Castro", "I am a fullstack java dev with bla", "java backend dev", "UMSS", EducationLevel.Doctorate, "2021-12-14",
         "+59169554851", "gildaro.castro@gmail.com")]
@@ -113,8 +153,10 @@ public class QualifiedProfile_UT
         string email)
     {
         var phoneNumb = PhoneNumber.Parse(phone);
+        var name = Name.CreateNew(firstName, lastName);
+        var emailResult = Email.CreateNew(email);
         var qualifProfResult = QualifiedProfile
-            .Create(firstName, lastName, summary, desiredRole, phoneNumb, email);
+            .Create(name.Value, summary, desiredRole, phoneNumb, emailResult.Value);
         var qualifiedProf = qualifProfResult.Value;
 
         var education = DegreeEducation.Create(institution, educationLevel, DateOnly.Parse(startDate), null).Value;
@@ -146,8 +188,10 @@ public class QualifiedProfile_UT
     string position)
     {
         var phoneNumb = PhoneNumber.Parse(phone);
+        var name = Name.CreateNew(firstName, lastName);
+        var emailResult = Email.CreateNew(email);
         var qualifProfResult = QualifiedProfile
-            .Create(firstName, lastName, summary, desiredRole, phoneNumb, email);
+            .Create(name.Value, summary, desiredRole, phoneNumb, emailResult.Value);
         var qualifiedProf = qualifProfResult.Value;
 
         var WorkExp1 = WorkExperience.Create(company, startDate, endDate, description, position).Value;
@@ -173,8 +217,11 @@ public class QualifiedProfile_UT
         string email)
     {
         var phoneNumb = PhoneNumber.Parse(phone);
-        var qualifProfResult = QualifiedProfile.Create(
-            firstName, lastName, summary, desiredRole, phoneNumb, email);
+        var name = Name.CreateNew(firstName, lastName);
+        var emailResult = Email.CreateNew(email);
+        var qualifProfResult = QualifiedProfile
+            .Create(name.Value, summary, desiredRole, phoneNumb, emailResult.Value);
+
         var error = qualifProfResult.Error;
 
         Assert.False(qualifProfResult.IsSucces);

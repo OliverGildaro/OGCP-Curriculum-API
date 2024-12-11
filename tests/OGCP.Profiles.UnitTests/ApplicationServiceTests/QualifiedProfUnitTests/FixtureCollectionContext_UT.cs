@@ -2,6 +2,7 @@
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.dtos;
 using OGCP.Curriculums.Core.DomainModel.profiles;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests;
 
@@ -39,8 +40,11 @@ public class CreateQualifiedProfileRequestClassData
 {
     public CreateQualifiedProfileRequestClassData()
     {
-        Add(QualifiedProfile.Create("Oliver", "CAstro", "I am bla", "Backedn",
-                            PhoneNumber.CreateNew("591", "69554851").Value,
-                "gildaro.castro@gmai.com").Value);
+        Add(QualifiedProfile.Create(
+            Name.CreateNew("Oliver", "Castro").Value,
+            "I am bla",
+            "Backedn",
+            PhoneNumber.CreateNew("591", "69554851").Value,
+            Email.CreateNew("gildaro.castro@gmai.com").Value).Value);
     }
 }

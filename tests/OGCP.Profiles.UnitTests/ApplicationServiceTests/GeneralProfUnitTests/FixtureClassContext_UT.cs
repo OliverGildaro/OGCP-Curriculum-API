@@ -4,6 +4,7 @@ using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services;
 using OGCP.Curriculums.Core.DomainModel.profiles;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.GeneralProfUnitTests;
 
@@ -24,20 +25,18 @@ public class FixtureClassContext_UT : IClassFixture<GeneralProfileServiceFixture
         return new TheoryData<GeneralProfile>
         {
             GeneralProfile.Create(
-                "Oliver",
-                "Castro",
+                Name.CreateNew("Oliver", "Castro").Value,
                 "Fullstack sumary",
                 new string[] { "Be the best", "Another" },
                 PhoneNumber.CreateNew("591", "69554851").Value,
-                "gildaro.castro@gmai.com"
+                Email.CreateNew("gildaro.castro@gmai.com").Value
                 ).Value,
             GeneralProfile.Create(
-                "Cristian",
-                "Morato",
+                Name.CreateNew("Oliver", "Castro").Value,
                 "Fullstack sumary",
                 new string[] { "Be the best", "Another" },
                 PhoneNumber.CreateNew("591", "69554851").Value,
-                "gildaro.castro@gmai.com"
+                Email.CreateNew("gildaro.castro@gmai.com").Value
                 ).Value,
         };
     }
@@ -50,6 +49,7 @@ public class FixtureClassContext_UT : IClassFixture<GeneralProfileServiceFixture
 
         Assert.IsType<Result>(result);
     }
+
 
     //here I have not been able to use fixture class context
     //needs to be redo for ProfileReadModel

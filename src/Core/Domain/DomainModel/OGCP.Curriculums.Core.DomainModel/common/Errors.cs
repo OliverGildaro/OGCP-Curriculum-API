@@ -38,9 +38,9 @@ public static class Errors
         
     }
 
-    public class Languages
-    {
-    }
+    //public class Languages
+    //{
+    //}
 
     public static class Validation
     {
@@ -78,6 +78,11 @@ public static class Errors
         }
 
         internal static Result<Email, Error> InvalidEmail(string v)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static Result<LanguageSkill, Error> DuplicateValue(string v)
         {
             throw new NotImplementedException();
         }

@@ -4,6 +4,7 @@ using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services;
 using OGCP.Curriculums.Core.DomainModel.profiles;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
 namespace OGCP.Profiles.UnitTests.serviceTests.QualifiedProfUnitTests;
 
@@ -20,12 +21,17 @@ public class FixtureClassContext_UT : IClassFixture<QualifiedProfileServiceFIxtu
     {
         return new TheoryData<QualifiedProfile>
         {
-            QualifiedProfile.Create("Oliver", "Castro", "Fullstack", "Backend",
-                            PhoneNumber.CreateNew("591", "69554851").Value,
-                "gildaro.castro@gmai.com").Value,
-            QualifiedProfile.Create("Alvaro", "Castro", "Fullstack", "Backend and architect",
-                            PhoneNumber.CreateNew("591", "69554851").Value,
-                "gildaro.castro@gmai.com").Value,
+            QualifiedProfile.Create(                
+                Name.CreateNew("Oliver", "Castro").Value,
+                "Fullstack",
+                "Backend",
+                PhoneNumber.CreateNew("591", "69554851").Value,
+                Email.CreateNew("gildaro.castro@gmai.com").Value).Value,
+            QualifiedProfile.Create(
+                Name.CreateNew("Alvaro", "Castro").Value,
+                "Fullstack", "Backend and architect",
+                PhoneNumber.CreateNew("591", "69554851").Value,
+                Email.CreateNew("gildaro.castro@gmai.com").Value).Value,
         };
     }
 
@@ -69,9 +75,12 @@ public class QualifiedProfileServiceFIxtureClass
 
         repo.Setup(m => m.FindAsync(It.IsAny<int>()))
                 .ReturnsAsync(QualifiedProfile
-                    .Create("Oliver", "Castro", "I am bla bla", "Fullstack software dev",
-                                    PhoneNumber.CreateNew("591", "69554851").Value,
-                "gildaro.castro@gmai.com").Value);
+                    .Create(
+                        Name.CreateNew("Oliver", "Castro").Value,
+                        "I am bla bla",
+                        "Fullstack software dev",
+                        PhoneNumber.CreateNew("591", "69554851").Value,
+                        Email.CreateNew("gildaro.castro@gmai.com").Value).Value);
 
         service = new ProfileService(repo.Object);
     }
