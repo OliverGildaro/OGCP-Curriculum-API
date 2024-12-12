@@ -8,10 +8,10 @@ public class CreateStudentProfileRequestValidator
 {
     public CreateStudentProfileRequestValidator()
     {
-        RuleFor(x => x.FirstName)
+        RuleFor(x => x.Name.GivenName)
             .NotEmpty();
 
-        RuleFor(x => x.LastName)
+        RuleFor(x => x.Name.GivenName)
             .NotEmpty();
     }
 }

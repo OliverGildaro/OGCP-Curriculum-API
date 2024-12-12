@@ -45,7 +45,7 @@ public static class PresentationServicesMounter
             //System.Text.Json is more performant than Newtonsoft.json
             options.SerializerSettings.Converters.Add(
                 JsonSubtypesConverterBuilder
-                .Of(typeof(ProfileRequest), "RequestType")
+                .Of(typeof(CreateProfileRequest), "RequestType")
                 .RegisterSubtype(typeof(CreateGeneralProfileRequest), ProfileRequests.CreateGeneral)
                 .RegisterSubtype(typeof(CreateQualifiedProfileRequest), ProfileRequests.CreateQualified)
                 .RegisterSubtype(typeof(CreateStudentProfileRequest), ProfileRequests.CreateStudent)

@@ -9,10 +9,10 @@ public class CreateGeneralProfileRequestValidator
 {
     public CreateGeneralProfileRequestValidator()
     {
-        RuleFor(x => x.FirstName)
+        RuleFor(x => x.Name.GivenName)
             .NotEmptyCustom();
 
-        RuleFor(x => x.LastName)
+        RuleFor(x => x.Name.FamilyNames)
             .NotEmptyCustom();
     }
 }

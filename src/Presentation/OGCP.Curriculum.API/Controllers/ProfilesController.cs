@@ -103,11 +103,19 @@ public class ProfilesController : ApplicationController
 
     [HttpPost]
     [Consumes("application/json")]
-    public async Task<IActionResult> CreateProfileAsync([FromBody] ProfileRequest profileRequest)
+    public async Task<IActionResult> CreateProfileAsync([FromBody] CreateProfileRequest profileRequest)
     {
-        var command = this.mapper.Map<CreateProfileCommand>(profileRequest);
-        await this.message.DispatchCommand(command);
-        return Ok();
+        try
+        {
+            var command = this.mapper.Map<CreateProfileCommand>(profileRequest);
+            await this.message.DispatchCommand(command);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
     }
 
 
