@@ -1,27 +1,27 @@
-﻿using customMapper = AutoMapper;
+﻿using ArtForAll.Shared.ErrorHandler.Maybe;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
+using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
 using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
+using OGCP.Curriculum.API.Commanding.commands.DeleteProfile;
 using OGCP.Curriculum.API.Commanding.commands.UpdateProfile;
+using OGCP.Curriculum.API.DAL.Queries.interfaces;
+using OGCP.Curriculum.API.DAL.Queries.Models;
+using OGCP.Curriculum.API.DAL.Queries.utils;
+using OGCP.Curriculum.API.DAL.Queries.utils.expand;
 using OGCP.Curriculum.API.DTOs.requests.Profile;
+using OGCP.Curriculum.API.DTOs.responses;
+using OGCP.Curriculum.API.Filters;
 using OGCP.Curriculum.API.POCOS.requests.Language;
 using OGCP.Curriculum.API.POCOS.requests.Profile;
 using OGCP.Curriculum.API.POCOS.requests.work;
 using OGCP.Curriculum.API.POCOS.responses;
-using OGCP.Curriculum.API.Commanding.commands.DeleteProfile;
-using System.Dynamic;
-using OGCP.Curriculum.API.DAL.Queries.Models;
-using OGCP.Curriculum.API.DAL.Queries.utils.expand;
-using OGCP.Curriculum.API.DAL.Queries.utils;
-using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
 using OGCP.Curriculum.API.Querying.GetProfileById;
 using OGCP.Curriculum.API.Querying.GetProfiles;
-using OGCP.Curriculum.API.Filters;
-using OGCP.Curriculum.API.DAL.Queries.interfaces;
-using ArtForAll.Shared.ErrorHandler.Maybe;
-using OGCP.Curriculum.API.DTOs.responses;
+using System.Dynamic;
+using customMapper = AutoMapper;
 
 namespace OGCP.Curriculum.API.Controllers;
 
@@ -47,6 +47,7 @@ public class ProfilesController : ApplicationController
     }
 
     [HttpGet]
+    [SkipModelValidationFilter]
     public async Task<IActionResult> GetProfilesAsync([FromQuery] QueryParameters parameters)
     {
         var query = new GetProfilesQuery()
@@ -123,11 +124,11 @@ public class ProfilesController : ApplicationController
     [ProducesResponseType(203)]
     public async Task<IActionResult> UpdateProfileAsync(int id, [FromBody] UpdateProfileRequest profile)
     {
-            var command = this.mapper.Map<UpdateProfileCommand>(profile);
-            command.Id = id;
-            await this.message.DispatchCommand(command);
+        var command = this.mapper.Map<UpdateProfileCommand>(profile);
+        command.Id = id;
+        await this.message.DispatchCommand(command);
 
-            return NoContent();
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
@@ -146,33 +147,33 @@ public class ProfilesController : ApplicationController
     [ProducesResponseType(203)]
     public async Task<IActionResult> AddLanguageToProfileAsync(int id, [FromBody] AddLanguageRequest request)
     {
-            var command = new AddLangueToProfileCommand
-            {
-                Id = id,
-                Level = request.Level,
-                Name = request.Name,
-            };
+        var command = new AddLangueToProfileCommand
+        {
+            Id = id,
+            Level = request.Level,
+            Name = request.Name,
+        };
 
-            await this.message.DispatchCommand(command);
+        await this.message.DispatchCommand(command);
 
-            return NoContent();
+        return NoContent();
     }
 
     [HttpPut("{id}/languages/{languageId}")]
     [ProducesResponseType(203)]
     public async Task<IActionResult> EditLanguageFromProfileAsync(int id, int languageId, [FromBody] UpdateLanguageRequest request)
     {
-            var command = new UpdateLanguageFromProfileCommand
-            {
-                Id = id,
-                LanguageId = languageId,
-                Level = request.Level,
-                Name = request.Name,
-            };
+        var command = new UpdateLanguageFromProfileCommand
+        {
+            Id = id,
+            LanguageId = languageId,
+            Level = request.Level,
+            Name = request.Name,
+        };
 
-            await this.message.DispatchCommand(command);
+        await this.message.DispatchCommand(command);
 
-            return NoContent();
+        return NoContent();
     }
 
 
@@ -180,15 +181,15 @@ public class ProfilesController : ApplicationController
     [ProducesResponseType(203)]
     public async Task<IActionResult> RemoveLanguageFromProfileAsync(int id, int languageId)
     {
-            var command = new RemoveLangueFromProfileCommand
-            {
-                Id = id,
-                LanguageId = languageId,
-            };
+        var command = new RemoveLangueFromProfileCommand
+        {
+            Id = id,
+            LanguageId = languageId,
+        };
 
-            await this.message.DispatchCommand(command);
+        await this.message.DispatchCommand(command);
 
-            return NoContent();
+        return NoContent();
     }
 
     [HttpPut("{id}/WorkExperienceTypes")]
@@ -220,8 +221,8 @@ public class ProfilesController : ApplicationController
     {
         return new ProfileResponse
         {
-            FirstName = p.FirstName,
-            LastName = p.LastName,
+            GivenName = p.GivenName,
+            FamilyNames = p.FamilyNames,
             Summary = p.Summary,
             Id = p.Id
         };

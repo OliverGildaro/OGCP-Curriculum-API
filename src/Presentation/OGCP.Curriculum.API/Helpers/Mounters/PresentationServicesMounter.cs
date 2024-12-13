@@ -27,6 +27,7 @@ public static class PresentationServicesMounter
         Services.AddControllers(options =>
         {
             options.Filters.Add<ExceptionHandlerFilter>();
+            options.Filters.Add<SkipModelValidationFilter>();
         })
         .ConfigureApiBehaviorOptions(options =>
         {
@@ -136,6 +137,15 @@ public static class PresentationServicesMounter
 
         public static IActionResult ValidateModelState(ActionContext context)
         {
+            var skipValidation = context.ActionDescriptor.EndpointMetadata
+            .OfType<SkipModelValidationFilter>()
+            .Any();
+
+            if (skipValidation)
+            {
+                return null; // Skip validation
+            }
+
             List<KeyValueError> allErrors = context.ModelState
                 .Where(x => x.Value.Errors.Count > 0)
                 .SelectMany(x => x.Value.Errors.Select(e => new KeyValueError

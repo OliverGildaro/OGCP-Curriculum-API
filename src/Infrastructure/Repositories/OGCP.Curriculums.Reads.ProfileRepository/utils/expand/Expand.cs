@@ -9,8 +9,8 @@ public class Expand
     private static readonly Dictionary<string, Expression<Func<ProfileReadModel, object>>> SelectFields =
         new Dictionary<string, Expression<Func<ProfileReadModel, object>>>
         {
-        { "FirstName", x => x.FirstName },
-        { "LastName", x => x.LastName },
+        { "GivenName", x => x.GivenName },
+        { "FamilyNames", x => x.FamilyNames },
         { "Summary", x => x.Summary },
         { "Id", x => x.Id },
         { "CareerGoals", x => x.CareerGoals }

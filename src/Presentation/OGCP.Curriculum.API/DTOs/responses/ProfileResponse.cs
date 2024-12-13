@@ -6,8 +6,8 @@ namespace OGCP.Curriculum.API.POCOS.responses;
 public class ProfileResponse
 {
     public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string GivenName { get; set; }
+    public string FamilyNames { get; set; }
     public string Summary { get; set; }
     public string DesiredJobRole { get; set; }
     public string[]? PersonalGoals { get; set; } = new string[] { };

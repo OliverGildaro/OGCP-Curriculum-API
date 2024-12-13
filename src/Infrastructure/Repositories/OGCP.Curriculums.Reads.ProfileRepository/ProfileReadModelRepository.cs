@@ -19,8 +19,8 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
     private readonly Dictionary<string, IOrderBy> OrderFunctions =
         new Dictionary<string, IOrderBy>
         {
-                    { "FirstName", new OrderBy<string>(x => x.FirstName) },
-                    { "LastName",  new OrderBy<string>(x => x.LastName) },
+                    { "GivenName", new OrderBy<string>(x => x.GivenName) },
+                    { "FamilyNames",  new OrderBy<string>(x => x.FamilyNames) },
                     { "Summary",   new OrderBy<string>(x => x.Summary) },
                     { "CareerGoals",   new OrderBy<string>(x => x.CareerGoals) },
                     { "DesiredJobRole",   new OrderBy<string>(x => x.DesiredJobRole) },
@@ -58,8 +58,8 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
             //Searching
             if (!string.IsNullOrEmpty(parameters.SearchBy))
             {
-                collection = collection.Where(c => c.FirstName.Contains(parameters.SearchBy.Trim())
-                    || c.LastName.Contains(parameters.SearchBy.Trim()));
+                collection = collection.Where(c => c.GivenName.Contains(parameters.SearchBy.Trim())
+                    || c.FamilyNames.Contains(parameters.SearchBy.Trim()));
             }
 
             //Ordering
@@ -156,7 +156,7 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
             .ThenInclude(pe => pe.Education)
             .SelectMany(p => p.ProfileEducations, (profile, profileEducation) => new ProfileEducationDto
             {
-                FirstName = profile.FirstName,
+                GivenName = profile.GivenName,
                 Institution = profileEducation.Education.Institution,
             }).ToListAsync();
     }
