@@ -32,7 +32,7 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
         this.context = profileContext;
     }
 
-    public async Task<IReadOnlyList<ProfileReadModel>> Find(QueryParameters parameters)
+    public async Task<IReadOnlyList<ProfileReadModel>> FindAsync(QueryParameters parameters)
     {
         try
         {
@@ -90,7 +90,7 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
         }
     }
 
-    public async Task<Maybe<ProfileReadModel>> Find(int id)
+    public async Task<Maybe<ProfileReadModel>> FindAsync(int id)
     {
         try
         {

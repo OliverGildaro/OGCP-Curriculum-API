@@ -6,6 +6,6 @@ namespace OGCP.Curriculum.API.DAL.Queries;
 public interface IReadRepository<TEntity, TEntityId>
     where TEntity : class
 {
-    public Task<IReadOnlyList<TEntity>> Find(QueryParameters parameters);
-    public Task<Maybe<TEntity>> Find(TEntityId id);
+    public Task<IReadOnlyList<TEntity>> FindAsync(QueryParameters parameters);
+    public Task<Maybe<TEntity>> FindAsync(TEntityId id);
 }

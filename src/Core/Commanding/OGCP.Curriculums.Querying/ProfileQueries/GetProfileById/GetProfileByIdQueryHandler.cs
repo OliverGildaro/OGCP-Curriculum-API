@@ -15,6 +15,6 @@ public class GetProfileByIdQueryHandler : IQueryHandler<GetProfileByIdQuery, May
     }
     public Task<Maybe<ProfileReadModel>> Handle(GetProfileByIdQuery query)
     {
-        return this.repository.Find(query.Id);
+        return this.repository.FindAsync(query.Id);
     }
 }

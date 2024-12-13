@@ -16,6 +16,6 @@ public class GetProfilesQueryHandler
 
     public Task<IReadOnlyList<ProfileReadModel>> Handle(GetProfilesQuery query)
     {
-        return repository.Find(query.Parameters);
+        return repository.FindAsync(query.Parameters);
     }
 }
