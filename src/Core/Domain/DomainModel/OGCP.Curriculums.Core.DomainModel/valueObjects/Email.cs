@@ -9,6 +9,10 @@ using System.Text.RegularExpressions;
 public class Email : ValueObject
 {
     private readonly string _value;
+    protected Email()
+    {
+        
+    }
 
     public string Value => _value;
 

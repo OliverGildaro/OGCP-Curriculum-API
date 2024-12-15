@@ -10,6 +10,10 @@ public class Name : ValueObject
 
     public string GivenName => _givenName;
     public string FamilyNames => _familyNames;
+    protected Name()
+    {
+        
+    }
 
     public string FullName => string.IsNullOrEmpty(FamilyNames)
         ? GivenName

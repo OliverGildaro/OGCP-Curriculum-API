@@ -14,6 +14,11 @@ public class LanguageSkill
         Level = level;
     }
 
+    protected LanguageSkill()
+    {
+        
+    }
+
     public static Result<LanguageSkill, Error> CreateNew(LangSkill skill, ProficiencyLevel level)
     {
         return new LanguageSkill(skill, level);

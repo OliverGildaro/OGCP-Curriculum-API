@@ -13,6 +13,10 @@ public class PhoneNumber : ValueObject
     private static readonly Regex PhoneNumberRegex = new Regex(
         @"^\+(?<countryCode>\d{1,3})(?<number>\d+)$");
 
+    protected PhoneNumber()
+    {
+    }
+
     private PhoneNumber(string countryCode, string number)
     {
         if (string.IsNullOrWhiteSpace(countryCode))

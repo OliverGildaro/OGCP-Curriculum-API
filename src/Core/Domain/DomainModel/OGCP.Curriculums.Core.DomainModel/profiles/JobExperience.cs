@@ -7,6 +7,10 @@ public abstract class JobExperience
     // Properties
     public int Id { get; protected set; }
     public string Company { get; protected set; }
+    protected JobExperience()
+    {
+        
+    }
 
     //TODO: DateOnly
     //public DateOnly StartDate { get; set; }

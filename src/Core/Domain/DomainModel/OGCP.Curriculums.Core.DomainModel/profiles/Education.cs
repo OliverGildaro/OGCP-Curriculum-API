@@ -9,7 +9,10 @@ public abstract class Education
     protected string _institution;
     protected DateOnly _startDate;
     protected DateOnly? _endDate;
-
+    protected Education()
+    {
+        
+    }
     public int Id => _id;
     public string Institution => _institution;
 
