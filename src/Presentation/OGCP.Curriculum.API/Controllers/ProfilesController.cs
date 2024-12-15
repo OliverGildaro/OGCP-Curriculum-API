@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.commanding.commands.AddLanguageToProfile;
+using OGCP.Curriculum.API.commanding.commands.AddSkillToLanguage;
 using OGCP.Curriculum.API.commanding.commands.CreateQualifiedProfile;
 using OGCP.Curriculum.API.commanding.commands.EditLanguageFromProfile;
 using OGCP.Curriculum.API.Commanding.commands.DeleteProfile;
@@ -11,6 +12,7 @@ using OGCP.Curriculum.API.DAL.Queries.interfaces;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.DAL.Queries.utils.expand;
+using OGCP.Curriculum.API.DTOs.requests.Language;
 using OGCP.Curriculum.API.DTOs.requests.Profile;
 using OGCP.Curriculum.API.DTOs.responses;
 using OGCP.Curriculum.API.Filters;
@@ -157,6 +159,24 @@ public class ProfilesController : ApplicationController
         await this.message.DispatchCommand(command);
 
         return NoContent();
+    }
+
+    [HttpPost("{profileId}/languages/{educationId}/skills")]
+    [ProducesResponseType(201)]
+    public async Task<IActionResult> AddLanguageSkillToLanguageAsync(
+        int profileId, int educationId, [FromBody] AddLanguageSkillRequest request)
+    {
+        var command = new AddLangueSkillToLanguageCommand
+        {
+            ProfileId = profileId,
+            EducationId = educationId,
+            Level = request.Level,
+            Skill = request.Skill,
+        };
+
+        await this.message.DispatchCommand(command);
+
+        return Created();
     }
 
     [HttpPut("{id}/languages/{languageId}")]

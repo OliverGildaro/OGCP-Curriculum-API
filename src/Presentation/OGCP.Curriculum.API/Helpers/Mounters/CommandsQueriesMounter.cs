@@ -15,6 +15,7 @@ using OGCP.Curriculum.API.Commanding.commands.UpdateProfile;
 using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.Querying.GetProfileById;
 using OGCP.Curriculum.API.Querying.GetProfiles;
+using OGCP.Curriculum.API.commanding.commands.AddSkillToLanguage;
 
 namespace OGCP.Curriculum.API.Helpers.DIMounters;
 
@@ -42,6 +43,7 @@ public static class CommandsQueriesMounter
         Services.AddScoped<ICommandHandler<AddLangueToProfileCommand, Result>, AddLanguageToProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<UpdateLanguageFromProfileCommand, Result>, UpdateLanguageFromProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveLangueFromProfileCommand, Result>, RemoveLanguageFromProfileCommandHandler>();
+        Services.AddScoped<ICommandHandler<AddLangueSkillToLanguageCommand, Result>, AddLangueSkillToLanguageCommandHandler>();
 
         //EDUCATIONS
         Services.AddScoped<ICommandHandler<AddEducationToStudentProfileCommand, Result>, AddEducationToStudentProfileCommandHandler>();

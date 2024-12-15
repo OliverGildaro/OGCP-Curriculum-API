@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OGCP.Curriculums.Core.DomainModel.profiles;
-using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
 namespace OGCP.Curriculums.Writes.ProfileRepository.context.Configurations;
 

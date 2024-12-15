@@ -131,11 +131,11 @@ public class Profile : IEntity<int>
 
     }
 
-    public void AddLAnguageSkill(int id, LanguageSkill langSki)
+    public Result AddLAnguageSkill(int id, LanguageSkill langSki)
     {
         if (langSki.Level.Equals(ProficiencyLevel.Native))
         {
-            return;
+            return Result.Failure("");
         }
         if (!this.LanguagesSpoken.Any(lang => lang.LanguageId.Equals(id)))
         {
@@ -149,7 +149,14 @@ public class Profile : IEntity<int>
 
         ProfileLanguage profLang = this._languagesSpoken.FirstOrDefault(lang => lang.LanguageId == id);
 
-        profLang.AddNewLangSkill(langSki);
+        var resultAddSkill = profLang.AddNewLangSkill(langSki);
+
+        if (resultAddSkill.IsFailure)
+        {
+            Result.Failure(resultAddSkill.Error.Message);
+        }
+
+        return Result.Success();
     }
 
     public virtual Result UpdateProfile(Profile profile)

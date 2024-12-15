@@ -1,6 +1,8 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using ArtForAll.Shared.ErrorHandler.Maybe;
 using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculums.Core.DomainModel;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
 namespace OGCP.Curriculum.API.services.interfaces
 {
@@ -13,5 +15,6 @@ namespace OGCP.Curriculum.API.services.interfaces
         Task<Result> UpdateAsync(Profile profile);
         Task<Result> DeleteProfile(int id);
         Task<Maybe<Language>> FindByLanguageAsync(Language language);
+        Task<Result> AddLanguageSkillAsync(int profileId, int educationId, LanguageSkill skill);
     }
 }

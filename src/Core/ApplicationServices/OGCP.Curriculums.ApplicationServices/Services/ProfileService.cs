@@ -3,6 +3,8 @@ using ArtForAll.Shared.ErrorHandler.Maybe;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
+using OGCP.Curriculums.Core.DomainModel;
+using OGCP.Curriculums.Core.DomainModel.valueObjects;
 using System.Linq.Expressions;
 
 namespace OGCP.Curriculum.API.services
@@ -15,6 +17,26 @@ namespace OGCP.Curriculum.API.services
         {
             this.writeRepo = writeRepo;
         }
+
+        public async Task<Result> AddLanguageSkillAsync(
+            int profileId, int educationId, LanguageSkill skill)
+        {
+            Maybe<Profile> profile = await this.writeRepo.FindAsync(profileId);
+
+            if (profile.HasNoValue)
+            {
+                return Result.Failure("");
+            }
+            var langAdded = profile.Value.AddLAnguageSkill(educationId, skill);
+
+            if (langAdded.IsFailure)
+            {
+                return langAdded;
+            }
+            await this.writeRepo.SaveChangesAsync();
+            return langAdded;
+        }
+
 
         public async Task<Result> AddLangueAsync(int id, Language language)
         {
