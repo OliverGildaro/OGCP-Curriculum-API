@@ -1,0 +1,31 @@
+﻿AZURE
+
+CREATE A APP SERVICE PLAN
+1. create a resource group
+2. Create an App service plan inside the resource group (here we can set up scale)
+3. Create an App service using azure bash
+az webapp create \
+  --resource-group M3CurriculumsGroup \
+  --plan M3CurriculumsPlan \
+  --name M3Curriculums \
+  --runtime "DOTNETCORE:6.0"
+
+az webapp deployment source config-local-git \
+  --name Curriculums \
+  --resource-group M3CurriculumsGroup
+
+Respuesta: https://olicasCV@curriculums.scm.azurewebsites.net/Curriculums.git
+4. Setup a user
+az webapp deployment user set --user-name olicasCV
+
+Respuesta: {
+  "id": null,
+  "kind": null,
+  "name": "web",
+  "publishingPassword": null,
+  "publishingPasswordHash": null,
+  "publishingPasswordHashSalt": null,
+  "publishingUserName": "olicasCV",
+  "scmUri": null,
+  "type": "Microsoft.Web/publishingUsers/web"
+}
