@@ -8,7 +8,7 @@ az webapp create \
   --resource-group M3CurriculumsGroup \
   --plan M3CurriculumsPlan \
   --name M3Curriculums \
-  --runtime "DOTNETCORE:6.0"
+  --runtime "DOTNETCORE:8.0"
 
 az webapp deployment source config-local-git \
   --name Curriculums \
