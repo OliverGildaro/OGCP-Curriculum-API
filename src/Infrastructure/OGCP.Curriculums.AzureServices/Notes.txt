@@ -55,6 +55,8 @@ then we can scale up and down in so far we need to
 4. Create a sql server database
 make it serverless, so when is not use it then it goes down to zero
 serverless is great for development porpouses
-networking: public endpoint and add current client ip address enabled
+networking: public endpoint
+Enable: Add current client ip address and azure resources access to this server
 then we can add our local IP address to talk with azure sql server
 5. Create a sql database
+get connection strings
