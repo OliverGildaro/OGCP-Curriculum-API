@@ -42,3 +42,19 @@ git remote add azure https://olicasCV@curriculums.scm.azurewebsites.net/Curricul
 BLOB STORAGE
 We can create a cdn to deliver images much faster
 cdns also have some caching implementation
+
+
+
+YOUTUBE tutorial
+1. Create a resource group
+2. Create ann App Service plan
+determine the pricing, the CPU power and memory, etc.
+we can have more than a web app in a service plan
+then we can scale up and down in so far we need to
+3. Create an app service
+4. Create a sql server database
+make it serverless, so when is not use it then it goes down to zero
+serverless is great for development porpouses
+networking: public endpoint and add current client ip address enabled
+then we can add our local IP address to talk with azure sql server
+5. Create a sql database
