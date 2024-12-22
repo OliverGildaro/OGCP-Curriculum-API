@@ -14,8 +14,8 @@ public class ApplicationWriteDbContext : DbContext
     }
 
     //This constructor is only for testing porpouses
-    //public ApplicationWriteDbContext(DbContextOptions<ApplicationWriteDbContext> dbContext)
-    //    : base(dbContext) { }
+    public ApplicationWriteDbContext(DbContextOptions<ApplicationWriteDbContext> dbContext)
+        : base(dbContext) { }
 
     public DbSet<QualifiedProfile> QualifiedProfiles { get; set; }
     public DbSet<GeneralProfile> GeneralProfiles { get; set; }

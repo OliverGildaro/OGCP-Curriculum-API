@@ -16,6 +16,7 @@ using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.Querying.GetProfileById;
 using OGCP.Curriculum.API.Querying.GetProfiles;
 using OGCP.Curriculum.API.commanding.commands.AddSkillToLanguage;
+using OGCP.Curriculums.Commanding.ProfileCommandImages.AddImage;
 
 namespace OGCP.Curriculum.API.Helpers.DIMounters;
 
@@ -54,6 +55,10 @@ public static class CommandsQueriesMounter
         Services.AddScoped<ICommandHandler<UpdateResearchEducationFromQualifiedProfileCommand, Result>, UpdateResearchEducationFromQualifiedProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveEducationFromQualifiedProfileCommand, Result>, RemoveEducationFromQualifiedProfileCommandHandler>();
         Services.AddScoped<ICommandHandler<RemoveEducationFromStudentProfileCommand, Result>, RemoveEducationFromStudentProfileCommandHandler>();
+
+        //IMAGES
+        Services.AddScoped<ICommandHandler<AddImageCommand, Result>, AddImageCommandHandler>();
+
     }
 
     public static void SetupQueries(this IServiceCollection Services)

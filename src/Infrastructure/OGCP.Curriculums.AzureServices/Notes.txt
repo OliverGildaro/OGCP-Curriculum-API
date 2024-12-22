@@ -60,3 +60,7 @@ Enable: Add current client ip address and azure resources access to this server
 then we can add our local IP address to talk with azure sql server
 5. Create a sql database
 get connection strings
+create a user-secrets for local dev work
+6. Create a publish profile from visual studio
+7. Publich
+8. Go to app service Environment Variables and add the connection string
