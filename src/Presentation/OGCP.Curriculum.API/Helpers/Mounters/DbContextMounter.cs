@@ -1,4 +1,5 @@
-﻿using OGCP.Curriculum.API.DAL.Mutations.context;
+﻿using Microsoft.EntityFrameworkCore.Design;
+using OGCP.Curriculum.API.DAL.Mutations.context;
 using OGCP.Curriculum.API.DAL.Queries.context;
 
 namespace OGCP.Curriculum.API.Helpers.DIMounters
@@ -10,32 +11,29 @@ namespace OGCP.Curriculum.API.Helpers.DIMounters
 
             // Add services to the container.
             //The dbcontext is automatically dispose after getting out of scope along with the tracking objects
-            //builder.Services.AddScoped(provider => new DbProfileContextConfig
+            //Services.AddScoped<ApplicationWriteDbContext>();
             //{
-            //    ConnectionString = builder.Configuration.GetConnectionString("conectionDb"),
-            //    UseConsoleLogger = true
+                //I need to register in this way because there is an abiguity between the two constructors I have
+                //In the DbProfileContext
+            //    var configuration = provider.GetRequiredService<DbProfileWritesContextConfig>();
+            //    return new ApplicationWriteDbContext(new DbProfileWritesContextConfig
+            //    {
+            //        ConnectionString = Configuration.GetConnectionString("conectionDb"),
+            //        UseConsoleLogger = true
+            //    });
             //});
-            Services.AddScoped<ApplicationWriteDbContext>(provider =>
-            {
-                //I need to register in this way because there is an abiguity between the two constructors I have
-                //In the DbProfileContext
-                return new ApplicationWriteDbContext(new DbProfileWritesContextConfig
-                {
-                    ConnectionString = Configuration.GetConnectionString("conectionDb"),
-                    UseConsoleLogger = true
-                });
-            });
 
-            Services.AddScoped<ApplicationReadDbContext>(provider =>
-            {
                 //I need to register in this way because there is an abiguity between the two constructors I have
                 //In the DbProfileContext
-                return new ApplicationReadDbContext(new DbProfileReadsContextConfig
-                {
-                    ConnectionString = Configuration.GetConnectionString("conectionDb"),
-                    UseConsoleLogger = true
-                });
-            });
+            //Services.AddScoped<ApplicationReadDbContext>(provider =>
+            //{
+            //    return new ApplicationReadDbContext(new DbProfileReadsContextConfig
+            //    {
+            //        ConnectionString = Configuration.GetConnectionString("conectionDb"),
+            //        UseConsoleLogger = true
+            //    });
+            //});
         }
     }
 }
+

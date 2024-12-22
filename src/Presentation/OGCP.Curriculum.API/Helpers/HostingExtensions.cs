@@ -13,7 +13,7 @@ public static class HostingExtensions
             builder.Services.SetupQueries();
             builder.Services.SetupServices();
             builder.Services.SetupRepositories(builder.Configuration);
-            builder.Services.SetupDbContext(builder.Configuration);
+            //builder.Services.SetupDbContext(builder.Configuration);
             return builder.Build();
         }
         catch (Exception ex)
