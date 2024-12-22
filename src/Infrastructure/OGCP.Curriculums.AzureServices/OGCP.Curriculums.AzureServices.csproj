@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.23.0" />
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="QueueStorages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Domain\DomainModel\OGCP.Curriculums.Core.DomainModel\OGCP.Curriculums.Core.DomainModel.csproj" />
+  </ItemGroup>
+
 </Project>

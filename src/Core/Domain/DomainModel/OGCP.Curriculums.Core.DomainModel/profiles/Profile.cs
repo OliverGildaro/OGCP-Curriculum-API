@@ -1,4 +1,7 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
+using OGCP.Curriculums.Core.DomainModel.common;
+using OGCP.Curriculums.Core.DomainModel.Events;
+using OGCP.Curriculums.Core.DomainModel.Images;
 using OGCP.Curriculums.Core.DomainModel.profiles;
 using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
@@ -8,7 +11,7 @@ namespace OGCP.Curriculum.API.domainmodel;
 //If we makes this one abstract we do not have any other choice than instantiate a leaf class
 //It helps to see the full picture
 //Ad an specific profile help us to see what kind of profiles we can create
-public class Profile : IEntity<int>
+public class Profile : AggregateRoot, IEntity<int>
 {
     protected List<ProfileLanguage> _languagesSpoken = new List<ProfileLanguage>();//Many to many
 
@@ -17,6 +20,8 @@ public class Profile : IEntity<int>
     protected string _summary;
     protected Email _email;
     protected PhoneNumber _phone;
+    private Image image;
+
     protected bool _isPublic;
     protected string _visibility;
     protected ProfileDetailLevel _detailLevel;
@@ -51,6 +56,7 @@ public class Profile : IEntity<int>
     public string Summary => _summary;
     public PhoneNumber Phone => _phone;
     public Email Email => _email;
+    public virtual Image Image => this.image;
     public bool IsPublic => _isPublic;
     public string Visibility => _visibility;
     public ProfileDetailLevel DetailLevel => _detailLevel;
@@ -161,6 +167,43 @@ public class Profile : IEntity<int>
 
     public virtual Result UpdateProfile(Profile profile)
     {
+        return Result.Success();
+    }
+
+    public bool AllowAddImageIsSuccess()
+    {
+        var allowAddImage = true;
+        //if (this.State.Equals(StateEvent.DELETED))
+        //{
+        //    allowAddImage = false;
+        //}
+
+        //if (this.StartDate <= DateTime.UtcNow)
+        //{
+        //    allowAddImage = false;
+        //}
+
+        return allowAddImage;
+    }
+
+    public Result AddImage(Image image)
+    {
+        if (this.Image != null)
+        {
+            return Result.Failure("The image alreaady exist");
+        }
+        var imageAdded = new ImageAdded
+        {
+            Id = image.Id,
+            CreatedAt = this.CreatedAt.ToString("yyyy-MM-dd"),
+            ProfileId = this.Id,
+            contentType = image.ContentType,
+            fileName = image.FileName
+        };
+
+        this.AddDomainEvent(imageAdded);
+
+        this.image = image;
         return Result.Success();
     }
 }

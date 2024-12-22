@@ -3,19 +3,59 @@ using ArtForAll.Shared.ErrorHandler.Maybe;
 using OGCP.Curriculum.API.DAL.Mutations.Interfaces;
 using OGCP.Curriculum.API.domainmodel;
 using OGCP.Curriculum.API.services.interfaces;
-using OGCP.Curriculums.Core.DomainModel;
+using OGCP.Curriculums.AzureServices.BlobStorages;
+using OGCP.Curriculums.Core.DomainModel.Images;
 using OGCP.Curriculums.Core.DomainModel.valueObjects;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace OGCP.Curriculum.API.services
 {
     public class ProfileService : IProfileService
     {
         private readonly IProfileWriteRepo writeRepo;
+        private readonly IBlobProfileImagesServices blobProfileImages;
 
-        public ProfileService(IProfileWriteRepo writeRepo)
+        public ProfileService(IProfileWriteRepo writeRepo, IBlobProfileImagesServices blobProfileImages)
         {
             this.writeRepo = writeRepo;
+            this.blobProfileImages = blobProfileImages;
+        }
+
+        public async Task<Result> AddImageAsync(int profileId, Image image, byte[] imageContent)
+        {
+            var @profile = await writeRepo.FindAsync(profileId);
+            if (@profile.HasNoValue || !@profile.Value.AllowAddImageIsSuccess())
+            {
+                return Result.Failure("");
+            }
+
+            var resultAdd = @profile.Value.AddImage(image);
+
+            if (resultAdd.IsFailure)
+            {
+                return resultAdd;
+            }
+
+            await writeRepo.SaveChangesAsync();
+
+
+            //imageBuffer
+            var imageBuffResult = ImageBuffer.CreateNew(imageContent, image.Id);
+            if (imageBuffResult.IsFailure)
+            {
+                return Result.Failure(imageBuffResult.Error.Message);
+            }
+
+            var uploadResult = await this.blobProfileImages.UploadImageAsync(imageBuffResult.Value);
+
+
+            if (uploadResult.IsFailure)
+            {
+                return Result.Failure(uploadResult.Message);
+            }
+
+            return Result.Success(uploadResult.Id);
         }
 
         public async Task<Result> AddLanguageSkillAsync(
@@ -84,7 +124,7 @@ namespace OGCP.Curriculum.API.services
             }
             var result = this.writeRepo.DeleteProfileAsync(profile.Value);
             await this.writeRepo.SaveChangesAsync();
-            
+
             return result;
         }
 
