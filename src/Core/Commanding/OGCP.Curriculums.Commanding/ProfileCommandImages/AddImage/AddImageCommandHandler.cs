@@ -17,7 +17,7 @@ public class AddImageCommandHandler : ICommandHandler<AddImageCommand, Result>
     {
 
         //imageCreated
-        var imageResult = Image.CreateNew(command.Id, command.ContentType, command.FileName);
+        var imageResult = Image.CreateNew(command.ProfileId, command.ContentType, command.FileName);
         if (imageResult.IsFailure)
         {
             return Result.Failure(imageResult.Error.Message);

@@ -35,4 +35,17 @@ public class ApplicationController : ControllerBase
 
     //    return Error(result.Error);
     //}
+
+    protected static byte[] ConvertIFormFileToByteArrayAsync(IFormFile file)
+    {
+        if (file is null)
+        {
+            return null;
+        }
+        using (var memoryStream = new MemoryStream())
+        {
+            file.CopyTo(memoryStream);
+            return memoryStream.ToArray();
+        }
+    }
 }
