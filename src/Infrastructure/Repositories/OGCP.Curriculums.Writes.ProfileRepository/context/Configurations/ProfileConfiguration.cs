@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculums.Core.DomainModel.Images;
 using OGCP.Curriculums.Core.DomainModel.valueObjects;
 
 namespace OGCP.Curriculums.Writes.ProfileRepository.context.Configurations;
@@ -74,6 +75,9 @@ internal class ProfileConfiguration : IEntityTypeConfiguration<Profile>
         entity.Property(p => p.UpdatedAt)
             .IsRequired();
 
+        entity.HasOne(p => p.Image)
+            .WithOne()
+            .HasForeignKey<Image>(p => p.ProfileId);
         //Shadow properties is something that EF use behind the scenes for example to
         //facilitate temporary tables, or to keep track of foreign keys that we have not mapped explicitly
         //we can use to access other fields that are not mapped to entities but exist in tables

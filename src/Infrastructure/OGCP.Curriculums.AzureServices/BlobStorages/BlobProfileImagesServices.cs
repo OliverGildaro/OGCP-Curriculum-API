@@ -17,14 +17,23 @@ public class BlobProfileImagesServices  : IBlobProfileImagesServices
 
     public async Task<Result> UploadImageAsync(ImageBuffer imageFile)
     {
-        using var stream = new MemoryStream(imageFile.Content);
-        var containerClient = this.client.GetBlobContainerClient("oliver");
-        await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
+        try
+        {
 
-        string blobName = $"{Guid.NewGuid().ToString()}.jpg";
+            using var stream = new MemoryStream(imageFile.Content);
+            var containerClient = this.client.GetBlobContainerClient("oliver");
+            await containerClient.CreateIfNotExistsAsync(PublicAccessType.None);
 
-        var response = await containerClient.UploadBlobAsync(blobName, stream);
+            string blobName = $"{Guid.NewGuid().ToString()}.jpg";
 
-        return Result.Success("Sucess");
+            var response = await containerClient.UploadBlobAsync(blobName, stream);
+
+            return Result.Success("Sucess");
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
     }
 }

@@ -11,7 +11,6 @@ public class ImageBuffer
 
     private ImageBuffer(byte[] content, int imageId)
     {
-        content = content ?? throw new ArgumentNullException(nameof(content), "Parameter cannot be null");
         this._id = imageId;
         this.content = content;
         this.key = $"images/{imageId}";

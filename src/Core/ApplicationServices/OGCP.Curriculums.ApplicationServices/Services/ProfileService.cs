@@ -37,11 +37,10 @@ namespace OGCP.Curriculum.API.services
                 return resultAdd;
             }
 
-            await writeRepo.SaveChangesAsync();
 
 
             //imageBuffer
-            var imageBuffResult = ImageBuffer.CreateNew(imageContent, image.Id);
+            var imageBuffResult = ImageBuffer.CreateNew(imageContent, image.ProfileId);
             if (imageBuffResult.IsFailure)
             {
                 return Result.Failure(imageBuffResult.Error.Message);
@@ -49,11 +48,17 @@ namespace OGCP.Curriculum.API.services
 
             var uploadResult = await this.blobProfileImages.UploadImageAsync(imageBuffResult.Value);
 
-
             if (uploadResult.IsFailure)
             {
                 return Result.Failure(uploadResult.Message);
             }
+            var result = await writeRepo.SaveChangesAsync();
+
+            if (result < 1)
+            {
+                return Result.Failure("");
+            }
+
 
             return Result.Success(uploadResult.Id);
         }

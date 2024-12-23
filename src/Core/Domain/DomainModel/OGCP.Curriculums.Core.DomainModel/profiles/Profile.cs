@@ -11,7 +11,7 @@ namespace OGCP.Curriculum.API.domainmodel;
 //If we makes this one abstract we do not have any other choice than instantiate a leaf class
 //It helps to see the full picture
 //Ad an specific profile help us to see what kind of profiles we can create
-public class Profile : AggregateRoot, IEntity<int>
+public abstract class Profile : AggregateRoot, IEntity<int>
 {
     protected List<ProfileLanguage> _languagesSpoken = new List<ProfileLanguage>();//Many to many
 
@@ -165,10 +165,7 @@ public class Profile : AggregateRoot, IEntity<int>
         return Result.Success();
     }
 
-    public virtual Result UpdateProfile(Profile profile)
-    {
-        return Result.Success();
-    }
+    public abstract Result UpdateProfile(Profile profile);
 
     public bool AllowAddImageIsSuccess()
     {

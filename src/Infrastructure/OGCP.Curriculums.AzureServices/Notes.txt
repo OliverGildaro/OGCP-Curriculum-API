@@ -82,3 +82,9 @@ create a user-secrets for local dev work
 6. Create a publish profile from visual studio
 7. Publish the profile
 8. Go to app service Environment Variables and add the connection string
+
+PART 3 - BlobStorage
+1. Create a blob storage
+2. Get access keys and copy to app.settings
+3. Add a container to hold images for example
+4. Create an azure CDN, so we can catch the images and response faster (Not available for student accounts)

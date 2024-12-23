@@ -21,14 +21,14 @@ public class ImagesController : ApplicationController
     [HttpPost("{profileId}/images")]
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
-    public async Task<IActionResult> AddImage([FromForm] ImageAddRequest request)
+    public async Task<IActionResult> AddImage(int profileId, [FromForm] ImageAddRequest request)
     {
         try
         {
 
             var addImageCmd = new AddImageCommand
             {
-                ProfileId = request.profileId,
+                ProfileId = profileId,
                 ImageContent = ConvertIFormFileToByteArrayAsync(request.Image),
                 ContentType = request.Image.ContentType,
                 FileName = request.Image.FileName
