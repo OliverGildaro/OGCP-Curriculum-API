@@ -1,17 +1,18 @@
-﻿using ArtForAll.Shared.Contracts.DDD;
-using ArtForAll.Shared.ErrorHandler;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculums.API.Envelopes;
-using OGCP.Curriculums.Core.DomainModel;
 using System.Net;
 
 namespace OGCP.Curriculum.API.Controllers;
 //SOURCES
 //https://enterprisecraftsmanship.com
 //http://bit.ly/vlad-updates
-[ApiController]
-public class ApplicationController : ControllerBase
+//[ApiController]
+public class ApplicationController : Controller
 {
+
+    public ApplicationController()
+    {
+    }
     protected new IActionResult Ok(object result = null)
     {
         return new EnvelopeResult(Envelope.Ok(result), HttpStatusCode.OK);
@@ -48,4 +49,6 @@ public class ApplicationController : ControllerBase
             return memoryStream.ToArray();
         }
     }
+
+
 }

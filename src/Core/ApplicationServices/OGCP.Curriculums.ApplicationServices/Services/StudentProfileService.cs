@@ -21,7 +21,7 @@ public class StudentProfileService : IStudentProfileService
         Maybe<StudentProfile> profile = await this.repository.FindAsync(id);
         if (profile.HasNoValue)
         {
-            return Result.Failure("");
+            return Result.Failure(string.Format("A student profile does not exist for the Id: {0}", id));
 
         }
 

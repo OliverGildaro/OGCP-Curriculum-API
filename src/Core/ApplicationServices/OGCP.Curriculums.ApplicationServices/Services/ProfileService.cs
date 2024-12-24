@@ -7,7 +7,6 @@ using OGCP.Curriculums.AzureServices.BlobStorages;
 using OGCP.Curriculums.Core.DomainModel.Images;
 using OGCP.Curriculums.Core.DomainModel.valueObjects;
 using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace OGCP.Curriculum.API.services
 {
@@ -112,7 +111,7 @@ namespace OGCP.Curriculum.API.services
 
             var resultSave = await writeRepo.SaveChangesAsync();
 
-            return Result.Success();
+            return Result.Success(request.Id.ToString());
         }
 
         public async Task<Result> DeleteProfile(int id)

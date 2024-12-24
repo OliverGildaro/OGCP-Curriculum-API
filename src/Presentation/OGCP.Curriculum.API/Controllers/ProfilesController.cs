@@ -1,4 +1,5 @@
-﻿using ArtForAll.Shared.ErrorHandler.Maybe;
+﻿using ArtForAll.Shared.ErrorHandler;
+using ArtForAll.Shared.ErrorHandler.Maybe;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
@@ -35,12 +36,18 @@ public class ProfilesController : ApplicationController
     private readonly IProfileReadModelRepository repository;
     private readonly Message message;
     private readonly customMapper.IMapper mapper;
+    private readonly LinkGenerator linkGenerator;
 
-    public ProfilesController(IProfileReadModelRepository repository, Message message, customMapper.IMapper mapper)
+    public ProfilesController(
+        IProfileReadModelRepository repository,
+        Message message,
+        customMapper.IMapper mapper,
+        LinkGenerator linkGenerator)
     {
         this.repository = repository;
         this.message = message;
         this.mapper = mapper;
+        this.linkGenerator = linkGenerator;
     }
     [HttpGet("error")]
     public IActionResult GetError()
@@ -49,7 +56,7 @@ public class ProfilesController : ApplicationController
     }
 
     [HttpGet]
-    [SkipModelValidationFilter]
+    //[SkipModelValidationFilter]
     public async Task<IActionResult> GetProfilesAsync([FromQuery] QueryParameters parameters)
     {
         var query = new GetProfilesQuery()
@@ -66,7 +73,7 @@ public class ProfilesController : ApplicationController
 
 
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = "GetProfileById")]
     public async Task<IActionResult> GetProfileByIdAsync(int id)
     {
         var query = new GetProfileByIdQuery
@@ -108,17 +115,11 @@ public class ProfilesController : ApplicationController
     [Consumes("application/json")]
     public async Task<IActionResult> CreateProfileAsync([FromBody] CreateProfileRequest profileRequest)
     {
-        try
-        {
-            var command = this.mapper.Map<CreateProfileCommand>(profileRequest);
-            await this.message.DispatchCommand(command);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
+        var command = this.mapper.Map<CreateProfileCommand>(profileRequest);
+        var resultCreated = await this.message.DispatchCommand(command);
+        var link = this.GenerateLinkForGetDashboardById(resultCreated.Id);
 
-            throw;
-        }
+        return this.Created(link, new { productId = resultCreated.Id });
     }
 
 
@@ -246,5 +247,14 @@ public class ProfilesController : ApplicationController
             Summary = p.Summary,
             Id = p.Id
         };
+    }
+
+    private string GenerateLinkForGetDashboardById(string id)
+    {
+        return this.linkGenerator.GetUriByAction(
+            httpContext: this.HttpContext,
+            action: nameof(this.GetProfileByIdAsync),
+            controller: "profiles",
+            values: new { profileId = id });
     }
 }

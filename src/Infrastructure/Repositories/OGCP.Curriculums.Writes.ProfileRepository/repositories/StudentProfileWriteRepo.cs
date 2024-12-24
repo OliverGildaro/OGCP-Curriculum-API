@@ -33,8 +33,10 @@ public class StudentProfileWriteRepo : IStudentProfileWriteRepo
         //    .AsSplitQuery()
         //    .FirstOrDefaultAsync(p => p.Id.Equals(id));
 
-        return await this.context.StudentProfiles
+        var result = await this.context.StudentProfiles
             .FirstOrDefaultAsync(p => p.Id.Equals(id));
+
+        return result;
     }
 
     public Task<int> RemoveOrphanEducationsAsync(string removeEducation)

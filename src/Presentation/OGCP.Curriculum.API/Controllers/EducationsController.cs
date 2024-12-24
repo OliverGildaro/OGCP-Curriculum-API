@@ -54,22 +54,27 @@ public class EducationsController : ApplicationController
     [ProducesResponseType(203)]
     public async Task<IActionResult> AddEducationToProfileAsync(int profileId, [FromBody] AddEducationRequest request)
     {
-            //AddEducationToQualifiedProfileCommand command = EducationFactory.Get(request, id);
-            var command = this.mapper.Map<AddEducationToProfileCommand>(request);
-            command.ProfileId = profileId;
-            Result sds = await this.message.DispatchCommand(command);
-            return NoContent();
+        //AddEducationToQualifiedProfileCommand command = EducationFactory.Get(request, id);
+        var command = this.mapper.Map<AddEducationToProfileCommand>(request);
+        command.ProfileId = profileId;
+        Result result = await this.message.DispatchCommand(command);
+        if (result.IsFailure)
+        {
+            return BadRequest(result.Message);
+        }
+
+        return NoContent();
     }
 
     [HttpPut("{profileId}/educations/{educationId}")]
     [ProducesResponseType(203)]
     public async Task<IActionResult> UpdateEducationFromProfileAsync(int profileId, int educationId, [FromBody] UpdateEducationRequest request)
     {
-            var command = this.mapper.Map<UpdateEducationFromQualifiedProfileCommand>(request);
-            command.ProfileId = profileId;
-            command.EducationId = educationId;
-            Result sds = await this.message.DispatchCommand(command);
-            return NoContent();
+        var command = this.mapper.Map<UpdateEducationFromQualifiedProfileCommand>(request);
+        command.ProfileId = profileId;
+        command.EducationId = educationId;
+        Result sds = await this.message.DispatchCommand(command);
+        return NoContent();
     }
 
     [HttpDelete("{profileId}/educations/{educationId}")]
@@ -77,11 +82,11 @@ public class EducationsController : ApplicationController
     public async Task<IActionResult> RemoveEducationFromProfileAsync(
         int profileId, int educationId, [FromBody] DeleteEducationRequest request)
     {
-            var command = this.mapper.Map<RemoveEducationFromProfileCommand>(request);
-            command.Id = profileId;
-            command.EducationId = educationId;
-            Result sds = await this.message.DispatchCommand(command);
-            return NoContent();
+        var command = this.mapper.Map<RemoveEducationFromProfileCommand>(request);
+        command.Id = profileId;
+        command.EducationId = educationId;
+        Result sds = await this.message.DispatchCommand(command);
+        return NoContent();
     }
 
     [HttpGet("educations/by-range")]

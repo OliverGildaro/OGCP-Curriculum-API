@@ -1,22 +1,18 @@
 ﻿using JsonSubTypes;
+using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
 using OGCP.Curriculum.API.domainmodel;
+using OGCP.Curriculum.API.DTOs;
 using OGCP.Curriculum.API.DTOs.requests.Education;
 using OGCP.Curriculum.API.DTOs.requests.Profile;
-using OGCP.Curriculum.API.DTOs;
 using OGCP.Curriculum.API.Filters;
+using OGCP.Curriculum.API.Filters.Envelopes;
 using OGCP.Curriculum.API.POCOS.requests.Education;
 using OGCP.Curriculum.API.POCOS.requests.Profile;
 using OGCP.Curriculum.API.POCOS.requests.work;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculums.API.Envelopes;
-using System.Net;
-using ArtForAll.Shared.Contracts.DDD;
-using FluentValidation.AspNetCore;
-using OGCP.Curriculum.API.Validators;
 using OGCP.Curriculums.Core.DomainModel;
-using OGCP.Curriculum.API.Filters.Envelopes;
+using System.Net;
 
 namespace OGCP.Curriculum.API.Helpers.DIMounters;
 
@@ -27,18 +23,18 @@ public static class PresentationServicesMounter
         Services.AddControllers(options =>
         {
             options.Filters.Add<ExceptionHandlerFilter>();
-            options.Filters.Add<SkipModelValidationFilter>();
+            //options.Filters.Add<SkipModelValidationFilter>();
         })
-        .ConfigureApiBehaviorOptions(options =>
-        {
-            options.InvalidModelStateResponseFactory = ModelStateValidator.ValidateModelState;
-        })
-        .AddFluentValidation(options =>
-        {
-            options.RegisterValidatorsFromAssemblyContaining<CreateGeneralProfileRequestValidator>();
-            options.RegisterValidatorsFromAssemblyContaining<CreateStudentProfileRequestValidator>();
-            options.RegisterValidatorsFromAssemblyContaining<AddDegreeEducationRequestValidator>();
-        })
+        //.ConfigureApiBehaviorOptions(options =>
+        //{
+        //    options.InvalidModelStateResponseFactory = ModelStateValidator.ValidateModelState;
+        //})
+        //.AddFluentValidation(options =>
+        //{
+        //    options.RegisterValidatorsFromAssemblyContaining<CreateGeneralProfileRequestValidator>();
+        //    options.RegisterValidatorsFromAssemblyContaining<CreateStudentProfileRequestValidator>();
+        //    options.RegisterValidatorsFromAssemblyContaining<AddDegreeEducationRequestValidator>();
+        //})
         .AddNewtonsoftJson(options =>
         {
             //System.Text.Json does not support polimorphic deserialization, but it support limited serialization
