@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Infrastructure\OGCP.Curriculums.AzureServices\OGCP.Curriculums.AzureServices.csproj" />
-    <ProjectReference Include="..\..\..\Infrastructure\POCOS\OGCP.Curriculums.Infrastructure.POCOS\OGCP.Curriculums.Infrastructure.POCOS.csproj" />
     <ProjectReference Include="..\..\..\Infrastructure\Repositories\OGCP.Curriculums.Writes.ProfileRepository\OGCP.Curriculums.Writes.ProfileRepository.csproj" />
   </ItemGroup>
 
