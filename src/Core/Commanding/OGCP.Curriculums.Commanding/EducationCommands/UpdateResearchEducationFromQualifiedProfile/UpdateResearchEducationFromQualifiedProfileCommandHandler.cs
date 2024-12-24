@@ -21,7 +21,7 @@ public class UpdateResearchEducationFromQualifiedProfileCommandHandler
         (int id, string institution, DateOnly startDate, DateOnly? endDate, string projectTitle, string supervisor, string summary)
             = command;
         var reserachEduResult = ResearchEducation
-            .Hidrate(id, institution, startDate, endDate, projectTitle, supervisor, summary);
+            .Create(institution, startDate, endDate, projectTitle, supervisor, summary);
 
         if (reserachEduResult.IsFailure)
         {

@@ -47,6 +47,7 @@ public class StudentProfileWriteRepo : IStudentProfileWriteRepo
     public async Task<Maybe<ResearchEducation>> FindResearchEducation(string institution, string projectTitle)
     {
         return await this.context.ResearchEducations
+            .AsNoTracking()
             .FirstOrDefaultAsync(p => p.Institution.Equals(institution) && p.ProjectTitle.Equals(projectTitle));
     }
 

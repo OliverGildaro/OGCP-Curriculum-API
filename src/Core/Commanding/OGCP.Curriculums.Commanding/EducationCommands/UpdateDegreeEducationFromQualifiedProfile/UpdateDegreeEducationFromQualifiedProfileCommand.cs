@@ -26,7 +26,7 @@ public class UpdateDegreeEducationFromQualifiedProfileCommand : UpdateEducationF
         out DateOnly startDate,
         out DateOnly? endDate)
     {
-        id = base.ProfileId;
+        id = base.EducationId;
         institution = base.Institution;
         degree = this.Degree;
         startDate = base.StartDate;
@@ -49,7 +49,7 @@ public class UpdateResearchEducationFromQualifiedProfileCommand : UpdateEducatio
         out string supervisor,
         out string summary)
     {
-        id = base.ProfileId;
+        id = base.EducationId;
         institution = base.Institution;
         startDate = base.StartDate;
         endDate = base.EndDate;
