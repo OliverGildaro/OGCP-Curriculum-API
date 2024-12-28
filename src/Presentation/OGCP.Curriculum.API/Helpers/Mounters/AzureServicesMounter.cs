@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Azure;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Azure;
+using Microsoft.Identity.Web;
 using OGCP.Curriculums.AzureServices.BlobStorages;
 
 namespace OGCP.Curriculum.API.Helpers.DIMounters;
@@ -12,5 +14,12 @@ public static class AzureServicesMounter
         {
             azureBuilder.AddBlobServiceClient(Configuration.GetConnectionString("blobStorage"));
         });
+
+        Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"));
+
+        var initialScopes = Configuration["AzureAdB2C:Scopes"]?.Split(' ');
+
+        Services.AddAuthorization();
     }
 }

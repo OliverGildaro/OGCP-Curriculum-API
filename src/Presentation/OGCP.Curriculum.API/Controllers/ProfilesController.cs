@@ -1,5 +1,6 @@
 ﻿using ArtForAll.Shared.ErrorHandler;
 using ArtForAll.Shared.ErrorHandler.Maybe;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using OGCP.Curriculum.API.commanding;
@@ -56,6 +57,7 @@ public class ProfilesController : ApplicationController
     }
 
     [HttpGet]
+    [Authorize]
     //[SkipModelValidationFilter]
     public async Task<IActionResult> GetProfilesAsync([FromQuery] QueryParameters parameters)
     {
