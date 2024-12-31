@@ -17,7 +17,7 @@ namespace OGCP.Curriculum.API.Helpers.DIMounters
             //In the DbProfileContext
                 return new ApplicationWriteDbContext(new DbProfileWritesContextConfig
                 {
-                    ConnectionString = Configuration.GetConnectionString("conectionDb"),
+                    ConnectionString = Configuration["conectionDb"],
                     UseConsoleLogger = true
                 });
             });
@@ -28,7 +28,7 @@ namespace OGCP.Curriculum.API.Helpers.DIMounters
             {
                 return new ApplicationReadDbContext(new DbProfileReadsContextConfig
                 {
-                    ConnectionString = Configuration.GetConnectionString("conectionDb"),
+                    ConnectionString = Configuration["conectionDb"],
                     UseConsoleLogger = true
                 });
             });
