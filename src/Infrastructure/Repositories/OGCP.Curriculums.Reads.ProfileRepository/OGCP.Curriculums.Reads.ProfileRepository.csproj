@@ -22,4 +22,8 @@
 
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\ApplicationServices\OGCP.Curriculums.Ports\OGCP.Curriculums.Ports.csproj" />
+  </ItemGroup>
+
 </Project>

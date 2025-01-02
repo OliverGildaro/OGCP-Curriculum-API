@@ -47,6 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AzureServices", "AzureServi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OGCP.Curriculums.AzureServices", "src\Infrastructure\OGCP.Curriculums.AzureServices\OGCP.Curriculums.AzureServices.csproj", "{24F62387-9C6B-498F-A9D6-06E0705CA247}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OGCP.Curriculums.Ports", "src\Core\ApplicationServices\OGCP.Curriculums.Ports\OGCP.Curriculums.Ports.csproj", "{266110C0-4E82-4AB3-89AB-ADFB017D98ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{24F62387-9C6B-498F-A9D6-06E0705CA247}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24F62387-9C6B-498F-A9D6-06E0705CA247}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24F62387-9C6B-498F-A9D6-06E0705CA247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{266110C0-4E82-4AB3-89AB-ADFB017D98ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{266110C0-4E82-4AB3-89AB-ADFB017D98ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{266110C0-4E82-4AB3-89AB-ADFB017D98ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{266110C0-4E82-4AB3-89AB-ADFB017D98ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,6 +124,7 @@ Global
 		{B7AE1DCB-26F5-4664-8041-4962718EA743} = {2726DD97-C8E1-440C-883F-1400BEA0E96F}
 		{638528F5-BDD1-4185-998F-8BE5C77F3F91} = {BD4D7566-346E-41DC-B462-DF998B981AE7}
 		{24F62387-9C6B-498F-A9D6-06E0705CA247} = {638528F5-BDD1-4185-998F-8BE5C77F3F91}
+		{266110C0-4E82-4AB3-89AB-ADFB017D98ED} = {0F2D440E-F717-428E-B1C3-EAF8DAABEFB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {033F9C8E-4BC3-4F8E-9BCF-B79B2BE3ECF7}

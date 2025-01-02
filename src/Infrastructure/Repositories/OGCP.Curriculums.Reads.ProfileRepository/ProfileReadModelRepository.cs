@@ -7,6 +7,7 @@ using OGCP.Curriculum.API.DAL.Queries.Models;
 using OGCP.Curriculum.API.DAL.Queries.utils;
 using OGCP.Curriculum.API.DAL.Queries.utils.expand;
 using OGCP.Curriculum.API.DAL.Queries.utils.pagination;
+using OGCP.Curriculums.Ports;
 using OGCP.Curriculums.Reads.ProfileRepository.DTOs;
 using System.Data;
 
@@ -15,7 +16,7 @@ namespace OGCP.Curriculum.API.DAL.Queries;
 public class ProfileReadModelRepository : IProfileReadModelRepository
 {
     private readonly ApplicationReadDbContext context;
-
+    private readonly IApplicationInsights insights;
     private readonly Dictionary<string, IOrderBy> OrderFunctions =
         new Dictionary<string, IOrderBy>
         {
@@ -27,9 +28,12 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
                     { "Discriminator",   new OrderBy<string>(x => x.Discriminator) },
         };
 
-    public ProfileReadModelRepository(ApplicationReadDbContext profileContext)
+    public ProfileReadModelRepository(
+        ApplicationReadDbContext profileContext,
+        IApplicationInsights insights)
     {
         this.context = profileContext;
+        this.insights = insights;
     }
 
     public async Task<IReadOnlyList<ProfileReadModel>> FindAsync(QueryParameters parameters)
@@ -43,6 +47,7 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
             //IENUMERABLE
             //IEnumerable works with delegates
             //That is compiled code
+            insights.LogInformation("MY_TRACKINGS: Ready to execute my sql command");
             var collection = context.Profiles
                 .Include(p => p.ProfileEducations)
                 .ThenInclude(pe => pe.Education)
@@ -85,7 +90,10 @@ public class ProfileReadModelRepository : IProfileReadModelRepository
         }
         catch (Exception ex)
         {
-
+            insights.LogInformation("MY_TRACKINGS: Exception was catched in sql execution");
+            insights.LogInformation(string.Format("MY_TRACKINGS message: {0}", ex.Message));
+            insights.LogInformation(string.Format("MY_TRACKINGS stack trace: {0}", ex.StackTrace));
+            //insights.LogException(ex);
             throw;
         }
     }

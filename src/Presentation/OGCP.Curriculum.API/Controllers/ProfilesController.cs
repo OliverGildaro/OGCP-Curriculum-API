@@ -24,7 +24,9 @@ using OGCP.Curriculum.API.POCOS.requests.work;
 using OGCP.Curriculum.API.POCOS.responses;
 using OGCP.Curriculum.API.Querying.GetProfileById;
 using OGCP.Curriculum.API.Querying.GetProfiles;
+using OGCP.Curriculums.Ports;
 using System.Dynamic;
+using static System.Formats.Asn1.AsnWriter;
 using customMapper = AutoMapper;
 
 namespace OGCP.Curriculum.API.Controllers;
@@ -38,17 +40,20 @@ public class ProfilesController : ApplicationController
     private readonly Message message;
     private readonly customMapper.IMapper mapper;
     private readonly LinkGenerator linkGenerator;
+    private readonly IApplicationInsights insights;
 
     public ProfilesController(
         IProfileReadModelRepository repository,
         Message message,
         customMapper.IMapper mapper,
-        LinkGenerator linkGenerator)
+        LinkGenerator linkGenerator,
+        IApplicationInsights insights)
     {
         this.repository = repository;
         this.message = message;
         this.mapper = mapper;
         this.linkGenerator = linkGenerator;
+        this.insights = insights;
     }
     [HttpGet("error")]
     public IActionResult GetError()
@@ -61,6 +66,9 @@ public class ProfilesController : ApplicationController
     //[SkipModelValidationFilter]
     public async Task<IActionResult> GetProfilesAsync([FromQuery] QueryParameters parameters)
     {
+        //insights.LogInformation(string.Format("Scopes: {0}", scopes));
+        insights.LogInformation("MY_TRACKINGS: Entering to the endpoint");
+
         var query = new GetProfilesQuery()
         {
             Parameters = parameters

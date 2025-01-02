@@ -1,11 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using OGCP.Curriculums.Ports;
 
 namespace OGCP.Curriculum.API.Filters;
 
 public class ExceptionHandlerFilter : IExceptionFilter
 {
+    private readonly IApplicationInsights insights;
+
+    public ExceptionHandlerFilter(IApplicationInsights insights)
+    {
+        this.insights = insights;
+    }
     public void OnException(ExceptionContext context)
     {
         // Determine the response details based on the exception
@@ -29,7 +36,7 @@ public class ExceptionHandlerFilter : IExceptionFilter
             Message = message,
             Details = context.Exception.Message // Avoid exposing internal details in production
         };
-
+        insights.LogException(context.Exception);
         // Create JSON response
         context.Result = new JsonResult(response)
         {
