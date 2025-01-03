@@ -77,3 +77,13 @@ Azure functions
 Azure container app: Kubernetes
 Azure kubernetes services
 Azure container services: for lightwait works
+
+3. Run app on docker
+Add docker support in visual studio
+Open azure clud shell on azure
+go to github a grab the GitHub CLI url
+Run: gh clone "URL" in azure
+You may need to authenticate agains github
+run on azure cli:
+	az acr --image blazor/web:v1 --registry acrcvssouthbraz.azurecr.io
+		--file D:\repositories\OGCP-Curriculum-Blazor\src\Server\OGCP.Curriculums.BlazorServer
