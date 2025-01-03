@@ -85,5 +85,4 @@ go to github a grab the GitHub CLI url
 Run: gh clone "URL" in azure
 You may need to authenticate agains github
 run on azure cli:
-	az acr --image blazor/web:v1 --registry acrcvssouthbraz.azurecr.io
-		--file D:\repositories\OGCP-Curriculum-Blazor\src\Server\OGCP.Curriculums.BlazorServer
+	az acr --image blazor/web:v1 --registry acrcvssouthbraz.azurecr.io --file \OGCP-Curriculum-Blazor\src\Server\OGCP.Curriculums.BlazorServer
