@@ -62,7 +62,7 @@ public class ProfilesController : ApplicationController
     }
 
     [HttpGet]
-    [Authorize]
+    //[Authorize]
     //[SkipModelValidationFilter]
     public async Task<IActionResult> GetProfilesAsync([FromQuery] QueryParameters parameters)
     {

@@ -34,7 +34,7 @@ public static class HostingExtensions
         app.UseCors("AllowSpecificOrigins");
 
         //In the case that the user fails authorization, from this midleware 403 is returned
-        app.UseAuthorization();
+        //app.UseAuthorization();
 
         app.UseRequestLocalization(options =>
         {
