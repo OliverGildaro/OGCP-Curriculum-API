@@ -36,7 +36,9 @@ public class ExceptionHandlerFilter : IExceptionFilter
             Message = message,
             Details = context.Exception.Message // Avoid exposing internal details in production
         };
-        insights.LogException(context.Exception);
+        insights.LogInformation("MY_TRACKINGS: Exception was catched in exception handler filter class");
+        insights.LogInformation(string.Format("MY_TRACKINGS message: {0}", context.Exception.Message));
+        insights.LogInformation(string.Format("MY_TRACKINGS stack trace: {0}", context.Exception.StackTrace));
         // Create JSON response
         context.Result = new JsonResult(response)
         {

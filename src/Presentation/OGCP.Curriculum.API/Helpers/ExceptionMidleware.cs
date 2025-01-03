@@ -24,7 +24,10 @@ public class ExceptionMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.LogInformation("MY_TRACKINGS: Exception was catched in exc eption middleware class");
+            _logger.LogInformation(string.Format("MY_TRACKINGS message: {0}", ex.Message));
+            _logger.LogInformation(string.Format("MY_TRACKINGS stack trace: {0}", ex.StackTrace));
+            
             await HandleCustomExceptionResponseAsync(context, ex);
         }
     }

@@ -39,14 +39,14 @@ public static class AzureServicesMounter
     public static void SetupApplicationInsights(
         IServiceCollection Services, IConfiguration Configuration, ILoggingBuilder loggingBuilder)
     {
-        string appInsightsCS = Configuration["ApplicationInsights:ConnectionString"];
-        loggingBuilder.AddApplicationInsights(
-                configureTelemetryConfiguration: (config) =>
-                    config.ConnectionString = appInsightsCS,
-                    configureApplicationInsightsLoggerOptions: (options) => { }
-            );
+        //string appInsightsCS = Configuration["ApplicationInsights:ConnectionString"];
+        //loggingBuilder.AddApplicationInsights(
+        //        configureTelemetryConfiguration: (config) =>
+        //            config.ConnectionString = appInsightsCS,
+        //            configureApplicationInsightsLoggerOptions: (options) => { }
+        //    );
 
-        loggingBuilder.AddFilter<ApplicationInsightsLoggerProvider>(null, LogLevel.Trace);
+        //loggingBuilder.AddFilter<ApplicationInsightsLoggerProvider>(null, LogLevel.Trace);
 
         Services.AddApplicationInsightsTelemetry();
         Services.AddScoped<IApplicationInsights, ApplicationInsightsService>();

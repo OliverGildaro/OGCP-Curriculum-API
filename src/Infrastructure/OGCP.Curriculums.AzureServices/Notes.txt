@@ -1,49 +1,5 @@
 ﻿AZURE
 
-CREATE A APP SERVICE PLAN
-1. create a resource group
-2. Create an App service plan inside the resource group (here we can set up scale)
-3. Create an App service using azure bash
-az webapp create \
-  --resource-group M3CurriculumsGroup \
-  --plan M3CurriculumsPlan \
-  --name M3Curriculums \
-  --runtime "DOTNETCORE:8.0"
-
-az webapp deployment source config-local-git \
-  --name Curriculums \
-  --resource-group M3CurriculumsGroup
-
-Respuesta: https://olicasCV@curriculums.scm.azurewebsites.net/Curriculums.git
-4. Setup a user
-az webapp deployment user set --user-name olicasCV
-
-Respuesta: {
-  "id": null,
-  "kind": null,
-  "name": "web",
-  "publishingPassword": null,
-  "publishingPasswordHash": null,
-  "publishingPasswordHashSalt": null,
-  "publishingUserName": "olicasCV",
-  "scmUri": null,
-  "type": "Microsoft.Web/publishingUsers/web"
-}
-
-Deployement
-1. agregar el repo a azure
-git remote add azure https://olicasCV@curriculums.scm.azurewebsites.net/Curriculums.git
-
-2. Create a new commit
-3. Create a master branch
-4. git push azure master
-
-
-BLOB STORAGE
-We can create a cdn to deliver images much faster
-cdns also have some caching implementation
-
-
 PART 1:
 1, Crahracteristic
 Someone else infrastructure
@@ -100,3 +56,8 @@ PART 5 - Auth
 8. Add a scope for the web api
 9. Go to the app registration for the web app and add a permisions (now if I go to the web app I will get the api scope	)
 10. Create a secret for web app
+
+PART 6 - APplication insigths
+traces
+| where message contains "MY_TRACKINGS"
+| order by timestamp desc
