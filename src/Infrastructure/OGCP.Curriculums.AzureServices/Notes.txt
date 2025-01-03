@@ -61,3 +61,19 @@ PART 6 - APplication insigths
 traces
 | where message contains "MY_TRACKINGS"
 | order by timestamp desc
+
+PART 7 - Azure containers
+1. Benefits
+Container are package in a single image, all is there.
+Is portable, can be run on different machines or operate systems because the image is inmutable
+WOrks nice with cloud azure
+Is isolated from the Operate system and other containers
+We can scale up and down easily
+
+2. Some azure container services
+Azure container Registry (we push the images here)
+App services
+Azure functions
+Azure container app: Kubernetes
+Azure kubernetes services
+Azure container services: for lightwait works
